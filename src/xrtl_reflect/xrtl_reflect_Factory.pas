@@ -5,10 +5,14 @@ unit xrtl_reflect_Factory;
 interface
 
 uses
-  SysUtils, Classes,
-  xrtl_reflect_ClassDescriptor;
+  SysUtils, Classes;
 
 type
+  IXRTLFactory = interface
+  ['{2BD0AC81-EC53-4252-A8A9-4F5325750A89}']
+    function   CreateInstance: TObject;
+  end;
+
   TXRTLObjectFactory = class(TInterfacedObject, IXRTLFactory)
   private
     FClazz: TClass;

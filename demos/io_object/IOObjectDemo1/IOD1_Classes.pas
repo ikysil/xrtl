@@ -7,7 +7,6 @@ uses
   SysUtils,
   xrtl_util_Value,
   xrtl_reflect_ClassDescriptor, xrtl_reflect_Introspector,
-  xrtl_reflect_PropertyList, xrtl_reflect_Property,
   xrtl_io_object_Serializer;
 
 type
@@ -54,8 +53,7 @@ type
   end;
 
   TDerived1Introspector = class(TXRTLIntrospector)
-    procedure  DefineProperties(const Descriptor: IXRTLClassDescriptor;
-                                const Properties: IXRTLPropertyList); override;
+    procedure  DefineProperties(const Clazz: TClass; const Properties: IXRTLPropertyList); override;
     procedure  GetValues(const Obj: TObject; const Properties: IXRTLPropertyList); override;
     procedure  SetValues(const Obj: TObject; const Properties: IXRTLPropertyList); override;
   end;
@@ -159,7 +157,7 @@ end;
 
 { TDerived1Introspector }
 
-procedure TDerived1Introspector.DefineProperties(const Descriptor: IXRTLClassDescriptor;
+procedure TDerived1Introspector.DefineProperties(const Clazz: TClass;
   const Properties: IXRTLPropertyList);
 begin
   Properties.Add(TXRTLProperty.Create('Parent', XRTLValue(TObject(nil))));
@@ -218,7 +216,7 @@ var
 begin
   Descriptor:= TBaseClassDescriptor.Create;
   XRTLRegisterClassDescriptor(Descriptor);
-  XRTLRegisterStreamer(TBaseStreamer.Create(Descriptor));
+  XRTLRegisterStreamer(TBase, TBaseStreamer.Create);
   Descriptor:= TDerived1ClassDescriptor.Create;
   XRTLRegisterClassDescriptor(Descriptor);
   Descriptor:= TDerived2ClassDescriptor.Create;

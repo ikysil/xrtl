@@ -8,27 +8,13 @@ uses
   SysUtils,
   xrtl_util_Type, xrtl_util_Value, xrtl_util_Exception,
   xrtl_util_Compare, xrtl_util_Container,
-  xrtl_reflect_PropertyList;
+  xrtl_reflect_Introspector, xrtl_reflect_Factory;
 
 const
   XRTLClassDescriptorId = 'xrtl::class';
 
 type
   EXRTLClassDescriptorException = class(EXRTLException);
-
-  IXRTLClassDescriptor = interface;
-
-  IXRTLIntrospector = interface
-  ['{2BD0AC80-EC53-4252-A8A9-4F5325750A89}']
-    procedure  DefineProperties(const Descriptor: IXRTLClassDescriptor; const Properties: IXRTLPropertyList);
-    procedure  GetValues(const Obj: TObject; const Properties: IXRTLPropertyList);
-    procedure  SetValues(const Obj: TObject; const Properties: IXRTLPropertyList);
-  end;
-
-  IXRTLFactory = interface
-  ['{2BD0AC81-EC53-4252-A8A9-4F5325750A89}']
-    function   CreateInstance: TObject;
-  end;
 
   IXRTLClassDescriptor = interface
   ['{C255D459-F2C1-44FA-A47F-C37771143BF4}']
@@ -239,7 +225,7 @@ function TXRTLClassDescriptor.DefineProperties: IXRTLPropertyList;
 begin
   Result:= TXRTLPropertyList.Create;
   if Assigned(FIntrospector) then
-    FIntrospector.DefineProperties(Self, Result)
+    FIntrospector.DefineProperties(Self.GetClass, Result)
   else
     DoDefineProperties(Result);
 end;

@@ -6,7 +6,7 @@ interface
 
 uses
   SysUtils,
-  xrtl_reflect_ClassDescriptor, xrtl_reflect_Property, xrtl_reflect_PropertyList;
+  xrtl_reflect_ClassDescriptor, xrtl_reflect_Introspector;
 
 type
   TXRTLValueCardinalClassDescriptor = class(TXRTLClassDescriptor)

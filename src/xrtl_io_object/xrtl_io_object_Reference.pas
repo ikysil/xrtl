@@ -8,8 +8,7 @@ uses
   Windows,
   SysUtils,
   xrtl_util_Value,
-  xrtl_reflect_ClassDescriptor, xrtl_reflect_Introspector, xrtl_reflect_Property,
-  xrtl_reflect_PropertyList;
+  xrtl_reflect_ClassDescriptor, xrtl_reflect_Introspector;
 
 const
   XRTLInstanceReferenceClassId = 'xrtl::ref';
@@ -36,8 +35,7 @@ type
 
   TXRTLInstanceReferenceIntrospector = class(TXRTLIntrospector)
   public
-    procedure  DefineProperties(const Descriptor: IXRTLClassDescriptor;
-                                const Properties: IXRTLPropertyList); override;
+    procedure  DefineProperties(const Clazz: TClass; const Properties: IXRTLPropertyList); override;
     procedure  GetValues(const Obj: TObject; const Properties: IXRTLPropertyList); override;
     procedure  SetValues(const Obj: TObject; const Properties: IXRTLPropertyList); override;
   end;
@@ -93,7 +91,7 @@ end;
 
 { TXRTLInstanceReferenceIntrospector }
 
-procedure TXRTLInstanceReferenceIntrospector.DefineProperties(const Descriptor: IXRTLClassDescriptor;
+procedure TXRTLInstanceReferenceIntrospector.DefineProperties(const Clazz: TClass;
   const Properties: IXRTLPropertyList);
 begin
   Properties.Add(TXRTLProperty.Create('AllowShared', XRTLValue(False)));
