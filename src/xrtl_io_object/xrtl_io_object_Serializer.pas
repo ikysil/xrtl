@@ -7,12 +7,10 @@ interface
 uses
   SysUtils,
   xrtl_util_Type, xrtl_util_Exception,
-  xrtl_reflect_ClassDescriptor,
-  xrtl_io_Stream;
+  xrtl_io_Stream, xrtl_reflect_ClassHelper;
 
 type
   EXRTLSerializerException = class(EXRTLException);
-  EXRTLObjectStreamerException = class(EXRTLSerializerException);
 
   IXRTLSerializer = interface
   ['{C255D455-F2C1-44FA-A47F-C37771143BF4}']
@@ -88,14 +86,14 @@ type
     procedure  EndBinaryData(var Stream: TXRTLInputStream);
   end;
 
-  IXRTLObjectStreamer = interface
+  IXRTLObjectStreamer = interface(IXRTLClassHelper)
   ['{34F068D3-2136-442C-B11A-69467F90333E}']
     procedure  WriteObjectData(const Writer: IXRTLObjectWriter; const Obj: TObject);
     procedure  ReadNoData(const Obj: TObject);
     procedure  ReadObjectData(const Reader: IXRTLObjectReader; const Obj: TObject);
   end;
 
-  TXRTLObjectStreamer = class(TInterfacedObject, IXRTLObjectStreamer)
+  TXRTLObjectStreamer = class(TInterfacedObject, IXRTLObjectStreamer, IXRTLClassHelper)
   private
   public
     procedure  WriteObjectData(const Writer: IXRTLObjectWriter; const Obj: TObject); virtual; abstract;
@@ -103,77 +101,32 @@ type
     procedure  ReadObjectData(const Reader: IXRTLObjectReader; const Obj: TObject); virtual; abstract;
   end;
 
-procedure XRTLRegisterStreamer(const Clazz: TClass; const Streamer: IXRTLObjectStreamer);
-function  XRTLFindStreamer(const Clazz: TClass; var Streamer: IXRTLObjectStreamer): Boolean; overload;
-function  XRTLFindParentStreamer(const Clazz: TClass; var Streamer: IXRTLObjectStreamer): Boolean;
-function  XRTLGetStreamer(const Clazz: TClass): IXRTLObjectStreamer; overload;
+function  XRTLStreamerRegistry: TXRTLClassHelperRegistry;
 
 implementation
 
 uses
-  xrtl_util_Compare, xrtl_util_Container, xrtl_util_Map, xrtl_util_Lock, xrtl_util_Value,
-  xrtl_io_object_ResourceStrings, xrtl_io_object_StdClassDescriptor,
+  xrtl_io_object_StdClassDescriptor,
   xrtl_io_object_StdStreamer;
 
 var
-  FStreamers: TXRTLSynchronizedMap = nil;
+  FStreamerRegistry: TXRTLClassHelperRegistry;
 
-procedure XRTLRegisterStreamer(const Clazz: TClass; const Streamer: IXRTLObjectStreamer);
-var
-  LStreamer: IXRTLObjectStreamer;
+function XRTLStreamerRegistry: TXRTLClassHelperRegistry;
 begin
-  try
-    FStreamers.BeginRead;
-    if XRTLFindStreamer(Clazz, LStreamer) then
-      raise EXRTLObjectStreamerException.CreateFmt(SXRTLStreamerForClassNameRegistered,
-                                                    [Clazz.ClassName]);
-    FStreamers.SetValue(XRTLValue(Clazz), XRTLValue(Streamer));
-  finally
-    FStreamers.EndRead;
-  end;
-end;
-
-function XRTLFindStreamer(const Clazz: TClass; var Streamer: IXRTLObjectStreamer): Boolean;
-var
-  Value: IXRTLValue;
-begin
-  Streamer:= nil;
-  Value:= FStreamers.GetValue(XRTLValue(Clazz));
-  Result:= Assigned(Value);
-  if Result then
-    Streamer:= XRTLGetAsInterface(Value) as IXRTLObjectStreamer;
-end;
-
-function XRTLFindParentStreamer(const Clazz: TClass; var Streamer: IXRTLObjectStreamer): Boolean;
-var
-  LClass: TClass;
-begin
-  Result:= False;
-  Streamer:= nil;
-  LClass:= Clazz.ClassParent;
-  while not Result and Assigned(LClass) do
-  begin
-    Result:= XRTLFindStreamer(LClass, Streamer);
-    LClass:= LClass.ClassParent;
-  end;
-end;
-
-function XRTLGetStreamer(const Clazz: TClass): IXRTLObjectStreamer; overload;
-begin
-  if not XRTLFindStreamer(Clazz, Result) then
-    raise EXRTLObjectStreamerException.CreateFmt(SXRTLNoStreamerForClassNameRegistered, [Clazz.ClassName]);
+  Result:= FStreamerRegistry;
 end;
 
 initialization
 begin
-  FStreamers:= TXRTLSynchronizedMap.Create(TXRTLArrayMap.Create, True);
+  FStreamerRegistry:= TXRTLClassHelperRegistry.Create;
   XRTLRegisterStdClassDescriptors;
   XRTLRegisterStdStreamers;
 end;
 
 finalization
 begin
-  FreeAndNil(FStreamers);
+  FreeAndNil(FStreamerRegistry);
 end;
 
 end.

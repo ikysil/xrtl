@@ -33,6 +33,8 @@ type
     FClassId: WideString;
     FIntrospector: IXRTLIntrospector;
     FFactory: IXRTLFactory;
+    procedure  CheckFactory;
+    procedure  CheckIntrospector;
   protected
     procedure  DoDefineProperties(const Properties: IXRTLPropertyList); virtual;
     procedure  DoGetValues(const Obj: TObject; const Properties: IXRTLPropertyList); virtual;
@@ -40,8 +42,11 @@ type
     function   DoCreateInstance: TObject; virtual;
   public
     constructor Create(const AClassId: WideString); overload;
+    constructor Create(const AClassId: WideString; const AClass: TClass); overload;
     constructor Create(const AClassId: WideString; const AClass: TClass;
-                       const AFactory: IXRTLFactory = nil;
+                       const AIntrospector: IXRTLIntrospector); overload;
+    constructor Create(const AClassId: WideString; const AClass: TClass;
+                       const AFactory: IXRTLFactory;
                        const AIntrospector: IXRTLIntrospector = nil); overload;
     destructor Destroy; override;
     function   GetImplementationObject: TObject;
@@ -191,8 +196,27 @@ begin
   FFactory:= nil;
 end;
 
+constructor TXRTLClassDescriptor.Create(const AClassId: WideString; const AClass: TClass);
+begin
+  inherited Create;
+  FClassId:= AClassId;
+  FClass:= AClass;
+  FFactory:= nil;
+  FIntrospector:= nil;
+end;
+
+constructor TXRTLClassDescriptor.Create(const AClassId: WideString;
+  const AClass: TClass; const AIntrospector: IXRTLIntrospector);
+begin
+  inherited Create;
+  FClassId:= AClassId;
+  FClass:= AClass;
+  FFactory:= nil;
+  FIntrospector:= AIntrospector;
+end;
+
 constructor TXRTLClassDescriptor.Create(const AClassId: WideString; const AClass: TClass;
-  const AFactory: IXRTLFactory = nil; const AIntrospector: IXRTLIntrospector = nil);
+  const AFactory: IXRTLFactory; const AIntrospector: IXRTLIntrospector = nil);
 begin
   inherited Create;
   FClassId:= AClassId;
@@ -221,8 +245,15 @@ begin
   Result:= FClassId;
 end;
 
+procedure TXRTLClassDescriptor.CheckIntrospector;
+begin
+  if not Assigned(FIntrospector) and Assigned(FClass) then
+    XRTLIntrospectorRegistry.Find(FClass, FIntrospector);
+end;
+
 function TXRTLClassDescriptor.DefineProperties: IXRTLPropertyList;
 begin
+  CheckIntrospector;
   Result:= TXRTLPropertyList.Create;
   if Assigned(FIntrospector) then
     FIntrospector.DefineProperties(Self.GetClass, Result)
@@ -233,6 +264,7 @@ end;
 procedure TXRTLClassDescriptor.GetValues(const Obj: TObject;
   const Properties: IXRTLPropertyList);
 begin
+  CheckIntrospector;
   if Assigned(FIntrospector) then
     FIntrospector.GetValues(Obj, Properties)
   else
@@ -242,14 +274,22 @@ end;
 procedure TXRTLClassDescriptor.SetValues(const Obj: TObject;
   const Properties: IXRTLPropertyList);
 begin
+  CheckIntrospector;
   if Assigned(FIntrospector) then
     FIntrospector.SetValues(Obj, Properties)
   else
     DoSetValues(Obj, Properties);
 end;
 
+procedure TXRTLClassDescriptor.CheckFactory;
+begin
+  if not Assigned(FFactory) and Assigned(FClass) then
+    XRTLFactoryRegistry.Find(FClass, FFactory);
+end;
+
 function TXRTLClassDescriptor.CreateInstance: TObject;
 begin
+  CheckFactory;
   if Assigned(FFactory) then
     Result:= FFactory.CreateInstance
   else

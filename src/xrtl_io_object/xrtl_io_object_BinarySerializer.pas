@@ -121,9 +121,9 @@ begin
         Ref:= TXRTLInstanceReference.Create(Obj, AllowShared);
       end;
       WriteObjectData(Stream, Ref);
-//  if reference is new (Result = False) and is registered successfully then
+//  if reference is old (Result = true) or is registered successfully then
 //  set Ref to nil to bypass FreeAndNil below
-      if not Result and FRefMap.RegisterReference(Ref, Obj) then
+      if Result or FRefMap.RegisterReference(Ref, Obj) then
       begin
         Ref:= nil; // to bypass FreeAndNil below
       end;
@@ -341,7 +341,7 @@ begin
   LStream:= nil;
   try
     LStream:= TXRTLBlockOutputStream.Create(Stream, False);
-    if XRTLFindStreamer(Descriptor.GetClass, LStreamer) then
+    if XRTLStreamerRegistry.Find(Descriptor.GetClass, LStreamer) then
     begin
       LStreamer.WriteObjectData(TXRTLBinaryObjectWriter.Create(LStream, Self), Obj);
     end;
@@ -673,7 +673,7 @@ begin
   LStream:= nil;
   try
     LStream:= TXRTLBlockInputStream.Create(Stream, False);
-    if XRTLFindStreamer(Descriptor.GetClass, LStreamer) then
+    if XRTLStreamerRegistry.Find(Descriptor.GetClass, LStreamer) then
     begin
       LStreamer.ReadObjectData(TXRTLBinaryObjectReader.Create(LStream, Self), Obj);
     end;
@@ -707,7 +707,7 @@ begin
   LStream:= nil;
   try
     LStream:= TXRTLBlockInputStream.Create(Stream, False);
-    if XRTLFindStreamer(Descriptor.GetClass, LStreamer) then
+    if XRTLStreamerRegistry.Find(Descriptor.GetClass, LStreamer) then
     begin
       LStreamer.ReadNoData(Obj);
     end;

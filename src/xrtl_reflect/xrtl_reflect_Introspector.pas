@@ -7,7 +7,8 @@ interface
 uses
   SysUtils,
   xrtl_util_Exception, xrtl_util_Container,
-  xrtl_util_Array, xrtl_util_Type, xrtl_util_Value;
+  xrtl_util_Array, xrtl_util_Type, xrtl_util_Value,
+  xrtl_reflect_ClassHelper;
 
 type
   IXRTLProperty = interface
@@ -33,7 +34,7 @@ type
     function   IsEmpty: Boolean;
   end;
 
-  IXRTLIntrospector = interface
+  IXRTLIntrospector = interface(IXRTLClassHelper)
   ['{2BD0AC80-EC53-4252-A8A9-4F5325750A89}']
     procedure  DefineProperties(const Clazz: TClass; const Properties: IXRTLPropertyList);
     procedure  GetValues(const Obj: TObject; const Properties: IXRTLPropertyList);
@@ -69,17 +70,45 @@ type
     function   IsEmpty: Boolean;
   end;
 
-  TXRTLIntrospector = class(TInterfacedObject, IXRTLIntrospector)
+  TXRTLIntrospector = class(TInterfacedObject, IXRTLIntrospector, IXRTLClassHelper)
   public
     procedure  DefineProperties(const Clazz: TClass; const Properties: IXRTLPropertyList); virtual; abstract;
     procedure  GetValues(const Obj: TObject; const Properties: IXRTLPropertyList); virtual; abstract;
     procedure  SetValues(const Obj: TObject; const Properties: IXRTLPropertyList); virtual; abstract;
   end;
 
+  TXRTLDefinePropertiesProc = procedure(const Clazz: TClass; const Properties: IXRTLPropertyList);
+  TXRTLGetValuesProc        = procedure(const Obj: TObject; const Properties: IXRTLPropertyList);
+  TXRTLSetValuesProc        = procedure(const Obj: TObject; const Properties: IXRTLPropertyList);
+
+  TXRTLDelegatingIntrospector = class(TXRTLIntrospector)
+  private
+    FDefinePropertiesProc: TXRTLDefinePropertiesProc;
+    FGetValuesProc: TXRTLGetValuesProc;
+    FSetValuesProc: TXRTLSetValuesProc;
+  public
+    constructor Create(const ADefinePropertiesProc: TXRTLDefinePropertiesProc;
+                       const AGetValuesProc: TXRTLGetValuesProc;
+                       const ASetValuesProc: TXRTLSetValuesProc);
+    procedure  DefineProperties(const Clazz: TClass; const Properties: IXRTLPropertyList); override;
+    procedure  GetValues(const Obj: TObject; const Properties: IXRTLPropertyList); override;
+    procedure  SetValues(const Obj: TObject; const Properties: IXRTLPropertyList); override;
+  end;
+
+function  XRTLIntrospectorRegistry: TXRTLClassHelperRegistry;
+
 implementation
 
 uses
   xrtl_util_Algorithm, xrtl_util_Compare;
+
+var
+  FIntrospectorRegistry: TXRTLClassHelperRegistry;
+
+function XRTLIntrospectorRegistry: TXRTLClassHelperRegistry;
+begin
+  Result:= FIntrospectorRegistry;
+end;
 
 { TXRTLProperty }
 
@@ -179,6 +208,54 @@ end;
 function TXRTLPropertyList.IsEmpty: Boolean;
 begin
   Result:= FProperties.IsEmpty;
+end;
+
+{ TXRTLDelegatingIntrospector }
+
+constructor TXRTLDelegatingIntrospector.Create(const ADefinePropertiesProc: TXRTLDefinePropertiesProc;
+  const AGetValuesProc: TXRTLGetValuesProc; const ASetValuesProc: TXRTLSetValuesProc);
+begin
+  inherited Create;
+  FDefinePropertiesProc:= ADefinePropertiesProc;
+  FGetValuesProc:= AGetValuesProc;
+  FSetValuesProc:= ASetValuesProc;
+end;
+
+procedure TXRTLDelegatingIntrospector.DefineProperties(const Clazz: TClass;
+  const Properties: IXRTLPropertyList);
+begin
+  if Assigned(FDefinePropertiesProc) then
+    FDefinePropertiesProc(Clazz, Properties)
+  else
+    XRTLNotImplemented;
+end;
+
+procedure TXRTLDelegatingIntrospector.GetValues(const Obj: TObject;
+  const Properties: IXRTLPropertyList);
+begin
+  if Assigned(FGetValuesProc) then
+    FGetValuesProc(Obj, Properties)
+  else
+    XRTLNotImplemented;
+end;
+
+procedure TXRTLDelegatingIntrospector.SetValues(const Obj: TObject;
+  const Properties: IXRTLPropertyList);
+begin
+  if Assigned(FSetValuesProc) then
+    FSetValuesProc(Obj, Properties)
+  else
+    XRTLNotImplemented;
+end;
+
+initialization
+begin
+  FIntrospectorRegistry:= TXRTLClassHelperRegistry.Create;
+end;
+
+finalization
+begin
+  FreeAndNil(FIntrospectorRegistry);
 end;
 
 end.

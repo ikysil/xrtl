@@ -6,7 +6,6 @@ interface
 
 uses
   SysUtils,
-  xrtl_reflect_ClassDescriptor,
   xrtl_io_object_Serializer;
 
 type
@@ -114,21 +113,21 @@ uses
 
 procedure XRTLRegisterStdStreamers;
 begin
-  XRTLRegisterStreamer(TXRTLValueCardinal,   TXRTLValueCardinalStreamer.Create);
-  XRTLRegisterStreamer(TXRTLValueInteger,    TXRTLValueIntegerStreamer.Create);
-  XRTLRegisterStreamer(TXRTLValueInt64,      TXRTLValueInt64Streamer.Create);
-  XRTLRegisterStreamer(TXRTLValueSingle,     TXRTLValueSingleStreamer.Create);
-  XRTLRegisterStreamer(TXRTLValueDouble,     TXRTLValueDoubleStreamer.Create);
-  XRTLRegisterStreamer(TXRTLValueExtended,   TXRTLValueExtendedStreamer.Create);
-  XRTLRegisterStreamer(TXRTLValueInterface,  TXRTLValueInterfaceStreamer.Create);
-  XRTLRegisterStreamer(TXRTLValueWideString, TXRTLValueWideStringStreamer.Create);
-  XRTLRegisterStreamer(TXRTLValueObject,     TXRTLValueObjectStreamer.Create);
-  XRTLRegisterStreamer(TXRTLValueVariant,    TXRTLValueVariantStreamer.Create);
-  XRTLRegisterStreamer(TXRTLValueCurrency,   TXRTLValueCurrencyStreamer.Create);
-  XRTLRegisterStreamer(TXRTLValueComp,       TXRTLValueCompStreamer.Create);
-  XRTLRegisterStreamer(TXRTLValueClass,      TXRTLValueClassStreamer.Create);
-  XRTLRegisterStreamer(TXRTLValueGUID,       TXRTLValueGUIDStreamer.Create);
-  XRTLRegisterStreamer(TXRTLValueBoolean,    TXRTLValueBooleanStreamer.Create);
+  XRTLStreamerRegistry.Register(TXRTLValueCardinal,   TXRTLValueCardinalStreamer.Create);
+  XRTLStreamerRegistry.Register(TXRTLValueInteger,    TXRTLValueIntegerStreamer.Create);
+  XRTLStreamerRegistry.Register(TXRTLValueInt64,      TXRTLValueInt64Streamer.Create);
+  XRTLStreamerRegistry.Register(TXRTLValueSingle,     TXRTLValueSingleStreamer.Create);
+  XRTLStreamerRegistry.Register(TXRTLValueDouble,     TXRTLValueDoubleStreamer.Create);
+  XRTLStreamerRegistry.Register(TXRTLValueExtended,   TXRTLValueExtendedStreamer.Create);
+  XRTLStreamerRegistry.Register(TXRTLValueInterface,  TXRTLValueInterfaceStreamer.Create);
+  XRTLStreamerRegistry.Register(TXRTLValueWideString, TXRTLValueWideStringStreamer.Create);
+  XRTLStreamerRegistry.Register(TXRTLValueObject,     TXRTLValueObjectStreamer.Create);
+  XRTLStreamerRegistry.Register(TXRTLValueVariant,    TXRTLValueVariantStreamer.Create);
+  XRTLStreamerRegistry.Register(TXRTLValueCurrency,   TXRTLValueCurrencyStreamer.Create);
+  XRTLStreamerRegistry.Register(TXRTLValueComp,       TXRTLValueCompStreamer.Create);
+  XRTLStreamerRegistry.Register(TXRTLValueClass,      TXRTLValueClassStreamer.Create);
+  XRTLStreamerRegistry.Register(TXRTLValueGUID,       TXRTLValueGUIDStreamer.Create);
+  XRTLStreamerRegistry.Register(TXRTLValueBoolean,    TXRTLValueBooleanStreamer.Create);
 end;
 
 { TXRTLValueStreamer }

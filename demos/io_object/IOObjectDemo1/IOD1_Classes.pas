@@ -216,7 +216,7 @@ var
 begin
   Descriptor:= TBaseClassDescriptor.Create;
   XRTLRegisterClassDescriptor(Descriptor);
-  XRTLRegisterStreamer(TBase, TBaseStreamer.Create);
+  XRTLStreamerRegistry.Register(TBase, TBaseStreamer.Create);
   Descriptor:= TDerived1ClassDescriptor.Create;
   XRTLRegisterClassDescriptor(Descriptor);
   Descriptor:= TDerived2ClassDescriptor.Create;

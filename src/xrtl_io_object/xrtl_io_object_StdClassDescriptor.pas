@@ -97,9 +97,9 @@ uses
 
 procedure XRTLRegisterStdClassDescriptors;
 begin
+  XRTLIntrospectorRegistry.Register(TXRTLInstanceReference, TXRTLInstanceReferenceIntrospector.Create);
   XRTLRegisterClassDescriptor(
-    TXRTLClassDescriptor.Create(XRTLInstanceReferenceClassId, TXRTLInstanceReference, nil,
-                                TXRTLInstanceReferenceIntrospector.Create));
+    TXRTLClassDescriptor.Create(XRTLInstanceReferenceClassId, TXRTLInstanceReference));
   XRTLRegisterClassDescriptor(TXRTLValueCardinalClassDescriptor.Create(
                                 'xrtl::value::Cardinal', TXRTLValueCardinal));
   XRTLRegisterClassDescriptor(TXRTLValueIntegerClassDescriptor.Create(

@@ -8,7 +8,7 @@ uses
   Windows,
   SysUtils,
   xrtl_util_Value,
-  xrtl_reflect_ClassDescriptor, xrtl_reflect_Introspector;
+  xrtl_reflect_Introspector;
 
 const
   XRTLInstanceReferenceClassId = 'xrtl::ref';
