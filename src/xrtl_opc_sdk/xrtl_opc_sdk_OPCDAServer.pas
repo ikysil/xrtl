@@ -620,7 +620,7 @@ begin
   inherited;
   Deleted:= False;
   ServerHandle:= GetGroupServerHandle;
-  FLock:= XRTLCreateReadWriteLock(XRTLCreateExclusiveLock);
+  FLock:= XRTLCreateReadWriteLock;
   FItems:= TXRTLArrayMap.Create;
   FActiveItems:= TXRTLArrayMap.Create;
   FName:= ClassName + '_' + IntToHex(ServerHandle, 8);
