@@ -76,8 +76,13 @@ function  XRTLSetValue(const IValue: IXRTLValue; const AValue: Pointer): Pointer
 function  XRTLGetAsPointer(const IValue: IXRTLValue): Pointer;
 function  XRTLGetAsPointerDef(const IValue: IXRTLValue; const DefValue: Pointer = nil): Pointer;
 
-function  XRTLValueV(const AValue: Variant): IXRTLValue; overload;
-function  XRTLSetValueV(const IValue: IXRTLValue; const AValue: Variant): Variant; overload;
+{$IFDEF COMPILER6_UP}
+function  XRTLValue(const AValue: Variant): IXRTLValue; overload;
+function  XRTLSetValue(const IValue: IXRTLValue; const AValue: Variant): Variant; overload;
+{$ELSE}
+function  XRTLValueVariant(const AValue: Variant): IXRTLValue; overload;
+function  XRTLSetValueVariant(const IValue: IXRTLValue; const AValue: Variant): Variant; overload;
+{$ENDIF}
 function  XRTLGetAsVariant(const IValue: IXRTLValue): Variant;
 function  XRTLGetAsVariantDef(const IValue: IXRTLValue; const DefValue: Variant): Variant;
 
@@ -376,12 +381,20 @@ begin
     Result:= LValue.GetValue;
 end;
 
-function XRTLValueV(const AValue: Variant): IXRTLValue;
+{$IFDEF COMPILER6_UP}
+function  XRTLValue(const AValue: Variant): IXRTLValue; overload;
+{$ELSE}
+function  XRTLValueVariant(const AValue: Variant): IXRTLValue; overload;
+{$ENDIF}
 begin
   Result:= TXRTLValueVariant.Create(AValue);
 end;
 
-function XRTLSetValueV(const IValue: IXRTLValue; const AValue: Variant): Variant;
+{$IFDEF COMPILER6_UP}
+function  XRTLSetValue(const IValue: IXRTLValue; const AValue: Variant): Variant; overload;
+{$ELSE}
+function  XRTLSetValueVariant(const IValue: IXRTLValue; const AValue: Variant): Variant; overload;
+{$ENDIF}
 begin
   Result:= (IValue as IXRTLValueVariant).SetValue(AValue);
 end;
