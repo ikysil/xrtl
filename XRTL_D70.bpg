@@ -12,12 +12,13 @@ BRCC = $(ROOT)\bin\brcc32.exe $**
 PROJECTS = xrtl_util_D70.bpl xrtl_util_async_D70.bpl xrtl_reflect_D70.bpl \
   xrtl_io_D70.bpl xrtl_io_zlib_D70.bpl xrtl_io_bzlib_D70.bpl \
   xrtl_io_dencoder_D70.bpl xrtl_sdf_D70.bpl xrtl_sdf_binary_D70.bpl \
-  xrtl_math_D70.bpl xrtl_crypt_D70.bpl xrtl_crypt_cipher_D70.bpl \
-  xrtl_crypt_md_D70.bpl xrtl_crypt_test_D70.bpl xrtl_net_D70.bpl xrtl_opc_D70.bpl \
-  xrtl_opc_sdk_D70.bpl xrtl_opc_cdk_D70.bpl zlibDemo1.exe zlibDemo2.exe \
-  bzlibDemo1.exe bzlibDemo2.exe mathDemo1.exe OPCDA20Server.exe OPCDA20Client.exe \
-  OPCDA20CTServer.exe DataStream.exe DDPDemo1.exe secDemo1.exe secDemo2.exe \
-  CryptTest.exe ASyncDemo.exe IOObjectDemo1.exe
+  xrtl_sdf_msxml_D70.bpl xrtl_math_D70.bpl xrtl_crypt_D70.bpl \
+  xrtl_crypt_cipher_D70.bpl xrtl_crypt_md_D70.bpl xrtl_crypt_test_D70.bpl \
+  xrtl_net_D70.bpl xrtl_opc_D70.bpl xrtl_opc_sdk_D70.bpl xrtl_opc_cdk_D70.bpl \
+  zlibDemo1.exe zlibDemo2.exe bzlibDemo1.exe bzlibDemo2.exe mathDemo1.exe \
+  OPCDA20Server.exe OPCDA20Client.exe OPCDA20CTServer.exe DataStream.exe \
+  DDPDemo1.exe secDemo1.exe secDemo2.exe CryptTest.exe ASyncDemo.exe \
+  IOObjectDemo1.exe
 #------------------------------------------------------------------------------
 default: $(PROJECTS)
 #------------------------------------------------------------------------------
@@ -119,6 +120,9 @@ IOObjectDemo1.exe: demos\sdf\IOObjectDemo1\IOObjectDemo1.dpr
   $(DCC)
 
 xrtl_sdf_binary_D70.bpl: packages\D7\xrtl_sdf_binary_D70.dpk
+  $(DCC)
+
+xrtl_sdf_msxml_D70.bpl: packages\D7\xrtl_sdf_msxml_D70.dpk
   $(DCC)
 
 
