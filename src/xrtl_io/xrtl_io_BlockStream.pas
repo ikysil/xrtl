@@ -24,13 +24,16 @@ type
   private
     FBlockFlags: Byte;
     FBlockSize: Integer;
+    FSkipToEndOfStreamOnClose: Boolean;
     procedure  ReadBlockHeader;
     function   SkipTo(const Flags: Byte): Int64;
   protected
     function   _ReadBuffer(var Buffer; const Count: Integer): Integer; override;
+    procedure  DoClose; override;
   public
     constructor Create(const ACoreStream: TXRTLInputStream;
-                       AOwnCoreStream: Boolean = True);
+                       AOwnCoreStream: Boolean = True;
+                       ASkipToEndOfStreamOnClose: Boolean = True);
     destructor Destroy; override;
     function   BytesAvailable: Int64; override;
     function   MarkPosition: TXRTLMarkData; override;
@@ -38,6 +41,7 @@ type
     function   Skip(const Count: Int64): Int64; override;
     function   SkipToSync: Int64;
     function   SkipToEndOfStream: Int64;
+    property   SkipToEndOfStreamOnClose: Boolean read FSkipToEndOfStreamOnClose write FSkipToEndOfStreamOnClose;
   end;
 
   TXRTLBlockOutputStream = class(TXRTLFilterOutputStream)
@@ -77,15 +81,23 @@ type
 { TXRTLBlockInputStream }
 
 constructor TXRTLBlockInputStream.Create(const ACoreStream: TXRTLInputStream;
-  AOwnCoreStream: Boolean = True);
+  AOwnCoreStream: Boolean = True; ASkipToEndOfStreamOnClose: Boolean = True);
 begin
   inherited Create(ACoreStream, AOwnCoreStream);
   FBlockFlags:= bsfNoFlags;
   FBlockSize:= 0;
+  FSkipToEndOfStreamOnClose:= ASkipToEndOfStreamOnClose;
 end;
 
 destructor TXRTLBlockInputStream.Destroy;
 begin
+  inherited;
+end;
+
+procedure TXRTLBlockInputStream.DoClose;
+begin
+  if FSkipToEndOfStreamOnClose then
+    SkipToEndOfStream;
   inherited;
 end;
 
