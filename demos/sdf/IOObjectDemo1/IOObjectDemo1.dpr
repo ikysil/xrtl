@@ -6,7 +6,7 @@ uses
   SysUtils,
   IOD1_Classes in 'IOD1_Classes.pas',
   xrtl_io_Stream, xrtl_io_FileStream,
-  xrtl_sdf_Serializer, xrtl_sdf_BinarySerializer,
+  xrtl_sdf_Serializer, xrtl_sdf_binary_Serializer,
   xrtl_util_Value;
 
 procedure Demo;

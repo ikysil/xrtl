@@ -1,4 +1,4 @@
-unit xrtl_sdf_BinarySerializer;
+unit xrtl_sdf_binary_Serializer;
 
 {$INCLUDE xrtl.inc}
 
@@ -86,7 +86,7 @@ implementation
 
 uses
   xrtl_io_BlockStream, xrtl_io_DataStream,
-  xrtl_sdf_BinarySerializerClasses;
+  xrtl_sdf_binary_Classes;
 
 { TXRTLBinarySerializer }
 

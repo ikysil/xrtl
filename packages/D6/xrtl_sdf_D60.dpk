@@ -33,10 +33,8 @@ requires
   xrtl_reflect_D60;
 
 contains
-  xrtl_sdf_BinarySerializer in '..\..\src\xrtl_sdf\xrtl_sdf_BinarySerializer.pas',
   xrtl_sdf_Serializer in '..\..\src\xrtl_sdf\xrtl_sdf_Serializer.pas',
   xrtl_sdf_ResourceStrings in '..\..\src\xrtl_sdf\xrtl_sdf_ResourceStrings.pas',
-  xrtl_sdf_BinarySerializerClasses in '..\..\src\xrtl_sdf\xrtl_sdf_BinarySerializerClasses.pas',
   xrtl_sdf_Reference in '..\..\src\xrtl_sdf\xrtl_sdf_Reference.pas',
   xrtl_sdf_ReferenceMap in '..\..\src\xrtl_sdf\xrtl_sdf_ReferenceMap.pas',
   xrtl_sdf_StdClassDescriptor in '..\..\src\xrtl_sdf\xrtl_sdf_StdClassDescriptor.pas',

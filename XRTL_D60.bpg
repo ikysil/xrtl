@@ -11,13 +11,13 @@ BRCC = $(ROOT)\bin\brcc32.exe $**
 #------------------------------------------------------------------------------
 PROJECTS = xrtl_util_D60.bpl xrtl_util_async_D60.bpl xrtl_reflect_D60.bpl \
   xrtl_io_D60.bpl xrtl_io_zlib_D60.bpl xrtl_io_bzlib_D60.bpl \
-  xrtl_io_dencoder_D60.bpl xrtl_sdf_D60.bpl xrtl_math_D60.bpl \
-  xrtl_crypt_D60.bpl xrtl_crypt_cipher_D60.bpl xrtl_crypt_md_D60.bpl \
-  xrtl_crypt_test_D60.bpl xrtl_net_D60.bpl xrtl_opc_D60.bpl xrtl_opc_sdk_D60.bpl \
-  xrtl_opc_cdk_D60.bpl zlibDemo1.exe zlibDemo2.exe bzlibDemo1.exe bzlibDemo2.exe \
-  mathDemo1.exe OPCDA20Server.exe OPCDA20Client.exe OPCDA20CTServer.exe \
-  DataStream.exe DDPDemo1.exe secDemo1.exe secDemo2.exe CryptTest.exe \
-  ASyncDemo.exe IOObjectDemo1.exe
+  xrtl_io_dencoder_D60.bpl xrtl_sdf_D60.bpl xrtl_sdf_binary_D60.bpl \
+  xrtl_math_D60.bpl xrtl_crypt_D60.bpl xrtl_crypt_cipher_D60.bpl \
+  xrtl_crypt_md_D60.bpl xrtl_crypt_test_D60.bpl xrtl_net_D60.bpl xrtl_opc_D60.bpl \
+  xrtl_opc_sdk_D60.bpl xrtl_opc_cdk_D60.bpl zlibDemo1.exe zlibDemo2.exe \
+  bzlibDemo1.exe bzlibDemo2.exe mathDemo1.exe OPCDA20Server.exe OPCDA20Client.exe \
+  OPCDA20CTServer.exe DataStream.exe DDPDemo1.exe secDemo1.exe secDemo2.exe \
+  CryptTest.exe ASyncDemo.exe IOObjectDemo1.exe
 #------------------------------------------------------------------------------
 default: $(PROJECTS)
 #------------------------------------------------------------------------------
@@ -116,6 +116,9 @@ xrtl_reflect_D60.bpl: packages\D6\xrtl_reflect_D60.dpk
   $(DCC)
 
 IOObjectDemo1.exe: demos\sdf\IOObjectDemo1\IOObjectDemo1.dpr
+  $(DCC)
+
+xrtl_sdf_binary_D60.bpl: packages\D6\xrtl_sdf_binary_D60.dpk
   $(DCC)
 
 

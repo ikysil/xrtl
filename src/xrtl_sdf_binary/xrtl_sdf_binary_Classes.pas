@@ -1,4 +1,4 @@
-unit xrtl_sdf_BinarySerializerClasses;
+unit xrtl_sdf_binary_Classes;
 
 {$INCLUDE xrtl.inc}
 

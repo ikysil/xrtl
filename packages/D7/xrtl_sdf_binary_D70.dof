@@ -39,27 +39,27 @@ RemoteSymbols=0
 MinStackSize=16384
 MaxStackSize=1048576
 ImageBase=926941184
-ExeDescription=xrtl serialization/deserialization framework
+ExeDescription=xrtl binary serialization/deserialization
 [Directories]
 OutputDir=
-UnitOutputDir=..\..\lib\D6
+UnitOutputDir=..\..\lib\D7
 PackageDLLOutputDir=
 PackageDCPOutputDir=
 SearchPath=..\..\inc
-Packages=vcl;rtl;vclx;VclSmp;vclshlctrls;dbrtl;adortl;vcldb;qrpt;bdertl;vcldbx;dsnap;cds;bdecds;teeui;teedb;tee;teeqr;ibxpress;visualclx;visualdbclx;inet;inetdb;nmfast;vclie;dbexpress;dbxcds;dclaxserver;Indy60;MSolUtil60;MSolOIVT60;MSolGantt60;MSolOPC60;OPC60;ZIP60;JVCL60;JvPack100_R60;VirtualExplorerTreeD6;PowerPDF60;xmlrtl;inetdbbde;inetdbxpress;soaprtl
+Packages=
 Conditionals=
 DebugSourceDirs=
 UsePackages=0
 [Parameters]
 RunParams=
-HostApplication=L:\Delphi\XRTL\exe\secDemo2.exe
+HostApplication=
 Launcher=
 UseLauncher=0
 DebugCWD=
 [Language]
 ActiveLang=
 ProjectLang=
-RootDir=C:\Program Files\Borland\Delphi6\Bin\
+RootDir=C:\Program Files\Borland\Delphi7\Bin\
 [Version Info]
 IncludeVerInfo=1
 AutoIncBuild=0
