@@ -6,7 +6,7 @@ interface
 
 uses
   SysUtils,
-  xrtl_reflect_ClassDescriptor;
+  xrtl_reflect_ClassDescriptor, xrtl_reflect_Property, xrtl_reflect_PropertyList;
 
 type
   TXRTLValueCardinalClassDescriptor = class(TXRTLClassDescriptor)
@@ -51,6 +51,9 @@ type
 
   TXRTLValueObjectClassDescriptor = class(TXRTLClassDescriptor)
   protected
+    procedure  DoDefineProperties(const Properties: IXRTLPropertyList); override;
+    procedure  DoGetValues(const Obj: TObject; const Properties: IXRTLPropertyList); override;
+    procedure  DoSetValues(const Obj: TObject; const Properties: IXRTLPropertyList); override;
     function   DoCreateInstance: TObject; override;
   end;
 
@@ -90,7 +93,7 @@ implementation
 
 uses
   {$IFDEF HAS_UNIT_VARIANTS}Variants, {$ENDIF}
-  xrtl_util_ValueImpl, xrtl_io_object_Reference;
+  xrtl_util_ValueImpl, xrtl_io_object_Reference, xrtl_util_Value;
 
 procedure XRTLRegisterStdClassDescriptors;
 begin
@@ -186,6 +189,29 @@ begin
 end;
 
 { TXRTLValueObjectClassDescriptor }
+
+procedure TXRTLValueObjectClassDescriptor.DoDefineProperties(const Properties: IXRTLPropertyList);
+begin
+  Properties.Add(TXRTLProperty.Create('OwnValue', XRTLValue(False)));
+end;
+
+procedure TXRTLValueObjectClassDescriptor.DoGetValues(const Obj: TObject;
+  const Properties: IXRTLPropertyList);
+var
+  LObj: TXRTLValueObject;
+begin
+  LObj:= Obj as TXRTLValueObject;
+  XRTLSetValue(Properties.GetByName('OwnValue').Value, LObj.OwnValue);
+end;
+
+procedure TXRTLValueObjectClassDescriptor.DoSetValues(const Obj: TObject;
+  const Properties: IXRTLPropertyList);
+var
+  LObj: TXRTLValueObject;
+begin
+  LObj:= Obj as TXRTLValueObject;
+  LObj.OwnValue:= XRTLGetAsBoolean(Properties.GetByName('OwnValue').Value);
+end;
 
 function TXRTLValueObjectClassDescriptor.DoCreateInstance: TObject;
 begin

@@ -13,7 +13,7 @@ uses
   xrtl_io_object_Serializer, xrtl_io_object_Reference, xrtl_io_object_ReferenceMap;
 
 type
-  EXRTLBinarySerializerException = class(EXRTLSerializerException);
+  EXRTLBinarySerializerException   = class(EXRTLSerializerException);
   EXRTLBinaryDeserializerException = class(EXRTLSerializerException);
 
   TXRTLBinarySerializer = class(TInterfacedObject, IXRTLSerializer)
@@ -267,7 +267,6 @@ begin
       LClassId:= LDescriptor.GetClassId;
       DStream.WriteUTF8String(LClassId);
     end;
-    DStream.WriteUTF8String(XRTLEndOfHierarchyClassId);
   finally
     FreeAndNil(DStream);
     Values:= nil;
@@ -501,6 +500,7 @@ begin
   LDescriptors:= nil;
   try
     SDescriptors:= ReadClassDescriptors(Stream);
+    Assert(not SDescriptors.IsEmpty);
     CDescriptor:= XRTLGetAsInterface(SDescriptors.GetValue(SDescriptors.AtBegin)) as IXRTLClassDescriptor;
     if WideCompareStr(CDescriptor.GetClassId, XRTLClassDescriptorId) = 0 then
     begin
@@ -539,6 +539,7 @@ end;
 
 function TXRTLBinaryDeserializer.ReadClassDescriptors(const Stream: TXRTLInputStream): TXRTLSequentialContainer;
 var
+  BStream: TXRTLBlockInputStream;
   DStream: TXRTLDataInputStream;
   LDescriptor: IXRTLClassDescriptor;
   LClassId: WideString;
@@ -546,12 +547,11 @@ begin
   Result:= TXRTLArray.Create;
   DStream:= nil;
   try
-    DStream:= TXRTLDataInputStream.Create(TXRTLBlockInputStream.Create(Stream, False), True);
-    while True do
+    BStream:= TXRTLBlockInputStream.Create(Stream, False);
+    DStream:= TXRTLDataInputStream.Create(BStream, True);
+    while not BStream.IsEndOfStream do
     begin
       LClassId:= DStream.ReadUTF8String;
-      if WideCompareStr(LClassId, XRTLEndOfHierarchyClassId) = 0 then
-        Break;
       LDescriptor:= nil;
       if not XRTLFindClassDescriptor(LClassId, LDescriptor) then
         LDescriptor:= TXRTLClassDescriptor.Create(LClassId);

@@ -10,9 +10,6 @@ uses
   xrtl_reflect_ClassDescriptor,
   xrtl_io_Stream;
 
-const
-  XRTLEndOfHierarchyClassId = 'xrtl::eoh';
-
 type
   EXRTLSerializerException = class(EXRTLException);
   EXRTLObjectStreamerException = class(EXRTLSerializerException);
