@@ -113,7 +113,7 @@ implementation
 
 uses
   xrtl_util_Compare, xrtl_util_Container, xrtl_util_Array, xrtl_util_Lock,
-  xrtl_reflect_ResourceStrings, xrtl_io_object_ResourceStrings, xrtl_util_Value;
+  xrtl_io_object_ResourceStrings, xrtl_util_Value;
 
 var
   FStreamerLock: IXRTLExclusiveLock = nil;
@@ -151,6 +151,7 @@ begin
       Result:= True;
       Exit;
     end;
+    Iter.Next;
   end;
   Streamer:= nil;
 end;
@@ -171,6 +172,7 @@ begin
       Result:= True;
       Exit;
     end;
+    Iter.Next;
   end;
   Streamer:= nil;
 end;

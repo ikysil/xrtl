@@ -9,6 +9,9 @@ uses
   xrtl_util_Type, xrtl_util_Value, xrtl_util_Exception,
   xrtl_reflect_PropertyList;
 
+const
+  XRTLClassDescriptorId = 'xrtl:classDescriptor';
+
 type
   EXRTLClassDescriptorException = class(EXRTLException);
 
@@ -17,15 +20,16 @@ type
   IXRTLIntrospector = interface
   ['{2BD0AC80-EC53-4252-A8A9-4F5325750A89}']
     procedure  DefineProperties(const Descriptor: IXRTLClassDescriptor; const Properties: IXRTLPropertyList);
+    procedure  GetValues(const Obj: TObject; const Properties: IXRTLPropertyList);
+    procedure  SetValues(const Obj: TObject; const Properties: IXRTLPropertyList);
   end;
 
   IXRTLClassDescriptor = interface
   ['{C255D459-F2C1-44FA-A47F-C37771143BF4}']
     function   GetClass: TClass;
     function   GetClassId: WideString;
-    function   GetProperties: IXRTLPropertyList;
+    function   DefineProperties: IXRTLPropertyList;
     function   GetIntrospector: IXRTLIntrospector;
-    property   Properties: IXRTLPropertyList read GetProperties;
     property   Introspector: IXRTLIntrospector read GetIntrospector;
   end;
 
@@ -34,7 +38,6 @@ type
   private
     FClass: TClass;
     FClassId: WideString;
-    FProperties: IXRTLPropertyList;
     FIntrospector: IXRTLIntrospector;
   protected
   public
@@ -44,7 +47,7 @@ type
     function   GetImplementationObject: TObject;
     function   GetClass: TClass;
     function   GetClassId: WideString;
-    function   GetProperties: IXRTLPropertyList;
+    function   DefineProperties: IXRTLPropertyList;
     function   GetIntrospector: IXRTLIntrospector;
   end;
 
@@ -98,6 +101,7 @@ begin
       Result:= True;
       Exit;
     end;
+    Iter.Next;
   end;
   Descriptor:= nil;
 end;
@@ -118,6 +122,7 @@ begin
       Result:= True;
       Exit;
     end;
+    Iter.Next;
   end;
   Descriptor:= nil;
 end;
@@ -156,7 +161,6 @@ begin
   inherited Create;
   FClass:= AClass;
   FClassId:= AClassId;
-  FProperties:= TXRTLPropertyList.Create;
   FIntrospector:= AIntrospector;
 end;
 
@@ -180,11 +184,11 @@ begin
   Result:= FClassId;
 end;
 
-function TXRTLClassDescriptor.GetProperties: IXRTLPropertyList;
+function TXRTLClassDescriptor.DefineProperties: IXRTLPropertyList;
 begin
-  if FProperties.IsEmpty then
-    FIntrospector.DefineProperties(Self, FProperties);
-  Result:= FProperties;
+  Result:= TXRTLPropertyList.Create;
+  if Assigned(FIntrospector) then
+    FIntrospector.DefineProperties(Self, Result);
 end;
 
 function TXRTLClassDescriptor.GetIntrospector: IXRTLIntrospector;
@@ -196,6 +200,7 @@ initialization
 begin
   FDescriptorLock:= XRTLCreateExclusiveLock;
   FDescriptorList:= TXRTLArray.Create;
+  XRTLRegisterClassDescriptor(TXRTLClassDescriptor.Create(TXRTLClassDescriptor, XRTLClassDescriptorId, nil));
 end;
 
 finalization

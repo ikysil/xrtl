@@ -12,6 +12,8 @@ type
   public
     procedure  DefineProperties(const Descriptor: IXRTLClassDescriptor;
                                 const Properties: IXRTLPropertyList); virtual; abstract;
+    procedure  GetValues(const Obj: TObject; const Properties: IXRTLPropertyList); virtual; abstract;
+    procedure  SetValues(const Obj: TObject; const Properties: IXRTLPropertyList); virtual; abstract;
   end;
 
 implementation
