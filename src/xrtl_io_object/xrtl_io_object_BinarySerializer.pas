@@ -10,7 +10,7 @@ uses
   xrtl_io_object_Serializer;
 
 type
-  TXRTLBinarySerializer = class
+  TXRTLBinarySerializer = class(TInterfacedObject)//, IXRTLSerializer)
   protected
     function   CheckAndWriteNil(const Obj): Boolean;
     procedure  WriteNilReference; virtual; abstract;
