@@ -1,0 +1,10 @@
+Question:
+I compile and run OPCDA20Server and OPCDA20Client (launching EXEs, to be
+sure...), it's all OK. But if I press the "connect" button in OPCDA20Client,
+appear me a windows saying "Interface not supported". What have I forgot?
+
+Answer:
+OPCDA20Server and OPCDA20Client was designed to test custom interfaces for
+remote configuration. Sorry for misleading names...
+In order to make them work you should install
+XRTL\src\xrtl_opc_sdk\XRTLOPCDAProxy\Release\XRTLOPCDAProxy.dll using regsvr32.
