@@ -175,7 +175,7 @@ type
     function   GetHashCode: Cardinal;
     function   GetValue(const ADetachOwnership: Boolean): TObject;
     function   SetValue(const AValue: TObject): TObject;
-    property   OwnValue: Boolean read FOwnValue;
+    property   OwnValue: Boolean read FOwnValue write FOwnValue;
   end;
 
   IXRTLValuePointer = interface(IXRTLValue)
