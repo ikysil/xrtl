@@ -15,8 +15,6 @@ XRTL contains:
 - misc. utils (xrtl_util)
 
 x. Contact information and Internet resources
-   Illya Kysil
-     email:       ikysil@ua.fm
-     homepage:    http://msol.io.com/ikysil
-     XRTL groups: http://groups.yahoo.com/group/xrtl/     English
-                  http://groups.yahoo.com/group/xrtl-ru/  Russian
+   Homepage: http://msol.io.com/ikysil
+   Groups:   http://groups.yahoo.com/group/xrtl/     English
+             http://groups.yahoo.com/group/xrtl-ru/  Russian
