@@ -11,7 +11,7 @@ resourcestring
   SXRTLNoDescriptorForClassIdRegistered   = 'No descriptor for class id ''%s'' registered';
 
   SXRTLHelperForClassNameRegistered       = 'Helper for class name ''%s'' is already registered';
-  SXRTLNoHelperForClassNameRegistered     = 'No Helper for class name ''%s'' registered';
+  SXRTLNoHelperForClassNameRegistered     = 'No helper for class name ''%s'' registered';
 
 implementation
 
