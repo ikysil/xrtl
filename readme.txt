@@ -15,6 +15,7 @@ XRTL contains:
 
 x. Contact information and Internet resources
    Illya Kysil
-     email:      ikysil@ua.fm
-     homepage:   http://msol.io.com/ikysil
-     XRTL group: http://groups.yahoo.com/group/xrtl/
+     email:       ikysil@ua.fm
+     homepage:    http://msol.io.com/ikysil
+     XRTL groups: http://groups.yahoo.com/group/xrtl/     English
+                  http://groups.yahoo.com/group/xrtl-ru/  Russian
