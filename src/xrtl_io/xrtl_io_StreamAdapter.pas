@@ -91,7 +91,8 @@ end;
 
 procedure TXRTLStreamToInputStreamAdapter.DoClose;
 begin
-  FreeAndNil(FCoreStream);
+  if FOwnCoreStream then
+    FreeAndNil(FCoreStream);
   inherited;
 end;
 
@@ -120,7 +121,8 @@ end;
 
 procedure TXRTLStreamToOutputStreamAdapter.DoClose;
 begin
-  FreeAndNil(FCoreStream);
+  if FOwnCoreStream then
+    FreeAndNil(FCoreStream);
   inherited;
 end;
 
