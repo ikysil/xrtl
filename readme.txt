@@ -18,5 +18,21 @@ x. Contact information and Internet resources
    Homepage:     http://xrtl.berlios.de
    Project page: http://developer.berlios.de/projects/xrtl/
              
-   Groups:       http://groups.yahoo.com/group/xrtl/     English
-                 http://groups.yahoo.com/group/xrtl-ru/  Russian
+   Mailing lists:
+     https://lists.berlios.de/mailman/listinfo/xrtl-announce
+       XRTL release announcements
+
+     https://lists.berlios.de/mailman/listinfo/xrtl-dev
+       XRTL developers list
+
+     https://lists.berlios.de/mailman/listinfo/xrtl-svn
+       XRTL Subversion commit announcements
+
+     https://lists.berlios.de/mailman/listinfo/xrtl-user
+       XRTL Users list
+
+   Newsgroups access (subscription pending):
+     news://news.gmane.org/gmane.comp.lib.xrtl.announce
+     news://news.gmane.org/gmane.comp.lib.xrtl.dev
+     news://news.gmane.org/gmane.comp.lib.xrtl.svn
+     news://news.gmane.org/gmane.comp.lib.xrtl.user

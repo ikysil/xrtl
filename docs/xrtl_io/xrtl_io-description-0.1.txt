@@ -39,9 +39,3 @@ xrtl_io description 0.1 - 21 Apr 2003
    - create TXRTLDataInputStream instance and pass TXRTLBufferedInputStream
      instance as CoreStream;
    - use TXRTLDataInputStream instance methods to read actual data.
-
-x. Contact information and Internet resources
-   Illya Kysil
-     email:      ikysil@ua.fm
-     homepage:   http://msol.io.com/ikysil
-     XRTL group: http://groups.yahoo.com/group/xrtl/
