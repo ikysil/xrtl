@@ -35,7 +35,7 @@ begin
     LOS:= TXRTLFileOutputStream.Create('c:\test.ser', False);
     LSer:= TXRTLBinarySerializer.Create;
     LSer.WriteObject(LOS, nil);
-//    LSer.WriteObject(LOS, O2);
+    LSer.WriteObject(LOS, O2);
     LSer.WriteObject(LOS, O1);
     LSer.WriteObject(LOS, O3);
     LOS.Close;
