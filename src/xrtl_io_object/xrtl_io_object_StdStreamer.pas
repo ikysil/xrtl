@@ -12,96 +12,110 @@ uses
 type
   TXRTLValueStreamer = class(TXRTLObjectStreamer)
   public
-    constructor Create; virtual;
     procedure  ReadNoData(const Obj: TObject); override;
   end;
 
   TXRTLValueCardinalStreamer = class(TXRTLValueStreamer)
   public
+    constructor Create;
     procedure  WriteObjectData(const Writer: IXRTLObjectWriter; const Obj: TObject); override;
     procedure  ReadObjectData(const Reader: IXRTLObjectReader; const Obj: TObject); override;
   end;
 
   TXRTLValueIntegerStreamer = class(TXRTLValueStreamer)
   public
+    constructor Create;
     procedure  WriteObjectData(const Writer: IXRTLObjectWriter; const Obj: TObject); override;
     procedure  ReadObjectData(const Reader: IXRTLObjectReader; const Obj: TObject); override;
   end;
 
   TXRTLValueInt64Streamer = class(TXRTLValueStreamer)
   public
+    constructor Create;
     procedure  WriteObjectData(const Writer: IXRTLObjectWriter; const Obj: TObject); override;
     procedure  ReadObjectData(const Reader: IXRTLObjectReader; const Obj: TObject); override;
   end;
 
   TXRTLValueSingleStreamer = class(TXRTLValueStreamer)
   public
+    constructor Create;
     procedure  WriteObjectData(const Writer: IXRTLObjectWriter; const Obj: TObject); override;
     procedure  ReadObjectData(const Reader: IXRTLObjectReader; const Obj: TObject); override;
   end;
 
   TXRTLValueDoubleStreamer = class(TXRTLValueStreamer)
   public
+    constructor Create;
     procedure  WriteObjectData(const Writer: IXRTLObjectWriter; const Obj: TObject); override;
     procedure  ReadObjectData(const Reader: IXRTLObjectReader; const Obj: TObject); override;
   end;
 
   TXRTLValueExtendedStreamer = class(TXRTLValueStreamer)
   public
+    constructor Create;
     procedure  WriteObjectData(const Writer: IXRTLObjectWriter; const Obj: TObject); override;
     procedure  ReadObjectData(const Reader: IXRTLObjectReader; const Obj: TObject); override;
   end;
 
   TXRTLValueInterfaceStreamer = class(TXRTLValueStreamer)
   public
+    constructor Create;
     procedure  WriteObjectData(const Writer: IXRTLObjectWriter; const Obj: TObject); override;
     procedure  ReadObjectData(const Reader: IXRTLObjectReader; const Obj: TObject); override;
   end;
 
   TXRTLValueWideStringStreamer = class(TXRTLValueStreamer)
   public
+    constructor Create;
     procedure  WriteObjectData(const Writer: IXRTLObjectWriter; const Obj: TObject); override;
     procedure  ReadObjectData(const Reader: IXRTLObjectReader; const Obj: TObject); override;
   end;
 
   TXRTLValueObjectStreamer = class(TXRTLValueStreamer)
   public
+    constructor Create;
     procedure  WriteObjectData(const Writer: IXRTLObjectWriter; const Obj: TObject); override;
     procedure  ReadObjectData(const Reader: IXRTLObjectReader; const Obj: TObject); override;
   end;
 
   TXRTLValueVariantStreamer = class(TXRTLValueStreamer)
   public
+    constructor Create;
     procedure  WriteObjectData(const Writer: IXRTLObjectWriter; const Obj: TObject); override;
     procedure  ReadObjectData(const Reader: IXRTLObjectReader; const Obj: TObject); override;
   end;
 
   TXRTLValueCurrencyStreamer = class(TXRTLValueStreamer)
   public
+    constructor Create;
     procedure  WriteObjectData(const Writer: IXRTLObjectWriter; const Obj: TObject); override;
     procedure  ReadObjectData(const Reader: IXRTLObjectReader; const Obj: TObject); override;
   end;
 
   TXRTLValueCompStreamer = class(TXRTLValueStreamer)
   public
+    constructor Create;
     procedure  WriteObjectData(const Writer: IXRTLObjectWriter; const Obj: TObject); override;
     procedure  ReadObjectData(const Reader: IXRTLObjectReader; const Obj: TObject); override;
   end;
 
   TXRTLValueClassStreamer = class(TXRTLValueStreamer)
   public
+    constructor Create;
     procedure  WriteObjectData(const Writer: IXRTLObjectWriter; const Obj: TObject); override;
     procedure  ReadObjectData(const Reader: IXRTLObjectReader; const Obj: TObject); override;
   end;
 
   TXRTLValueGUIDStreamer = class(TXRTLValueStreamer)
   public
+    constructor Create;
     procedure  WriteObjectData(const Writer: IXRTLObjectWriter; const Obj: TObject); override;
     procedure  ReadObjectData(const Reader: IXRTLObjectReader; const Obj: TObject); override;
   end;
 
   TXRTLValueBooleanStreamer = class(TXRTLValueStreamer)
   public
+    constructor Create;
     procedure  WriteObjectData(const Writer: IXRTLObjectWriter; const Obj: TObject); override;
     procedure  ReadObjectData(const Reader: IXRTLObjectReader; const Obj: TObject); override;
   end;
@@ -134,16 +148,16 @@ end;
 
 { TXRTLValueStreamer }
 
-constructor TXRTLValueStreamer.Create;
-begin
-  inherited Create(XRTLGetClassDescriptor(ClassType));
-end;
-
 procedure TXRTLValueStreamer.ReadNoData(const Obj: TObject);
 begin
 end;
 
 { TXRTLValueCardinalStreamer }
+
+constructor TXRTLValueCardinalStreamer.Create;
+begin
+  inherited Create(XRTLGetClassDescriptor(TXRTLValueCardinal));
+end;
 
 procedure TXRTLValueCardinalStreamer.WriteObjectData(const Writer: IXRTLObjectWriter;
   const Obj: TObject);
@@ -159,6 +173,11 @@ end;
 
 { TXRTLValueIntegerStreamer }
 
+constructor TXRTLValueIntegerStreamer.Create;
+begin
+  inherited Create(XRTLGetClassDescriptor(TXRTLValueInteger));
+end;
+
 procedure TXRTLValueIntegerStreamer.WriteObjectData(const Writer: IXRTLObjectWriter;
   const Obj: TObject);
 begin
@@ -172,6 +191,11 @@ begin
 end;
 
 { TXRTLValueInt64Streamer }
+
+constructor TXRTLValueInt64Streamer.Create;
+begin
+  inherited Create(XRTLGetClassDescriptor(TXRTLValueInt64));
+end;
 
 procedure TXRTLValueInt64Streamer.WriteObjectData(const Writer: IXRTLObjectWriter;
   const Obj: TObject);
@@ -187,6 +211,11 @@ end;
 
 { TXRTLValueSingleStreamer }
 
+constructor TXRTLValueSingleStreamer.Create;
+begin
+  inherited Create(XRTLGetClassDescriptor(TXRTLValueSingle));
+end;
+
 procedure TXRTLValueSingleStreamer.WriteObjectData(const Writer: IXRTLObjectWriter;
   const Obj: TObject);
 begin
@@ -200,6 +229,11 @@ begin
 end;
 
 { TXRTLValueDoubleStreamer }
+
+constructor TXRTLValueDoubleStreamer.Create;
+begin
+  inherited Create(XRTLGetClassDescriptor(TXRTLValueDouble));
+end;
 
 procedure TXRTLValueDoubleStreamer.WriteObjectData(const Writer: IXRTLObjectWriter;
   const Obj: TObject);
@@ -215,6 +249,11 @@ end;
 
 { TXRTLValueExtendedStreamer }
 
+constructor TXRTLValueExtendedStreamer.Create;
+begin
+  inherited Create(XRTLGetClassDescriptor(TXRTLValueExtended));
+end;
+
 procedure TXRTLValueExtendedStreamer.WriteObjectData(const Writer: IXRTLObjectWriter;
   const Obj: TObject);
 begin
@@ -228,6 +267,11 @@ begin
 end;
 
 { TXRTLValueInterfaceStreamer }
+
+constructor TXRTLValueInterfaceStreamer.Create;
+begin
+  inherited Create(XRTLGetClassDescriptor(TXRTLValueInterface));
+end;
 
 procedure TXRTLValueInterfaceStreamer.WriteObjectData(const Writer: IXRTLObjectWriter;
   const Obj: TObject);
@@ -243,6 +287,11 @@ end;
 
 { TXRTLValueWideStringStreamer }
 
+constructor TXRTLValueWideStringStreamer.Create;
+begin
+  inherited Create(XRTLGetClassDescriptor(TXRTLValueWideString));
+end;
+
 procedure TXRTLValueWideStringStreamer.WriteObjectData(const Writer: IXRTLObjectWriter;
   const Obj: TObject);
 begin
@@ -256,6 +305,11 @@ begin
 end;
 
 { TXRTLValueObjectStreamer }
+
+constructor TXRTLValueObjectStreamer.Create;
+begin
+  inherited Create(XRTLGetClassDescriptor(TXRTLValueObject));
+end;
 
 procedure TXRTLValueObjectStreamer.WriteObjectData(const Writer: IXRTLObjectWriter;
   const Obj: TObject);
@@ -271,6 +325,11 @@ end;
 
 { TXRTLValueVariantStreamer }
 
+constructor TXRTLValueVariantStreamer.Create;
+begin
+  inherited Create(XRTLGetClassDescriptor(TXRTLValueVariant));
+end;
+
 procedure TXRTLValueVariantStreamer.WriteObjectData(const Writer: IXRTLObjectWriter;
   const Obj: TObject);
 begin
@@ -284,6 +343,11 @@ begin
 end;
 
 { TXRTLValueCurrencyStreamer }
+
+constructor TXRTLValueCurrencyStreamer.Create;
+begin
+  inherited Create(XRTLGetClassDescriptor(TXRTLValueCurrency));
+end;
 
 procedure TXRTLValueCurrencyStreamer.WriteObjectData(const Writer: IXRTLObjectWriter;
   const Obj: TObject);
@@ -299,6 +363,11 @@ end;
 
 { TXRTLValueCompStreamer }
 
+constructor TXRTLValueCompStreamer.Create;
+begin
+  inherited Create(XRTLGetClassDescriptor(TXRTLValueComp));
+end;
+
 procedure TXRTLValueCompStreamer.WriteObjectData(const Writer: IXRTLObjectWriter;
   const Obj: TObject);
 begin
@@ -312,6 +381,11 @@ begin
 end;
 
 { TXRTLValueClassStreamer }
+
+constructor TXRTLValueClassStreamer.Create;
+begin
+  inherited Create(XRTLGetClassDescriptor(TXRTLValueClass));
+end;
 
 procedure TXRTLValueClassStreamer.WriteObjectData(const Writer: IXRTLObjectWriter;
   const Obj: TObject);
@@ -327,6 +401,11 @@ end;
 
 { TXRTLValueGUIDStreamer }
 
+constructor TXRTLValueGUIDStreamer.Create;
+begin
+  inherited Create(XRTLGetClassDescriptor(TXRTLValueGUID));
+end;
+
 procedure TXRTLValueGUIDStreamer.WriteObjectData(const Writer: IXRTLObjectWriter;
   const Obj: TObject);
 begin
@@ -340,6 +419,11 @@ begin
 end;
 
 { TXRTLValueBooleanStreamer }
+
+constructor TXRTLValueBooleanStreamer.Create;
+begin
+  inherited Create(XRTLGetClassDescriptor(TXRTLValueBoolean));
+end;
 
 procedure TXRTLValueBooleanStreamer.WriteObjectData(const Writer: IXRTLObjectWriter;
   const Obj: TObject);

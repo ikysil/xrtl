@@ -12,9 +12,6 @@ uses
   xrtl_io_Stream,
   xrtl_io_object_Serializer, xrtl_io_object_Reference, xrtl_io_object_ReferenceMap;
 
-const
-  XRTLEndOfPropertiesData = 'xrtl::eop';
-
 type
   EXRTLBinarySerializerException = class(EXRTLSerializerException);
   EXRTLBinaryDeserializerException = class(EXRTLSerializerException);
@@ -32,6 +29,7 @@ type
     procedure  WriteClassInstanceData(const Stream: TXRTLOutputStream;
                                       const Descriptor: IXRTLClassDescriptor;
                                       const Obj: TObject);
+    procedure  WriteInterfaceData(const Stream: TXRTLOutputStream; const Obj: IInterface);
     procedure  WriteProperty(const Stream: TXRTLOutputStream;
                              const AProperty: IXRTLProperty);
   protected
@@ -70,8 +68,10 @@ type
                                        const Descriptor: IXRTLClassDescriptor;
                                        const Obj: TObject);
     procedure  SkipClassInstanceData(const Stream: TXRTLInputStream);
-    function   ReadProperty(const Stream: TXRTLInputStream;
-                            const PropList: IXRTLPropertyList): Boolean;
+    procedure  ReadInterfaceData(const Stream: TXRTLInputStream;
+                                 const Obj: IInterface);
+    procedure  ReadProperty(const Stream: TXRTLInputStream;
+                            const PropList: IXRTLPropertyList);
   public
     constructor Create;
     destructor Destroy; override;
@@ -334,7 +334,6 @@ begin
     begin
       WriteProperty(LStream, XRTLGetAsInterface(Values[I]) as IXRTLProperty);
     end;
-    WriteProperty(LStream, TXRTLProperty.Create(XRTLEndOfPropertiesData, nil));
   finally
     Values:= nil;
     FreeAndNil(LProps);
@@ -353,6 +352,23 @@ begin
   end;
 end;
 
+procedure TXRTLBinarySerializer.WriteInterfaceData(const Stream: TXRTLOutputStream;
+  const Obj: IInterface);
+var
+  LObj: IXRTLImplementationObjectProvider;
+begin
+  if Assigned(Obj) then
+  begin
+    if not Supports(Obj, IXRTLImplementationObjectProvider, LObj) then
+      raise EXRTLBinarySerializerException.Create('Invalid interface reference, can''t serialize');
+    WriteObjectData(Stream, LObj.GetImplementationObject);
+  end
+  else
+  begin
+    WriteObjectData(Stream, nil);
+  end;
+end;
+
 procedure TXRTLBinarySerializer.WriteProperty(const Stream: TXRTLOutputStream;
   const AProperty: IXRTLProperty);
 var
@@ -360,10 +376,9 @@ var
 begin
   DStream:= nil;
   try
-    DStream:= TXRTLDataOutputStream.Create(
-                TXRTLBlockOutputStream.Create(Stream, False), True);
+    DStream:= TXRTLDataOutputStream.Create(TXRTLBlockOutputStream.Create(Stream, False), True);
     DStream.WriteUTF8String(AProperty.Name);
-    WriteInterface(DStream, AProperty.Value, False); 
+    WriteInterfaceData(DStream, AProperty.Value); 
   finally
     FreeAndNil(DStream);
   end;
@@ -643,7 +658,7 @@ end;
 procedure TXRTLBinaryDeserializer.ReadClassInstanceData(const Stream: TXRTLInputStream;
   const Descriptor: IXRTLClassDescriptor; const Obj: TObject);
 var
-  LStream: TXRTLInputStream;
+  LStream: TXRTLBlockInputStream;
   LPropList: IXRTLPropertyList;
   LProps: TXRTLArray;
   Values: TXRTLValueArray;
@@ -654,7 +669,8 @@ begin
   try
     LStream:= TXRTLBlockInputStream.Create(Stream, False);
     LPropList:= Descriptor.DefineProperties;
-    while not ReadProperty(LStream, LPropList) do;
+    while not LStream.IsEndOfStream do
+      ReadProperty(LStream, LPropList);
     Descriptor.SetValues(Obj, LPropList);
   finally
     Values:= nil;
@@ -729,23 +745,38 @@ begin
   end;
 end;
 
-function TXRTLBinaryDeserializer.ReadProperty(const Stream: TXRTLInputStream;
-  const PropList: IXRTLPropertyList): Boolean;
+procedure TXRTLBinaryDeserializer.ReadInterfaceData(const Stream: TXRTLInputStream;
+  const Obj: IInterface);
+var
+  LObj: IXRTLImplementationObjectProvider;
+  RObj: TObject;
+  Ref: TXRTLInstanceReference;
+begin
+  LObj:= nil;
+  Ref:= nil;
+  if Assigned(Obj) then
+  begin
+    if not Supports(Obj, IXRTLImplementationObjectProvider, LObj) then
+      raise EXRTLBinaryDeserializerException.Create('Invalid interface reference, can''t deserialize');
+  end;
+  RObj:= LObj.GetImplementationObject;
+  ReadObjectData(Stream, False, Ref, RObj);
+end;
+
+procedure TXRTLBinaryDeserializer.ReadProperty(const Stream: TXRTLInputStream;
+  const PropList: IXRTLPropertyList);
 var
   DStream: TXRTLDataInputStream;
   PropertyName: WideString;
-  LProperty: IXRTLProperty; 
+  LProperty: IXRTLProperty;
 begin
   DStream:= nil;
   try
-    DStream:= TXRTLDataInputStream.Create(
-                TXRTLBlockInputStream.Create(Stream, False), True);
+    DStream:= TXRTLDataInputStream.Create(TXRTLBlockInputStream.Create(Stream, False), True);
     PropertyName:= DStream.ReadUTF8String;
-    Result:= WideCompareStr(PropertyName, XRTLEndOfPropertiesData) = 0;
-    if Result then Exit;
     LProperty:= PropList.GetByName(PropertyName);
     if Assigned(LProperty) then
-      ReadInterface(DStream, LProperty.Value, False);
+      ReadInterfaceData(DStream, LProperty.Value);
   finally
     FreeAndNil(DStream);
   end;

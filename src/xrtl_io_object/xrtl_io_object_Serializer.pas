@@ -153,7 +153,7 @@ begin
   AutoLock:= XRTLAcquireExclusiveLock(FStreamerLock);
   Result:= False;
   Iter:= FStreamerList.AtBegin;
-  while Iter.Compare(FStreamerList.AtBegin) <> XRTLEqualsValue do
+  while Iter.Compare(FStreamerList.AtEnd) <> XRTLEqualsValue do
   begin
     Streamer:= XRTLGetAsInterface(FStreamerList.GetValue(Iter)) as IXRTLObjectStreamer;
     if Streamer.Descriptor.GetClass = Clazz then
@@ -174,7 +174,7 @@ begin
   AutoLock:= XRTLAcquireExclusiveLock(FStreamerLock);
   Result:= False;
   Iter:= FStreamerList.AtBegin;
-  while Iter.Compare(FStreamerList.AtBegin) <> XRTLEqualsValue do
+  while Iter.Compare(FStreamerList.AtEnd) <> XRTLEqualsValue do
   begin
     Streamer:= XRTLGetAsInterface(FStreamerList.GetValue(Iter)) as IXRTLObjectStreamer;
     if WideCompareStr(Streamer.Descriptor.GetClassId, ClassId) = 0 then
