@@ -6,10 +6,9 @@ interface
 
 uses
   SysUtils,
-  xrtl_util_Type, xrtl_util_Array, xrtl_util_Map,
+  xrtl_util_Map,
   xrtl_util_Container, xrtl_util_Value,
-  xrtl_reflect_ClassDescriptor, xrtl_reflect_PropertyList, xrtl_reflect_Property,
-  xrtl_io_object_Serializer, xrtl_io_object_Reference;
+  xrtl_io_object_Reference;
 
 type
   TXRTLReferenceMap = class

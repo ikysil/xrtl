@@ -90,10 +90,13 @@ implementation
 
 uses
   {$IFDEF HAS_UNIT_VARIANTS}Variants, {$ENDIF}
-  xrtl_util_ValueImpl;
+  xrtl_util_ValueImpl, xrtl_io_object_Reference;
 
 procedure XRTLRegisterStdClassDescriptors;
 begin
+  XRTLRegisterClassDescriptor(
+    TXRTLClassDescriptor.Create(XRTLInstanceReferenceClassId, TXRTLInstanceReference, nil,
+                                TXRTLInstanceReferenceIntrospector.Create));
   XRTLRegisterClassDescriptor(TXRTLValueCardinalClassDescriptor.Create(
                                 'xrtl::value::Cardinal', TXRTLValueCardinal));
   XRTLRegisterClassDescriptor(TXRTLValueIntegerClassDescriptor.Create(
