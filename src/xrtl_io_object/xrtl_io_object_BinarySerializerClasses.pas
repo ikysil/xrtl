@@ -5,9 +5,8 @@ unit xrtl_io_object_BinarySerializerClasses;
 interface
 
 uses
-  Windows,
   SysUtils,
-  xrtl_util_Type, xrtl_util_Exception,
+  xrtl_util_Type, 
   xrtl_io_Stream, xrtl_io_DataStream,
   xrtl_io_object_Serializer;
 

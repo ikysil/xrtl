@@ -132,8 +132,8 @@ end;
 initialization
 begin
   XRTLRegisterClassDescriptor(
-    TXRTLClassDescriptor.Create(TXRTLInstanceReference, XRTLInstanceReferenceClassId,
-                                TXRTLInstanceReferenceIntrospector.Create, nil));
+    TXRTLClassDescriptor.Create(XRTLInstanceReferenceClassId, TXRTLInstanceReference, nil,
+                                TXRTLInstanceReferenceIntrospector.Create));
 end;
 
 end.

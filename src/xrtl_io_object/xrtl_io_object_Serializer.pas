@@ -92,6 +92,7 @@ type
     function   GetDescriptor: IXRTLClassDescriptor;
     procedure  WriteObjectData(const Writer: IXRTLObjectWriter; const Obj: TObject);
     procedure  ReadObjectData(const Reader: IXRTLObjectReader; const Obj: TObject);
+    procedure  ReadNoData(const Obj: TObject);
     property   Descriptor: IXRTLClassDescriptor read GetDescriptor;
   end;
 
@@ -103,6 +104,7 @@ type
     function   GetDescriptor: IXRTLClassDescriptor;
     procedure  WriteObjectData(const Writer: IXRTLObjectWriter; const Obj: TObject); virtual; abstract;
     procedure  ReadObjectData(const Reader: IXRTLObjectReader; const Obj: TObject); virtual; abstract;
+    procedure  ReadNoData(const Obj: TObject); virtual; abstract;
   end;
 
 procedure XRTLRegisterStreamer(const Streamer: IXRTLObjectStreamer);

@@ -7,10 +7,13 @@ interface
 uses
   SysUtils,
   xrtl_util_Type, xrtl_util_Array,
-  xrtl_util_Container, xrtl_util_Stack, xrtl_util_Value,
-  xrtl_reflect_ClassDescriptor, xrtl_reflect_Property,
+  xrtl_util_Container, xrtl_util_Value,
+  xrtl_reflect_ClassDescriptor, xrtl_reflect_PropertyList, xrtl_reflect_Property,
   xrtl_io_Stream,
   xrtl_io_object_Serializer, xrtl_io_object_Reference;
+
+const
+  XRTLEndOfPropertiesData = 'xrtl::eop';
 
 type
   EXRTLBinarySerializerException = class(EXRTLSerializerException);
@@ -51,8 +54,18 @@ type
                                         var Obj: TObject; var AllowShared: Boolean): Boolean;
     function   ReadClassDescriptors(const Stream: TXRTLInputStream): TXRTLSequentialContainer;
     procedure  ReadInstanceData(const Stream: TXRTLInputStream;
-                                const Obj: TObject; const LDescriptors,
-                                SDescriptors: TXRTLSequentialContainer);
+                                const LDescriptors, SDescriptors: TXRTLSequentialContainer;
+                                const Obj: TObject);
+    procedure  ReadObjectData(const Stream: TXRTLInputStream; var Obj: TObject);
+    procedure  ReadClassInstanceData(const Stream: TXRTLInputStream;
+                                     const Descriptor: IXRTLClassDescriptor;
+                                     const Obj: TObject);
+    procedure  ReadNoClassInstanceData(const Stream: TXRTLInputStream;
+                                       const Descriptor: IXRTLClassDescriptor;
+                                       const Obj: TObject);
+    procedure  SkipClassInstanceData(const Stream: TXRTLInputStream);
+    function   ReadProperty(const Stream: TXRTLInputStream;
+                            const PropList: IXRTLPropertyList): Boolean;
   public
     constructor Create;
     destructor Destroy; override;
@@ -67,10 +80,8 @@ type
 implementation
 
 uses
-  xrtl_util_Guard,
   xrtl_io_BlockStream, xrtl_io_DataStream,
-  xrtl_io_object_BinarySerializerClasses,
-  xrtl_reflect_PropertyList, xrtl_util_Compare;
+  xrtl_io_object_BinarySerializerClasses;
 
 { TXRTLBinarySerializer }
 
@@ -132,10 +143,16 @@ procedure TXRTLBinarySerializer.WriteClass(const Stream: TXRTLOutputStream;
 var
   LDescriptor: IXRTLClassDescriptor;
 begin
-  if CheckAndWriteNilReference(Stream, Obj) then
-    Exit;
-  LDescriptor:= XRTLGetClassDescriptor(Obj);
-  WriteInterface(Stream, LDescriptor, AllowShared);
+  LDescriptor:= nil;
+  if Assigned(Obj) then
+  begin
+    LDescriptor:= XRTLGetClassDescriptor(Obj);
+    WriteInterface(Stream, LDescriptor, AllowShared);
+  end
+  else
+  begin
+    WriteInterface(Stream, nil, False);
+  end;
 end;
 
 procedure TXRTLBinarySerializer.WriteInterface(const Stream: TXRTLOutputStream;
@@ -143,11 +160,16 @@ procedure TXRTLBinarySerializer.WriteInterface(const Stream: TXRTLOutputStream;
 var
   LObj: IXRTLImplementationObjectProvider;
 begin
-  if CheckAndWriteNilReference(Stream, Obj) then
-    Exit;
-  if not Supports(Obj, IXRTLImplementationObjectProvider, LObj) then
-    raise EXRTLBinarySerializerException.Create('Invalid interface reference, can''t serialize');
-  WriteObject(Stream, LObj.GetImplementationObject, AllowShared);
+  if Assigned(Obj) then
+  begin
+    if not Supports(Obj, IXRTLImplementationObjectProvider, LObj) then
+      raise EXRTLBinarySerializerException.Create('Invalid interface reference, can''t serialize');
+    WriteObject(Stream, LObj.GetImplementationObject, AllowShared);
+  end
+  else
+  begin
+    WriteObject(Stream, nil, False);
+  end;
 end;
 
 procedure TXRTLBinarySerializer.WriteObject(const Stream: TXRTLOutputStream;
@@ -200,6 +222,7 @@ var
 begin
   LDescriptors:= nil;
   try
+//  get class descriptors in descendant - ancestor order
     LDescriptors:= XRTLFindHierarchyClassDescriptors(Obj.ClassType);
     WriteClassDescriptors(Stream, LDescriptors);
     WriteInstanceData(Stream, LDescriptors, Obj);
@@ -217,13 +240,11 @@ var
   LDescriptor: IXRTLClassDescriptor;
   LClassId: WideString;
 begin
-//  write class descriptors in descendant - ancestor order
   DStream:= nil;
   try
-    DStream:= TXRTLDataOutputStream.Create(
-                TXRTLBlockOutputStream.Create(Stream, False), True);
+    DStream:= TXRTLDataOutputStream.Create(TXRTLBlockOutputStream.Create(Stream, False), True);
     Values:= Descriptors.GetValues;
-    for I:= High(Values) to Low(Values) do
+    for I:= Low(Values) to High(Values) do
     begin
       LDescriptor:= XRTLGetAsInterface(Values[I]) as IXRTLClassDescriptor;
       LClassId:= LDescriptor.GetClassId;
@@ -248,7 +269,7 @@ begin
   try
     LStream:= TXRTLBlockOutputStream.Create(Stream, False);
     Values:= Descriptors.GetValues;
-    for I:= Low(Values) to High(Values) do
+    for I:= High(Values) downto Low(Values) do
     begin
       LDescriptor:= XRTLGetAsInterface(Values[I]) as IXRTLClassDescriptor;
       WriteClassInstanceData(LStream, LDescriptor, Obj);
@@ -274,13 +295,14 @@ begin
     LStream:= TXRTLBlockOutputStream.Create(Stream, False);
     LProps:= TXRTLArray.Create;
     LPropList:= Descriptor.DefineProperties;
-    Descriptor.Introspector.GetValues(Obj, LPropList);
+    Descriptor.GetValues(Obj, LPropList);
     LPropList.GetProperties(LProps);
     Values:= LProps.GetValues;
     for I:= Low(Values) to High(Values) do
     begin
       WriteProperty(LStream, XRTLGetAsInterface(Values[I]) as IXRTLProperty);
     end;
+    WriteProperty(LStream, TXRTLProperty.Create(XRTLEndOfPropertiesData, nil));
   finally
     Values:= nil;
     FreeAndNil(LProps);
@@ -330,12 +352,16 @@ end;
 function TXRTLBinaryDeserializer.ReadClass(const Stream: TXRTLInputStream;
   const Obj: TClass; const AllowShared: Boolean = True): TClass;
 var
+  RObj: IInterface;
   LDescriptor: IXRTLClassDescriptor;
 begin
+  Result:= nil;
   LDescriptor:= nil;
   if Assigned(Obj) then
     XRTLFindClassDescriptor(Obj, LDescriptor);
-  LDescriptor:= ReadInterface(Stream, LDescriptor, AllowShared) as IXRTLClassDescriptor;
+  RObj:= ReadInterface(Stream, LDescriptor, AllowShared);
+  if not Assigned(RObj) then Exit;
+  LDescriptor:= RObj as IXRTLClassDescriptor;
   Result:= LDescriptor.GetClass;
 end;
 
@@ -345,6 +371,7 @@ var
   LObj: IXRTLImplementationObjectProvider;
   RObj: TObject;
 begin
+  Result:= nil;
   LObj:= nil;
   if Assigned(Obj) then
   begin
@@ -352,6 +379,7 @@ begin
       raise EXRTLBinaryDeserializerException.Create('Invalid interface reference, can''t deserialize');
   end;
   RObj:= ReadObject(Stream, LObj.GetImplementationObject, AllowShared);
+  if not Assigned(RObj) then Exit;
   RObj.GetInterface(IInterface, Result);
 end;
 
@@ -359,54 +387,37 @@ function TXRTLBinaryDeserializer.ReadObject(const Stream: TXRTLInputStream;
   const Obj: TObject; const AllowShared: Boolean = True): TObject;
 var
   Ref: TXRTLInstanceReference;
-  LDescriptors, SDescriptors: TXRTLSequentialContainer;
-  CDescriptor: IXRTLClassDescriptor;
   LAllowShared: Boolean;
+  LStream: TXRTLInputStream;
 begin
   Result:= Obj;
   Ref:= nil;
-  SDescriptors:= nil;
-  LDescriptors:= nil;
+  LStream:= nil;
   try
+    LStream:= TXRTLBlockInputStream.Create(Stream, False);
     LAllowShared:= AllowShared;
-    Ref:= ReadReference(Stream);
+    Ref:= ReadReference(LStream);
     if GetInstanceFromReference(Ref, Result, LAllowShared) then
       Exit;
-    SDescriptors:= ReadClassDescriptors(Stream);
-    CDescriptor:= XRTLGetAsInterface(SDescriptors.GetValue(SDescriptors.AtBegin)) as IXRTLClassDescriptor;
-    if Assigned(Result) then
-    begin
-      LDescriptors:= XRTLFindHierarchyClassDescriptors(Result.ClassType);
-    end
-    else
-    begin
-      if not Assigned(CDescriptor.Factory) then
-        raise EXRTLBinaryDeserializerException.CreateFmt('Can''t deserialize, no class descriptor for class id ''%s'' found...', [CDescriptor.GetClassId]);
-      LDescriptors:= XRTLFindHierarchyClassDescriptors(CDescriptor.GetClass);
-      Result:= CDescriptor.Factory.CreateInstance;
-    end;
-    ReadInstanceData(Stream, Result, LDescriptors, SDescriptors);
+    ReadObjectData(LStream, Result);
   finally
     FreeAndNil(Ref);
-    FreeAndNil(SDescriptors);
-    FreeAndNil(LDescriptors);
+    FreeAndNil(LStream);
   end;
 end;
 
 function TXRTLBinaryDeserializer.ReadReference(const Stream: TXRTLInputStream): TXRTLInstanceReference;
 var
-  LDescriptors, SDescriptors: TXRTLSequentialContainer;
+  RObj: TObject;
 begin
-  LDescriptors:= nil;
-  SDescriptors:= nil;
+  RObj:= nil;
   try
-    LDescriptors:= XRTLFindHierarchyClassDescriptors(TXRTLInstanceReference);
-    SDescriptors:= ReadClassDescriptors(Stream);
-    Result:= TXRTLInstanceReference.Create;
-    ReadInstanceData(Stream, Result, LDescriptors, SDescriptors);
-  finally
-    FreeAndNil(SDescriptors);
-    FreeAndNil(LDescriptors);
+    RObj:= TXRTLInstanceReference.Create;
+    ReadObjectData(Stream, RObj);
+    Result:= RObj as TXRTLInstanceReference;
+  except
+    FreeAndNil(RObj);
+    raise;
   end;
 end;
 
@@ -431,6 +442,43 @@ begin
   end;
 end;
 
+procedure TXRTLBinaryDeserializer.ReadObjectData(const Stream: TXRTLInputStream;
+  var Obj: TObject);
+var
+  LDescriptors, SDescriptors: TXRTLSequentialContainer;
+  CDescriptor: IXRTLClassDescriptor;
+begin
+  SDescriptors:= nil;
+  LDescriptors:= nil;
+  try
+    SDescriptors:= ReadClassDescriptors(Stream);
+    CDescriptor:= XRTLGetAsInterface(SDescriptors.GetValue(SDescriptors.AtBegin)) as IXRTLClassDescriptor;
+    if Assigned(Obj) then
+    begin
+      if Assigned(CDescriptor.GetClass) then
+      begin
+        if not(Obj is CDescriptor.GetClass) then
+          raise EXRTLBinaryDeserializerException.CreateFmt('Can''t deserialize, class ''%s'' expected but ''%s'' instance provided...',
+                  [CDescriptor.GetClass.ClassName, Obj.ClassType]);
+      end;
+//  get class descriptors in descendant - ancestor order
+      LDescriptors:= XRTLFindHierarchyClassDescriptors(Obj.ClassType);
+    end
+    else
+    begin
+      Obj:= CDescriptor.CreateInstance;
+      if not Assigned(Obj) then
+        raise EXRTLBinaryDeserializerException.CreateFmt('Can''t create instance for class id ''%s''...', [CDescriptor.GetClassId]);
+//  get class descriptors in descendant - ancestor order
+      LDescriptors:= XRTLFindHierarchyClassDescriptors(CDescriptor.GetClass);
+    end;
+    ReadInstanceData(Stream, LDescriptors, SDescriptors, Obj);
+  finally
+    FreeAndNil(SDescriptors);
+    FreeAndNil(LDescriptors);
+  end;
+end;
+
 function TXRTLBinaryDeserializer.ReadClassDescriptors(const Stream: TXRTLInputStream): TXRTLSequentialContainer;
 var
   DStream: TXRTLDataInputStream;
@@ -438,11 +486,9 @@ var
   LClassId: WideString;
 begin
   Result:= TXRTLArray.Create;
-//  read class descriptors in descendant - ancestor order
   DStream:= nil;
   try
-    DStream:= TXRTLDataInputStream.Create(
-                TXRTLBlockInputStream.Create(Stream, False), True);
+    DStream:= TXRTLDataInputStream.Create(TXRTLBlockInputStream.Create(Stream, False), True);
     while True do
     begin
       LClassId:= DStream.ReadUTF8String;
@@ -459,8 +505,174 @@ begin
 end;
 
 procedure TXRTLBinaryDeserializer.ReadInstanceData(const Stream: TXRTLInputStream;
-  const Obj: TObject; const LDescriptors, SDescriptors: TXRTLSequentialContainer);
+  const LDescriptors, SDescriptors: TXRTLSequentialContainer; const Obj: TObject);
+var
+  I, K, LValuesHigh: Integer;
+  LStream: TXRTLInputStream;
+  LValues, SValues: TXRTLValueArray;
+  LDescriptor, SDescriptor: IXRTLClassDescriptor;
+
+  function HasLocalDescriptor(const Descriptor: IXRTLClassDescriptor): Boolean;
+  var
+    I: Integer;
+    LDescriptor: IXRTLClassDescriptor;
+  begin
+    Result:= False;
+    for I:= LValuesHigh downto Low(LValues) do
+    begin
+      LDescriptor:= XRTLGetAsInterface(LValues[I]) as IXRTLClassDescriptor;
+      Result:= WideCompareStr(Descriptor.GetClassId, LDescriptor.GetClassId) = 0;
+      if Result then Exit;
+    end;
+  end;
+
 begin
+  LStream:= nil;
+  try
+    LStream:= TXRTLBlockInputStream.Create(Stream, False);
+    LValues:= LDescriptors.GetValues;
+    SValues:= SDescriptors.GetValues;
+    LValuesHigh:= High(LValues);
+    for I:= High(SValues) downto Low(SValues) do
+    begin
+      SDescriptor:= XRTLGetAsInterface(SValues[I]) as IXRTLClassDescriptor;
+      if HasLocalDescriptor(SDescriptor) then
+      begin
+        for K:= LValuesHigh downto Low(LValues) do
+        begin
+          LDescriptor:= XRTLGetAsInterface(LValues[K]) as IXRTLClassDescriptor;
+          Dec(LValuesHigh);
+          if WideCompareStr(SDescriptor.GetClassId, LDescriptor.GetClassId) = 0 then
+          begin
+            ReadClassInstanceData(LStream, SDescriptor, Obj);
+            Break;
+          end
+          else
+          begin
+            ReadNoClassInstanceData(LStream, LDescriptor, Obj);
+          end;
+        end;
+      end
+      else
+      begin
+        SkipClassInstanceData(LStream);
+      end;
+    end;
+    Assert(LValuesHigh < 0);
+  finally
+    FreeAndNil(LStream);
+  end;
+end;
+
+procedure TXRTLBinaryDeserializer.ReadClassInstanceData(const Stream: TXRTLInputStream;
+  const Descriptor: IXRTLClassDescriptor; const Obj: TObject);
+var
+  LStream: TXRTLInputStream;
+  LPropList: IXRTLPropertyList;
+  LProps: TXRTLArray;
+  Values: TXRTLValueArray;
+  LStreamer: IXRTLObjectStreamer;
+begin
+  LStream:= nil;
+  LProps:= nil;
+  try
+    LStream:= TXRTLBlockInputStream.Create(Stream, False);
+    LPropList:= Descriptor.DefineProperties;
+    while not ReadProperty(LStream, LPropList) do;
+    Descriptor.SetValues(Obj, LPropList);
+  finally
+    Values:= nil;
+    FreeAndNil(LProps);
+    FreeAndNil(LStream);
+  end;
+//  read custom data
+  LStream:= nil;
+  try
+    LStream:= TXRTLBlockInputStream.Create(Stream, False);
+    if XRTLFindStreamer(Descriptor.GetClass, LStreamer) then
+    begin
+      LStreamer.ReadObjectData(TXRTLBinaryObjectReader.Create(LStream, Self), Obj);
+    end;
+  finally
+    FreeAndNil(LStream);
+  end;
+end;
+
+procedure TXRTLBinaryDeserializer.ReadNoClassInstanceData(const Stream: TXRTLInputStream;
+  const Descriptor: IXRTLClassDescriptor; const Obj: TObject);
+var
+  LStream: TXRTLInputStream;
+  LPropList: IXRTLPropertyList;
+  LProps: TXRTLArray;
+  Values: TXRTLValueArray;
+  LStreamer: IXRTLObjectStreamer;
+begin
+  LStream:= nil;
+  LProps:= nil;
+  try
+    LStream:= TXRTLBlockInputStream.Create(Stream, False);
+    LPropList:= Descriptor.DefineProperties;
+    Descriptor.SetValues(Obj, LPropList);
+  finally
+    Values:= nil;
+    FreeAndNil(LProps);
+//  automaticly skips property data
+    FreeAndNil(LStream);
+  end;
+//  read custom data
+  LStream:= nil;
+  try
+    LStream:= TXRTLBlockInputStream.Create(Stream, False);
+    if XRTLFindStreamer(Descriptor.GetClass, LStreamer) then
+    begin
+      LStreamer.ReadNoData(Obj);
+    end;
+  finally
+    FreeAndNil(LStream);
+  end;
+end;
+
+procedure TXRTLBinaryDeserializer.SkipClassInstanceData(const Stream: TXRTLInputStream);
+var
+  LStream: TXRTLInputStream;
+begin
+  LStream:= nil;
+  try
+    LStream:= TXRTLBlockInputStream.Create(Stream, False);
+  finally
+//  automatically skips property data
+    FreeAndNil(LStream);
+  end;
+//  read custom data
+  LStream:= nil;
+  try
+    LStream:= TXRTLBlockInputStream.Create(Stream, False);
+  finally
+//  automatically skips custom data
+    FreeAndNil(LStream);
+  end;
+end;
+
+function TXRTLBinaryDeserializer.ReadProperty(const Stream: TXRTLInputStream;
+  const PropList: IXRTLPropertyList): Boolean;
+var
+  DStream: TXRTLDataInputStream;
+  PropertyName: WideString;
+  LProperty: IXRTLProperty; 
+begin
+  DStream:= nil;
+  try
+    DStream:= TXRTLDataInputStream.Create(
+                TXRTLBlockInputStream.Create(Stream, False), True);
+    PropertyName:= DStream.ReadUTF8String;
+    Result:= WideCompareStr(PropertyName, XRTLEndOfPropertiesData) = 0;
+    if Result then Exit;
+    LProperty:= PropList.GetByName(PropertyName);
+    if Assigned(LProperty) then
+      ReadInterface(DStream, LProperty.Value, False);
+  finally
+    FreeAndNil(DStream);
+  end;
 end;
 
 end.
