@@ -7,7 +7,7 @@ uses
   SysUtils,
   xrtl_util_Value,
   xrtl_reflect_ClassDescriptor, xrtl_reflect_Introspector,
-  xrtl_io_object_Serializer;
+  xrtl_sdf_Serializer;
 
 type
   TBase = class
