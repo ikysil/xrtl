@@ -158,15 +158,6 @@ begin
     end;
     if WriteReference(LStream, Obj, LAllowShared) then
       Exit;
-{
-    LDescriptor:= XRTLGetClassDescriptor(Obj.ClassType);
-    WriteObject(LStream, (LDescriptor as IXRTLImplementationObjectProvider).GetImplementationObject, False);
-    if WideCompareStr(LDescriptor.GetClassId, XRTLClassDescriptorId) = 0 then
-    begin
-      WriteClassDescriptor(LDescriptor);
-      Exit;
-    end;
-}
     WriteObjectData(LStream, Obj);
   finally
     FreeAndNil(LStream);
