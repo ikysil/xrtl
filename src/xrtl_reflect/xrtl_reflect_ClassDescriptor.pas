@@ -7,10 +7,11 @@ interface
 uses
   SysUtils,
   xrtl_util_Type, xrtl_util_Value, xrtl_util_Exception,
+  xrtl_util_Compare, xrtl_util_Container,
   xrtl_reflect_PropertyList;
 
 const
-  XRTLClassDescriptorId = 'xrtl:classDescriptor';
+  XRTLClassDescriptorId = 'xrtl::class';
 
 type
   EXRTLClassDescriptorException = class(EXRTLException);
@@ -57,11 +58,13 @@ function  XRTLFindClassDescriptor(const ClassId: WideString; var Descriptor: IXR
 function  XRTLFindParentClassDescriptor(const Clazz: TClass; var Descriptor: IXRTLClassDescriptor): Boolean;
 function  XRTLGetClassDescriptor(const Clazz: TClass): IXRTLClassDescriptor; overload;
 function  XRTLGetClassDescriptor(const ClassId: WideString): IXRTLClassDescriptor; overload;
+// Returns hierarchy class descriptors in descendant - ancestor order
+function  XRTLFindHierarchyClassDescriptors(const Clazz: TClass): TXRTLSequentialContainer;
 
 implementation
 
 uses
-  xrtl_util_Compare, xrtl_util_Container, xrtl_util_Array, xrtl_util_Lock,
+  xrtl_util_Array, xrtl_util_Lock,
   xrtl_reflect_ResourceStrings;
 
 var
@@ -151,6 +154,24 @@ function XRTLGetClassDescriptor(const ClassId: WideString): IXRTLClassDescriptor
 begin
   if not XRTLFindClassDescriptor(ClassId, Result) then
     raise EXRTLClassDescriptorException.CreateFmt(SXRTLNoDescriptorForClassIdRegistered, [ClassId]);
+end;
+
+function XRTLFindHierarchyClassDescriptors(const Clazz: TClass): TXRTLSequentialContainer;
+var
+  LClass: TClass;
+  LDescriptor: IXRTLClassDescriptor;
+begin
+  Result:= TXRTLArray.Create;
+  LClass:= Clazz;
+  while Assigned(LClass) do
+  begin
+    LDescriptor:= nil;
+    if XRTLFindClassDescriptor(LClass, LDescriptor) then
+    begin
+      Result.Insert(XRTLValue(LDescriptor), Result.AtEnd);
+    end;
+    LClass:= LClass.ClassParent;
+  end;
 end;
 
 { TXRTLClassDescriptor }
