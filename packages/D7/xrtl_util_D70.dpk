@@ -55,7 +55,6 @@ contains
   xrtl_util_Set in '..\..\src\xrtl_util\xrtl_util_Set.pas',
   xrtl_util_Stack in '..\..\src\xrtl_util\xrtl_util_Stack.pas',
   xrtl_util_StrUtils in '..\..\src\xrtl_util\xrtl_util_StrUtils.pas',
-  xrtl_util_Synchronizer in '..\..\src\xrtl_util\xrtl_util_Synchronizer.pas',
   xrtl_util_ThreadUtils in '..\..\src\xrtl_util\xrtl_util_ThreadUtils.pas',
   xrtl_util_TimeStamp in '..\..\src\xrtl_util\xrtl_util_TimeStamp.pas',
   xrtl_util_TimeUtils in '..\..\src\xrtl_util\xrtl_util_TimeUtils.pas',
@@ -65,6 +64,8 @@ contains
   xrtl_util_VariantUtils in '..\..\src\xrtl_util\xrtl_util_VariantUtils.pas',
   xrtl_util_NameSpace in '..\..\src\xrtl_util\xrtl_util_NameSpace.pas',
   xrtl_util_NameSpacePath in '..\..\src\xrtl_util\xrtl_util_NameSpacePath.pas',
-  xrtl_util_ValueImpl in '..\..\src\xrtl_util\xrtl_util_ValueImpl.pas';
+  xrtl_util_ValueImpl in '..\..\src\xrtl_util\xrtl_util_ValueImpl.pas',
+  xrtl_util_LockImpl in '..\..\src\xrtl_util\xrtl_util_LockImpl.pas',
+  xrtl_util_Lock in '..\..\src\xrtl_util\xrtl_util_Lock.pas';
 
 end.
