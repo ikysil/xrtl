@@ -1,4 +1,4 @@
-unit xrtl_io_object_ValueStreamer;
+unit xrtl_io_object_StdStreamer;
 
 {$INCLUDE xrtl.inc}
 
@@ -106,14 +106,14 @@ type
     procedure  ReadObjectData(const Reader: IXRTLObjectReader; const Obj: TObject); override;
   end;
 
-procedure XRTLRegisterValueStreamers;
+procedure XRTLRegisterStdStreamers;
 
 implementation
 
 uses
   xrtl_util_ValueImpl;
 
-procedure XRTLRegisterValueStreamers;
+procedure XRTLRegisterStdStreamers;
 begin
   XRTLRegisterStreamer(TXRTLValueCardinalStreamer.Create);
   XRTLRegisterStreamer(TXRTLValueIntegerStreamer.Create);

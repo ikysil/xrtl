@@ -122,8 +122,8 @@ implementation
 
 uses
   xrtl_util_Compare, xrtl_util_Container, xrtl_util_Array, xrtl_util_Lock, xrtl_util_Value,
-  xrtl_io_object_ResourceStrings, xrtl_io_object_ValueClassDescriptor,
-  xrtl_io_object_ValueStreamer;
+  xrtl_io_object_ResourceStrings, xrtl_io_object_StdClassDescriptor,
+  xrtl_io_object_StdStreamer;
 
 var
   FStreamerLock: IXRTLExclusiveLock = nil;
@@ -230,8 +230,8 @@ initialization
 begin
   FStreamerLock:= XRTLCreateExclusiveLock;
   FStreamerList:= TXRTLArray.Create;
-  XRTLRegisterValueClassDescriptors;
-  XRTLRegisterValueStreamers;
+  XRTLRegisterStdClassDescriptors;
+  XRTLRegisterStdStreamers;
 end;
 
 finalization

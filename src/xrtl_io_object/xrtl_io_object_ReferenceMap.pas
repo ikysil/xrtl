@@ -45,15 +45,15 @@ end;
 function TXRTLReferenceMap.RegisterReference(const Ref: TXRTLInstanceReference;
   const Obj: TObject): Boolean;
 var
-  RefValue, ObjValue: IXRTLValue;
+  ObjValue: IXRTLValue;
 begin
   Result:= False;
   if Ref = Obj then Exit;
   if not Assigned(Ref) or not Assigned(Obj) then Exit;
-  RefValue:= XRTLValue(Ref, True);
+  if WideCompareStr(Ref.ReferenceId, '') = 0 then Exit;
   ObjValue:= XRTLValue(Obj, False);
-  FRef2Obj.SetValue(RefValue, ObjValue);
-  FObj2Ref.SetValue(ObjValue, RefValue);
+  FRef2Obj.SetValue(XRTLValue(Ref.ReferenceId), ObjValue);
+  FObj2Ref.SetValue(ObjValue, XRTLValue(Ref, True));
   Result:= True;
 end;
 
@@ -63,7 +63,8 @@ var
 begin
   Result:= nil;
   if not Assigned(Ref) then Exit;
-  ObjValue:= FRef2Obj.GetValue(XRTLValue(Ref, False));
+  if WideCompareStr(Ref.ReferenceId, '') = 0 then Exit;
+  ObjValue:= FRef2Obj.GetValue(XRTLValue(Ref.ReferenceId));
   if Assigned(ObjValue) then
     Result:= XRTLGetAsObject(ObjValue, False);
 end;

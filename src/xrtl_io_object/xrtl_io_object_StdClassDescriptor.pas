@@ -1,4 +1,4 @@
-unit xrtl_io_object_ValueClassDescriptor;
+unit xrtl_io_object_StdClassDescriptor;
 
 {$INCLUDE xrtl.inc}
 
@@ -84,7 +84,7 @@ type
     function   DoCreateInstance: TObject; override;
   end;
 
-procedure XRTLRegisterValueClassDescriptors;
+procedure XRTLRegisterStdClassDescriptors;
 
 implementation
 
@@ -92,7 +92,7 @@ uses
   {$IFDEF HAS_UNIT_VARIANTS}Variants, {$ENDIF}
   xrtl_util_ValueImpl;
 
-procedure XRTLRegisterValueClassDescriptors;
+procedure XRTLRegisterStdClassDescriptors;
 begin
   XRTLRegisterClassDescriptor(TXRTLValueCardinalClassDescriptor.Create(
                                 'xrtl::value::Cardinal', TXRTLValueCardinal));

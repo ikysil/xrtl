@@ -53,7 +53,8 @@ type
   TXRTLBinaryDeserializer = class(TInterfacedObject, IXRTLDeserializer)
   private
     FRefMap: TXRTLReferenceMap;
-    procedure  ReadObjectData(const Stream: TXRTLInputStream; var Obj: TObject);
+    procedure  ReadObjectData(const Stream: TXRTLInputStream; const AllowShared: Boolean;
+                              var Ref: TXRTLInstanceReference; var Obj: TObject);
     function   ReadReference(const Stream: TXRTLInputStream): TXRTLInstanceReference;
     function   GetInstanceFromReference(var Ref: TXRTLInstanceReference;
                                         var Obj: TObject; var AllowShared: Boolean): Boolean;
@@ -432,11 +433,7 @@ begin
     Ref:= ReadReference(LStream);
     if GetInstanceFromReference(Ref, Result, LAllowShared) then
       Exit;
-    ReadObjectData(LStream, Result);
-//  if AllowShared and reference is registered successfully then
-//  set Ref to nil to bypass FreeAndNil below
-    if LAllowShared and FRefMap.RegisterReference(Ref, Result) then
-      Ref:= nil; // to bypass FreeAndNil below
+    ReadObjectData(LStream, LAllowShared, Ref, Result);
   finally
     FreeAndNil(Ref);
     FreeAndNil(LStream);
@@ -448,9 +445,10 @@ var
   RObj: TObject;
 begin
   RObj:= nil;
+  Result:= nil;
   try
     RObj:= TXRTLInstanceReference.Create;
-    ReadObjectData(Stream, RObj);
+    ReadObjectData(Stream, False, Result, RObj);
     Result:= RObj as TXRTLInstanceReference;
   except
     FreeAndNil(RObj);
@@ -479,7 +477,7 @@ begin
     Result:= True;
     Exit;
   end;
-  if not AllowShared then Exit;
+  if not (AllowShared and Ref.AllowShared) then Exit;
   LObj:= FRefMap.GetObject(Ref);
   Result:= Assigned(LObj);
   if Result then
@@ -487,7 +485,7 @@ begin
 end;
 
 procedure TXRTLBinaryDeserializer.ReadObjectData(const Stream: TXRTLInputStream;
-  var Obj: TObject);
+  const AllowShared: Boolean; var Ref: TXRTLInstanceReference; var Obj: TObject);
 var
   LDescriptors, SDescriptors: TXRTLSequentialContainer;
   CDescriptor: IXRTLClassDescriptor;
@@ -521,6 +519,10 @@ begin
 //  get class descriptors in descendant - ancestor order
       LDescriptors:= XRTLFindHierarchyClassDescriptors(CDescriptor.GetClass);
     end;
+//  if AllowShared and reference is registered successfully then
+//  set Ref to nil to bypass FreeAndNil below
+    if AllowShared and FRefMap.RegisterReference(Ref, Obj) then
+      Ref:= nil; // to bypass FreeAndNil below
     ReadInstanceData(Stream, LDescriptors, SDescriptors, Obj);
   finally
     FreeAndNil(SDescriptors);
