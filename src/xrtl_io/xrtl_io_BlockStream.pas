@@ -25,6 +25,7 @@ type
     FBlockFlags: Byte;
     FBlockSize: Integer;
     FSkipToEndOfStreamOnClose: Boolean;
+    procedure  ReadFirstBlockHeader;
     procedure  ReadBlockHeader;
     function   SkipTo(const Flags: Byte): Int64;
   protected
@@ -41,6 +42,7 @@ type
     function   Skip(const Count: Int64): Int64; override;
     function   SkipToSync: Int64;
     function   SkipToEndOfStream: Int64;
+    function   IsEndOfStream: Boolean;
     property   SkipToEndOfStreamOnClose: Boolean read FSkipToEndOfStreamOnClose write FSkipToEndOfStreamOnClose;
   end;
 
@@ -87,6 +89,7 @@ begin
   FBlockFlags:= bsfNoFlags;
   FBlockSize:= 0;
   FSkipToEndOfStreamOnClose:= ASkipToEndOfStreamOnClose;
+  ReadFirstBlockHeader;
 end;
 
 destructor TXRTLBlockInputStream.Destroy;
@@ -127,9 +130,32 @@ begin
   FBlockSize:= MD.BlockSize;
 end;
 
+procedure TXRTLBlockInputStream.ReadFirstBlockHeader;
+var
+  LLength: Integer;
+  LBlockSize: Integer;
+begin
+  FBlockSize:= 0;
+  if (FBlockFlags and bsfEOS) = bsfEOS then
+    Exit;
+  FBlockSize:= 1; // fake BlockSize to eliminate stack overflow exception
+  ReadBufferFully(FBlockFlags, SizeOf(FBlockFlags));
+  if (FBlockFlags and bsfData) = bsfData then
+  begin
+    LLength:= ((FBlockFlags and bsfLengthMask) shr 6) + 1;
+    FBlockSize:= LLength; // fake BlockSize to eliminate stack overflow exception
+    LBlockSize:= 0;
+    ReadBufferFully(LBlockSize, LLength);
+    FBlockSize:= LBlockSize;
+  end
+  else
+    FBlockSize:= 0;
+end;
+
 procedure TXRTLBlockInputStream.ReadBlockHeader;
 var
   LLength: Integer;
+  LBlockSize: Integer;
 begin
   FBlockSize:= 0;
   if (FBlockFlags and bsfEOS) = bsfEOS then
@@ -138,7 +164,9 @@ begin
   if (FBlockFlags and bsfData) = bsfData then
   begin
     LLength:= ((FBlockFlags and bsfLengthMask) shr 6) + 1;
-    ReadBufferFully(FBlockSize, LLength);
+    LBlockSize:= 0;
+    ReadBufferFully(LBlockSize, LLength);
+    FBlockSize:= LBlockSize;
   end;
 end;
 
@@ -159,7 +187,7 @@ begin
       begin
         if Result <= 0 then
           Result:= XRTLEndOfStreamValue;
-        Break;
+        Exit;
       end;
       ReadBlockHeader;
     end;
@@ -170,9 +198,16 @@ begin
       if RResult > 0 then
       begin
         Inc(Result, RResult);
+        Dec(FBlockSize, RResult);
         InBuffer:= XRTLPointerAdd(InBuffer, RResult);
         if Result = Count then
           Break;
+      end
+      else
+      begin
+        if (Result = 0) and (RResult = XRTLEndOfStreamValue) then
+          Result:= XRTLEndOfStreamValue;
+        Exit;
       end;
     end;
   end;
@@ -202,6 +237,11 @@ end;
 function TXRTLBlockInputStream.SkipToEndOfStream: Int64;
 begin
   Result:= SkipTo(bsfEOS);
+end;
+
+function TXRTLBlockInputStream.IsEndOfStream: Boolean;
+begin
+  Result:= ((FBlockFlags and bsfEOS) = bsfEOS) and (FBlockSize = 0)
 end;
 
 { TXRTLBlockOutputStream }
@@ -292,7 +332,8 @@ procedure TXRTLBlockOutputStream.DoFlush(const Flags: Byte);
   end;
 
 var
-  LFlags, LSize, LBytesInBlock: Byte;
+  LFlags: Byte;
+  LSize, LBytesInBlock: Integer;
 begin
   LFlags:= Flags;
   LBytesInBlock:= BytesInBlock;
@@ -300,9 +341,9 @@ begin
   if LBytesInBlock > 0 then
     LFlags:= LFlags or bsfData or (((LSize - 1) and $03) shl 6);
   inherited _WriteBuffer(LFlags, SizeOf(LFlags));
-  inherited _WriteBuffer(LBytesInBlock, LSize);
   if LBytesInBlock > 0 then
   begin
+    inherited _WriteBuffer(LBytesInBlock, LSize);
     inherited _WriteBuffer(FBlockData^, FWritePointer);
     FWritePointer:= 0;
   end;
