@@ -81,6 +81,7 @@ begin
       Result:= LProperty;
       Exit;
     end;
+    Iter.Next;
   end;
 end;
 

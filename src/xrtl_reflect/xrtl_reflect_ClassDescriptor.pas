@@ -48,6 +48,7 @@ type
     FIntrospector: IXRTLIntrospector;
     FFactory: IXRTLFactory;
   protected
+    procedure  DoDefineProperties(const Properties: IXRTLPropertyList); virtual;
     procedure  DoGetValues(const Obj: TObject; const Properties: IXRTLPropertyList); virtual;
     procedure  DoSetValues(const Obj: TObject; const Properties: IXRTLPropertyList); virtual;
     function   DoCreateInstance: TObject; virtual;
@@ -115,7 +116,7 @@ begin
   AutoLock:= XRTLAcquireExclusiveLock(FDescriptorLock);
   Result:= False;
   Iter:= FDescriptorList.AtBegin;
-  while Iter.Compare(FDescriptorList.AtBegin) <> XRTLEqualsValue do
+  while Iter.Compare(FDescriptorList.AtEnd) <> XRTLEqualsValue do
   begin
     Descriptor:= XRTLGetAsInterface(FDescriptorList.GetValue(Iter)) as IXRTLClassDescriptor;
     if Descriptor.GetClass = Clazz then
@@ -136,7 +137,7 @@ begin
   AutoLock:= XRTLAcquireExclusiveLock(FDescriptorLock);
   Result:= False;
   Iter:= FDescriptorList.AtBegin;
-  while Iter.Compare(FDescriptorList.AtBegin) <> XRTLEqualsValue do
+  while Iter.Compare(FDescriptorList.AtEnd) <> XRTLEqualsValue do
   begin
     Descriptor:= XRTLGetAsInterface(FDescriptorList.GetValue(Iter)) as IXRTLClassDescriptor;
     if WideCompareStr(Descriptor.GetClassId, ClassId) = 0 then
@@ -238,7 +239,9 @@ function TXRTLClassDescriptor.DefineProperties: IXRTLPropertyList;
 begin
   Result:= TXRTLPropertyList.Create;
   if Assigned(FIntrospector) then
-    FIntrospector.DefineProperties(Self, Result);
+    FIntrospector.DefineProperties(Self, Result)
+  else
+    DoDefineProperties(Result);
 end;
 
 procedure TXRTLClassDescriptor.GetValues(const Obj: TObject;
@@ -265,6 +268,10 @@ begin
     Result:= FFactory.CreateInstance
   else
     Result:= DoCreateInstance;
+end;
+
+procedure TXRTLClassDescriptor.DoDefineProperties(const Properties: IXRTLPropertyList);
+begin
 end;
 
 procedure TXRTLClassDescriptor.DoGetValues(const Obj: TObject;
