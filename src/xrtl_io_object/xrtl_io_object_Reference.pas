@@ -8,6 +8,9 @@ uses
   Windows,
   SysUtils;
 
+const
+  XRTLInstanceReferenceClassId = 'xrtl::ref';
+
 type
   TXRTLInstanceReference = class
   private
@@ -18,7 +21,8 @@ type
   protected
     procedure  InitReference(const Obj: TObject);
   public
-    constructor Create(const Obj: TObject; const _AllowShared: Boolean);
+    constructor Create; overload;
+    constructor Create(const Obj: TObject; const _AllowShared: Boolean); overload;
     constructor CreateSelfReference(const Ref: TXRTLInstanceReference);
     destructor Destroy; override;
     property   AllowShared: Boolean read FAllowShared;
@@ -83,6 +87,15 @@ end;
 
 { TXRTLInstanceReference }
 
+constructor TXRTLInstanceReference.Create;
+begin
+  inherited Create;
+  FSelfRef:= False;
+  FAllowShared:= False;
+  FReferenceId:= '';
+  FIsNil:= False;
+end;
+
 constructor TXRTLInstanceReference.Create(const Obj: TObject; const _AllowShared: Boolean);
 begin
   inherited Create;
@@ -118,8 +131,9 @@ end;
 
 initialization
 begin
-  XRTLRegisterClassDescriptor(TXRTLClassDescriptor.Create(TXRTLInstanceReference, 'xrtl:ref',
-                                                          TXRTLInstanceReferenceIntrospector.Create));
+  XRTLRegisterClassDescriptor(
+    TXRTLClassDescriptor.Create(TXRTLInstanceReference, XRTLInstanceReferenceClassId,
+                                TXRTLInstanceReferenceIntrospector.Create, nil));
 end;
 
 end.
