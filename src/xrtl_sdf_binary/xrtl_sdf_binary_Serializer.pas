@@ -30,8 +30,7 @@ type
                                       const Descriptor: IXRTLClassDescriptor;
                                       const Obj: TObject);
     procedure  WritePropertyValue(const Stream: TXRTLOutputStream; const Obj: IXRTLValue);
-    procedure  WriteProperty(const Stream: TXRTLOutputStream;
-                             const AProperty: IXRTLProperty);
+    procedure  WriteProperty(const Stream: TXRTLOutputStream; const AProperty: IXRTLProperty);
   protected
     function   CheckAndWriteNilReference(const Stream: TXRTLOutputStream; const Obj): Boolean;
     function   WriteReference(const Stream: TXRTLOutputStream; const Obj: TObject;
@@ -69,8 +68,7 @@ type
                                        const Obj: TObject);
     procedure  SkipClassInstanceData(const Stream: TXRTLInputStream);
     procedure  ReadPropertyValue(const Stream: TXRTLInputStream; const Obj: IXRTLValue);
-    procedure  ReadProperty(const Stream: TXRTLInputStream;
-                            const PropList: IXRTLPropertyList);
+    procedure  ReadProperty(const Stream: TXRTLInputStream; const PropList: IXRTLPropertyList);
   public
     constructor Create;
     destructor Destroy; override;

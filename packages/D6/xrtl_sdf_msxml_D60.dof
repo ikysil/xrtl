@@ -39,7 +39,7 @@ RemoteSymbols=0
 MinStackSize=16384
 MaxStackSize=1048576
 ImageBase=926941184
-ExeDescription=xrtl serialization/deserialization framework (sdf)
+ExeDescription=xrtl MSXML serialization/deserialization
 [Directories]
 OutputDir=
 UnitOutputDir=..\..\lib\D6

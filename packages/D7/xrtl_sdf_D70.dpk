@@ -22,7 +22,7 @@ package xrtl_sdf_D70;
 {$WRITEABLECONST OFF}
 {$MINENUMSIZE 1}
 {$IMAGEBASE $37400000}
-{$DESCRIPTION 'xrtl serialization/deserialization framework'}
+{$DESCRIPTION 'xrtl serialization/deserialization framework (sdf)'}
 {$RUNONLY}
 {$IMPLICITBUILD OFF}
 
