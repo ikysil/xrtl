@@ -17,7 +17,7 @@ PROJECTS = xrtl_util_D60.bpl xrtl_util_async_D60.bpl xrtl_reflect_D60.bpl \
   xrtl_opc_cdk_D60.bpl zlibDemo1.exe zlibDemo2.exe bzlibDemo1.exe bzlibDemo2.exe \
   mathDemo1.exe OPCDA20Server.exe OPCDA20Client.exe OPCDA20CTServer.exe \
   DataStream.exe DDPDemo1.exe secDemo1.exe secDemo2.exe CryptTest.exe \
-  ASyncDemo.exe
+  ASyncDemo.exe IOObjectDemo1.exe
 #------------------------------------------------------------------------------
 default: $(PROJECTS)
 #------------------------------------------------------------------------------
@@ -113,6 +113,9 @@ xrtl_io_object_D60.bpl: packages\D6\xrtl_io_object_D60.dpk
   $(DCC)
 
 xrtl_reflect_D60.bpl: packages\D6\xrtl_reflect_D60.dpk
+  $(DCC)
+
+IOObjectDemo1.exe: demos\io_object\IOObjectDemo1\IOObjectDemo1.dpr
   $(DCC)
 
 
