@@ -37,6 +37,9 @@ contains
   xrtl_io_object_Serializer in '..\..\src\xrtl_io_object\xrtl_io_object_Serializer.pas',
   xrtl_io_object_ResourceStrings in '..\..\src\xrtl_io_object\xrtl_io_object_ResourceStrings.pas',
   xrtl_io_object_BinarySerializerClasses in '..\..\src\xrtl_io_object\xrtl_io_object_BinarySerializerClasses.pas',
-  xrtl_io_object_Reference in '..\..\src\xrtl_io_object\xrtl_io_object_Reference.pas';
+  xrtl_io_object_Reference in '..\..\src\xrtl_io_object\xrtl_io_object_Reference.pas',
+  xrtl_io_object_ValueStreamer in '..\..\src\xrtl_io_object\xrtl_io_object_ValueStreamer.pas',
+  xrtl_io_object_ValueClassDescriptor in '..\..\src\xrtl_io_object\xrtl_io_object_ValueClassDescriptor.pas',
+  xrtl_io_object_ReferenceMap in '..\..\src\xrtl_io_object\xrtl_io_object_ReferenceMap.pas';
 
 end.
