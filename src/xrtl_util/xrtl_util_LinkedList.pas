@@ -7,7 +7,7 @@ interface
 uses
   SysUtils,
   xrtl_util_Compare, xrtl_util_Value,
-  xrtl_util_Container;
+  xrtl_util_Container, xrtl_util_Compat;
 
 type
   IXRTLLinkedListNode = interface
@@ -40,6 +40,7 @@ type
 implementation
 
 uses
+  xrtl_util_Type,
   xrtl_util_ResourceStrings, xrtl_util_Array;
 
 type

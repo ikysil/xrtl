@@ -131,10 +131,12 @@ begin
 end;
 
 function TXRTLArrayQueue.Pop: IXRTLValue;
+const
+  NilValue: IXRTLValue = nil;
 begin
   if IsEmpty then
     raise EXRTLQueueEmpty.CreateFmt(SXRTLQueueEmpty, ['Pop']);
-  Result:= FValues.SetValue(nil, FPopHead);
+  Result:= FValues.SetValue(NilValue, FPopHead);
   FPopHead:= (FPopHead + 1) mod GetCapacity;
 end;
 

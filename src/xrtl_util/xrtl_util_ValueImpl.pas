@@ -6,7 +6,7 @@ interface
 
 uses
   SysUtils, {$IFDEF HAS_UNIT_VARIANTS}Variants,{$ENDIF}
-  xrtl_util_Compare, xrtl_util_Type, xrtl_util_Value;
+  xrtl_util_Compare, xrtl_util_Type, xrtl_util_Value, xrtl_util_Compat;
 
 type
   TXRTLValueBase = class(TXRTLImplementationObjectProvider)

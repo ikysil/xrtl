@@ -7,7 +7,7 @@ interface
 uses
   Windows, SysUtils, Classes, COMObj, AxCtrls, ActiveX,
   {$IFDEF HAS_UNIT_VARIANTS}Variants,{$ENDIF}
-  xrtl_util_TimeStamp, xrtl_util_MemoryUtils,
+  xrtl_util_TimeStamp, xrtl_util_MemoryUtils, xrtl_util_Compat,
   xrtl_util_Map, xrtl_util_Container, xrtl_util_Value,
   xrtl_util_COMUtils, xrtl_util_Lock,
   xrtl_util_async_Core,
@@ -322,7 +322,7 @@ var
 begin
   try
     CheckDeleted;
-    XRTLCheckArgument(not WideSameText('', szName));
+    XRTLCheckArgument(not WideSameStr('', szName));
     try
       BeginWrite;
       Result:= (Server as IOPCServer).GetGroupByName(szName, IID_IOPCItemMgt, GrpUnk);

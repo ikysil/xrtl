@@ -1,0 +1,38 @@
+package xrtl_io_zlib_D50;
+
+{$R *.res}
+{$A 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $37C80000}
+{$DESCRIPTION 'xrtl zlib input/output'}
+{$RUNONLY}
+{$IMPLICITBUILD OFF}
+
+requires
+  vcl50,
+  xrtl_io_D50;
+
+contains
+  xrtl_io_zlib_zlib in '..\..\src\xrtl_io_zlib\xrtl_io_zlib_zlib.pas',
+  xrtl_io_zlib_zlibStream in '..\..\src\xrtl_io_zlib\xrtl_io_zlib_zlibStream.pas',
+  xrtl_io_zlib_StreamProcessor in '..\..\src\xrtl_io_zlib\xrtl_io_zlib_StreamProcessor.pas';
+
+end.

@@ -6,7 +6,7 @@ interface
 
 uses
   SysUtils,
-  xrtl_util_Type;
+  xrtl_util_Type, xrtl_util_Compat;
 
 type
   IXRTLExclusiveLock = interface

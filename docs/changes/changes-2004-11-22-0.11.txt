@@ -1,0 +1,7 @@
+XRTL - Release 0.11 - 2004-11-22
+---------------------------------------
+
+Changes since 0.10 - 2004-03-17
+---------------------------------------
+[N] Some documentation added.
+[C] XRTL backported to Delphi 5. Only library itself compiles, no demos.

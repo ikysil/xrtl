@@ -6,7 +6,7 @@ interface
 
 uses
   Windows, SysUtils, COMObj, ActiveX, {$IFDEF HAS_UNIT_VARIANTS}Variants,{$ENDIF}
-  xrtl_util_StrUtils, xrtl_util_COMUtils,
+  xrtl_util_StrUtils, xrtl_util_COMUtils, xrtl_util_Compat,
   xrtl_util_NameSpace, xrtl_util_NameSpacePath,
   xrtl_util_Lock,
   xrtl_opc_DA, xrtl_opc_Error,

@@ -6,7 +6,7 @@ interface
 
 uses
   SysUtils,
-  xrtl_util_CPUUtils,
+  xrtl_util_CPUUtils, xrtl_util_Type, xrtl_util_Compat,
   xrtl_io_StreamProcessor, xrtl_io_CheckSum;
 
 type

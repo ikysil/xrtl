@@ -38,7 +38,7 @@ type
 implementation
 
 uses
-  xrtl_util_Type, xrtl_util_Lock,
+  xrtl_util_Type, xrtl_util_Lock, xrtl_util_Compat,
   xrtl_util_async_Thread;
 
 { TXRTLASyncMultiThreadContext }

@@ -6,7 +6,7 @@ interface
 
 uses
   SysUtils,
-  xrtl_util_TimeStamp;
+  xrtl_util_TimeStamp, xrtl_util_Compat;
 
 type
   TXRTLModuleKind = (mkApplication, mkDLL, mkPackage);
@@ -39,6 +39,7 @@ function XRTLModule: TXRTLModule;
 implementation
 
 uses
+  xrtl_util_Type,
   xrtl_util_FileUtils;
 
 var

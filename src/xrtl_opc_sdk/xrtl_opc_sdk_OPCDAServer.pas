@@ -7,7 +7,7 @@ interface
 uses
   Windows, SysUtils, COMObj, ActiveX, {$IFDEF HAS_UNIT_VARIANTS}Variants,{$ENDIF}
   Math,
-  xrtl_util_TimeStamp, 
+  xrtl_util_TimeStamp, xrtl_util_Compat, 
   xrtl_util_COMUtils, xrtl_util_Lock,
   xrtl_util_Map, xrtl_util_Container, xrtl_util_Algorithm, xrtl_util_Array,
   xrtl_opc_DA, xrtl_opc_Error, xrtl_opc_Types,

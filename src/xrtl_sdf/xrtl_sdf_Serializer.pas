@@ -6,7 +6,7 @@ interface
 
 uses
   SysUtils,
-  xrtl_util_Type, xrtl_util_Exception,
+  xrtl_util_Type, xrtl_util_Exception, xrtl_util_Compat,
   xrtl_io_Stream, xrtl_reflect_ClassHelper;
 
 type

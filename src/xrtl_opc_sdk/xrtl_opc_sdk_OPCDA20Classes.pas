@@ -6,7 +6,7 @@ interface
 
 uses
   Windows, SysUtils, COMObj, ActiveX, {$IFDEF HAS_UNIT_VARIANTS}Variants,{$ENDIF}
-  xrtl_util_COMUtils,
+  xrtl_util_COMUtils, xrtl_util_Compat,
   xrtl_opc_DA, xrtl_opc_Error, xrtl_opc_Types,
   xrtl_opc_sdk_OPCDANameSpace,
   xrtl_opc_sdk_OPCDAServer,
@@ -118,7 +118,7 @@ end;
 
 constructor TXRTLOPCDA20_IOPCBrowseServerAddressSpace.Create(const Controller: IInterface);
 begin
-  inherited;
+  inherited Create(Controller);
   FBrowseRoot:= VarArrayCreate([0, -1], varOleStr);
 end;
 

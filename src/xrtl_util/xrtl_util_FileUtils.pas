@@ -9,7 +9,8 @@ function XRTLExtractLongPathName(APath: string): string;
 implementation
 
 uses
-  SysUtils;
+  SysUtils,
+  xrtl_util_Type, xrtl_util_Compat;
 
 function GetLongName(const FixedPath: string; var APath: string): string;
 var

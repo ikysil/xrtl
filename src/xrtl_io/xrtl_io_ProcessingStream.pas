@@ -9,7 +9,7 @@ interface
 
 uses
   SysUtils, Math,
-  xrtl_util_CPUUtils,
+  xrtl_util_CPUUtils, xrtl_util_Type, xrtl_util_Compat,
   xrtl_io_Exception, xrtl_io_ResourceStrings,
   xrtl_io_Stream,
   xrtl_io_StreamProcessor;

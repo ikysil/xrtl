@@ -66,6 +66,7 @@ contains
   xrtl_util_NameSpacePath in '..\..\src\xrtl_util\xrtl_util_NameSpacePath.pas',
   xrtl_util_ValueImpl in '..\..\src\xrtl_util\xrtl_util_ValueImpl.pas',
   xrtl_util_LockImpl in '..\..\src\xrtl_util\xrtl_util_LockImpl.pas',
-  xrtl_util_Lock in '..\..\src\xrtl_util\xrtl_util_Lock.pas';
+  xrtl_util_Lock in '..\..\src\xrtl_util\xrtl_util_Lock.pas',
+  xrtl_util_Compat in '..\..\src\xrtl_util\xrtl_util_Compat.pas';
 
 end.

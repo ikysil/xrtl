@@ -9,6 +9,14 @@ uses
   xrtl_io_Exception, xrtl_io_ResourceStrings, xrtl_io_Stream;
 
 type
+  {$IFDEF COMPILER6_UP}
+  TXRTLSeekOffset = Int64;
+  TXRTLSeekOrigin = TSeekOrigin;
+  {$ELSE}
+  TXRTLSeekOffset = LongInt;
+  TXRTLSeekOrigin = Word;
+  {$ENDIF}
+
   TXRTLStreamToInputStreamAdapter = class(TXRTLInputStream)
   private
     FOwnCoreStream: Boolean;
@@ -49,7 +57,7 @@ type
     property   OwnCoreStream: Boolean read FOwnCoreStream write FOwnCoreStream;
     function   Read(var Buffer; Count: Integer): Integer; override;
     function   Write(const Buffer; Count: Integer): Integer; override;
-    function   Seek(const Offset: Int64; Origin: TSeekOrigin): Int64; override;
+    function   Seek({$IFDEF COMPILER6_UP}const{$ENDIF} Offset: TXRTLSeekOffset; Origin: TXRTLSeekOrigin): TXRTLSeekOffset; override;
   end;
 
   TXRTLOutputStreamToStreamAdapter = class(TStream)
@@ -63,7 +71,7 @@ type
     property   OwnCoreStream: Boolean read FOwnCoreStream write FOwnCoreStream;
     function   Read(var Buffer; Count: Integer): Integer; override;
     function   Write(const Buffer; Count: Integer): Integer; override;
-    function   Seek(const Offset: Int64; Origin: TSeekOrigin): Int64; override;
+    function   Seek({$IFDEF COMPILER6_UP}const{$ENDIF} Offset: TXRTLSeekOffset; Origin: TXRTLSeekOrigin): TXRTLSeekOffset; override;
   end;
 
 implementation
@@ -154,7 +162,7 @@ begin
     Result:= 0;
 end;
 
-function TXRTLInputStreamToStreamAdapter.Seek(const Offset: Int64; Origin: TSeekOrigin): Int64;
+function TXRTLInputStreamToStreamAdapter.Seek({$IFDEF COMPILER6_UP}const{$ENDIF}Offset: TXRTLSeekOffset; Origin: TXRTLSeekOrigin): TXRTLSeekOffset;
 begin
   raise EXRTLSeekException.CreateFmt(SXRTLSeekExceptionFmt, [ClassName]);
 end;
@@ -185,7 +193,7 @@ begin
   raise EXRTLReadException.CreateFmt(SXRTLReadExceptionFmt, [ClassName]);
 end;
 
-function TXRTLOutputStreamToStreamAdapter.Seek(const Offset: Int64; Origin: TSeekOrigin): Int64;
+function TXRTLOutputStreamToStreamAdapter.Seek({$IFDEF COMPILER6_UP}const{$ENDIF}Offset: TXRTLSeekOffset; Origin: TXRTLSeekOrigin): TXRTLSeekOffset;
 begin
   raise EXRTLSeekException.CreateFmt(SXRTLSeekExceptionFmt, [ClassName]);
 end;

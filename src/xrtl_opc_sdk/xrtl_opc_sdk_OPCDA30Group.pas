@@ -6,7 +6,7 @@ interface
 
 uses
   Windows, SysUtils, Classes, COMObj, AxCtrls, ActiveX, SyncObjs,
-  DateUtils, {$IFDEF HAS_UNIT_VARIANTS}Variants,{$ENDIF}
+  {$IFDEF HAS_UNIT_VARIANTS}Variants,{$ENDIF}
   xrtl_util_TimeStamp, xrtl_util_MemoryUtils,
   xrtl_util_Map, xrtl_util_Container,
   xrtl_util_COMUtils, xrtl_util_Lock,

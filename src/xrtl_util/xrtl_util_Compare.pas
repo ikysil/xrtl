@@ -4,6 +4,9 @@ unit xrtl_util_Compare;
 
 interface
 
+uses
+  xrtl_util_Type, xrtl_util_Compat;
+
 const
   XRTLLessThanValue    = -1;
   XRTLEqualsValue      =  0;

@@ -1,11 +1,9 @@
 unit OPCDA20Server_MainObject;
 
-{$WARN SYMBOL_PLATFORM OFF}
-
 interface
 
 uses
-  Windows, ActiveX, Classes, COMObj, StdVcl, Variants, SysUtils,
+  Windows, ActiveX, Classes, COMObj, StdVcl, SysUtils, Variants,
   xrtl_util_StrUtils,
   xrtl_opc_DA, xrtl_opc_Common,
   xrtl_opc_sdk_OPCDA20Server, xrtl_opc_sdk_OPCDA20COMObjectFactory,

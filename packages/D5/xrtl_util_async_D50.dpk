@@ -1,0 +1,40 @@
+package xrtl_util_async_D50;
+
+{$R *.res}
+{$A 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS ON}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $34000000}
+{$DESCRIPTION 'xrtl async'}
+{$RUNONLY}
+{$IMPLICITBUILD OFF}
+
+requires
+  vcl50,
+  xrtl_util_D50;
+
+contains
+  xrtl_util_async_Context in '..\..\src\xrtl_util_async\xrtl_util_async_Context.pas',
+  xrtl_util_async_ContextManager in '..\..\src\xrtl_util_async\xrtl_util_async_ContextManager.pas',
+  xrtl_util_async_Core in '..\..\src\xrtl_util_async\xrtl_util_async_Core.pas',
+  xrtl_util_async_Task in '..\..\src\xrtl_util_async\xrtl_util_async_Task.pas',
+  xrtl_util_async_Thread in '..\..\src\xrtl_util_async\xrtl_util_async_Thread.pas';
+
+end.

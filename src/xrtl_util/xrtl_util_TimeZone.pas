@@ -51,7 +51,7 @@ function XRTLGetTimeZones: TXRTLTimeZones;
 implementation
 
 uses
-  xrtl_util_Lock, xrtl_util_TimeUtils;
+  xrtl_util_Lock, xrtl_util_TimeUtils, xrtl_util_Type, xrtl_util_Compat;
 
 var
   FTimeZones: TXRTLTimeZones;
@@ -118,7 +118,7 @@ var
   DaylightDT: TDateTime;
   StandardDT: TDateTime;
 begin
-  Result:= DT - TimeZone.RTZI.Bias / MinPerDay;
+  Result:= DT - TimeZone.RTZI.Bias / MinsPerDay;
 
   if not (ValidSystemTime(TimeZone.RTZI.StandardDate) and
           ValidSystemTime(TimeZone.RTZI.DaylightDate)) then Exit;
@@ -126,15 +126,15 @@ begin
   DecodeDate(DT, Year, Month, Day);
 
   DaylightDT:= TimeZoneIDDateTime(Year, TimeZone.RTZI.DaylightDate) +
-    (TimeZone.RTZI.Bias + TimeZone.RTZI.DaylightBias) / MinPerDay;
+    (TimeZone.RTZI.Bias + TimeZone.RTZI.DaylightBias) / MinsPerDay;
 
   StandardDT:= TimeZoneIDDateTime(Year, TimeZone.RTZI.StandardDate) +
-    (TimeZone.RTZI.Bias + TimeZone.RTZI.StandardBias) / MinPerDay;
+    (TimeZone.RTZI.Bias + TimeZone.RTZI.StandardBias) / MinsPerDay;
 
   if (DT > DaylightDT) and (DT < StandardDT) then
-    Result:= Result - TimeZone.RTZI.DaylightBias / MinPerDay
+    Result:= Result - TimeZone.RTZI.DaylightBias / MinsPerDay
   else
-    Result:= Result - TimeZone.RTZI.StandardBias / MinPerDay;
+    Result:= Result - TimeZone.RTZI.StandardBias / MinsPerDay;
 end;
 
 { TXRTLTimeZone }

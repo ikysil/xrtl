@@ -6,7 +6,8 @@ interface
 
 uses
   SysUtils,
-  xrtl_util_Compare, xrtl_util_Exception, xrtl_util_Value, xrtl_util_Container;
+  xrtl_util_Compare, xrtl_util_Exception, xrtl_util_Value, xrtl_util_Container,
+  xrtl_util_Compat;
 
 const
   XRTLArrayMinCapacity = 16;
@@ -58,6 +59,7 @@ implementation
 
 uses
   Windows, Math,
+  xrtl_util_Type,
 //  xrtl_util_MemoryUtils,
   xrtl_util_ResourceStrings;
 

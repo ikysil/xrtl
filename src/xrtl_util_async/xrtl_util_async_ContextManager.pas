@@ -8,7 +8,7 @@ uses
   Windows,
   SysUtils, Classes,
   xrtl_util_Container, xrtl_util_Array, xrtl_util_Lock,
-  xrtl_util_Value,
+  xrtl_util_Value, xrtl_util_Type, xrtl_util_Compat,
   xrtl_util_async_Core;
 
 type

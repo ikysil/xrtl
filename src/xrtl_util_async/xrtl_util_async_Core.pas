@@ -8,7 +8,7 @@ uses
   Windows,
   SysUtils, SyncObjs, Classes,
   xrtl_util_Compare, xrtl_util_Container, xrtl_util_Array, xrtl_util_Value,
-  xrtl_util_Lock, xrtl_util_TimeStamp;
+  xrtl_util_Lock, xrtl_util_TimeStamp, xrtl_util_Type, xrtl_util_Compat;
 
 const
   XRTLASyncCPUCountMax = 32;

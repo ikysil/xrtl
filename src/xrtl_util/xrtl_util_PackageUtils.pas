@@ -5,7 +5,8 @@ unit xrtl_util_PackageUtils;
 interface
 
 uses
-  Windows, SysUtils;
+  Windows, SysUtils,
+  xrtl_util_Compat;
 
 type
   TXRTLForEachPackageProc = procedure(PackageName: string; ModuleHandle: THandle);
@@ -23,7 +24,7 @@ procedure XRTLForEachPackage(ForEachPackageMethod: TXRTLForEachPackageMethod); o
 implementation
 
 uses
-  xrtl_util_Value, xrtl_util_Map, xrtl_util_Lock;
+  xrtl_util_Value, xrtl_util_Map, xrtl_util_Lock, xrtl_util_Type;
 
 var
   FPackageList: TXRTLArrayMap;

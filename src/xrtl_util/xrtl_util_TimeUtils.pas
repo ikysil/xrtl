@@ -15,7 +15,7 @@ function LocalTimeToGMT(LocalTime: TDateTime): TDateTime;
 
 const
   HoursPerDay = 24;
-  MinPerDay = HoursPerDay * 60;
+  MinsPerDay = HoursPerDay * 60;
 
 var
   TimeZoneInfoTimeout: Integer = 30; // seconds

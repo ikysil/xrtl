@@ -4,9 +4,11 @@ unit xrtl_util_Type;
 
 interface
 
-type
-  IInterface = {$IFDEF COMPILER6_UP}System.IInterface{$ELSE}System.IUnknown{$ENDIF};
+uses
+  Windows,
+  xrtl_util_Compat;
 
+type
   TXRTLNRCInterfacedObject = class(TInterfacedObject)
     function   _AddRef: Integer; stdcall;
     function   _Release: Integer; stdcall;
@@ -24,6 +26,9 @@ type
 function  XRTLIsAs(const AObject: TObject; const AClass: TClass; out AResult): Boolean;
 
 implementation
+
+uses
+  SysUtils;
 
 function XRTLIsAs(const AObject: TObject; const AClass: TClass; out AResult): Boolean;
 begin

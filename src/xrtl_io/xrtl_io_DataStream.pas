@@ -57,6 +57,9 @@ type
 
 implementation
 
+uses
+  xrtl_util_Compat;
+
 { TXRTLDataInputStream }
 
 function TXRTLDataInputStream.ReadBoolean: Boolean;

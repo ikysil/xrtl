@@ -6,7 +6,7 @@ interface
 
 uses
   SysUtils,
-  xrtl_util_Value,
+  xrtl_util_Value, xrtl_util_Compat,
   xrtl_sdf_Serializer;
 
 type
@@ -418,7 +418,7 @@ end;
 
 procedure TXRTLSequentialContainerStreamer.DoAdd(const Obj: TObject; const Value: IXRTLValue);
 begin
-  (Obj as TXRTLSequentialContainer).Insert(Value, nil);
+  (Obj as TXRTLSequentialContainer).Insert(Value);
 end;
 
 { TXRTLSetContainerStreamer }

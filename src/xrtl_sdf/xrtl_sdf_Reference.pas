@@ -7,7 +7,7 @@ interface
 uses
   Windows,
   SysUtils,
-  xrtl_util_Value,
+  xrtl_util_Value, xrtl_util_Compat,
   xrtl_reflect_Introspector;
 
 const

@@ -7,7 +7,7 @@ interface
 uses
   Windows,
   SysUtils, Classes, SyncObjs,
-  xrtl_util_TimeStamp, xrtl_util_Value, xrtl_util_Compare,
+  xrtl_util_TimeStamp, xrtl_util_Value, xrtl_util_Compare, xrtl_util_Compat,
   xrtl_util_async_Core;
 
 type

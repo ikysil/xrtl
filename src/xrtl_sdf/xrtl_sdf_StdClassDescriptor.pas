@@ -6,6 +6,7 @@ interface
 
 uses
   SysUtils,
+  xrtl_util_Compat,
   xrtl_reflect_ClassDescriptor, xrtl_reflect_Introspector;
 
 type

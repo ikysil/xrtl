@@ -6,6 +6,7 @@ interface
 
 uses
   Windows, COMObj, ActiveX, {$IFDEF HAS_UNIT_VARIANTS}Variants,{$ENDIF}
+  xrtl_util_Type, xrtl_util_Compat,
   xrtl_util_COMUtils,
   xrtl_opc_Error,
   xrtl_opc_sdk_DA;
@@ -291,7 +292,11 @@ begin
     IsVar2Array:= (LvtVar2Type and varArray) = varArray;
     if not (IsVar1Array or IsVar2Array) then
     begin
+      {$IFDEF HAS_UNIT_VARIANTS}
       bResult:= VarCompareValue(Var1, Var2) = vrEqual;
+      {$ELSE}
+      bResult:= Var1 = Var2;
+      {$ENDIF}
       Exit;
     end;
 // check arrays

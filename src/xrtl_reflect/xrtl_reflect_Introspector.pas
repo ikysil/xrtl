@@ -7,7 +7,7 @@ interface
 uses
   SysUtils,
   xrtl_util_Exception, xrtl_util_Container,
-  xrtl_util_Array, xrtl_util_Type, xrtl_util_Value,
+  xrtl_util_Array, xrtl_util_Type, xrtl_util_Value, xrtl_util_Compat,
   xrtl_reflect_ClassHelper;
 
 type

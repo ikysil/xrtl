@@ -1,0 +1,128 @@
+#------------------------------------------------------------------------------
+VERSION = BWS.01
+#------------------------------------------------------------------------------
+!ifndef ROOT
+ROOT = $(MAKEDIR)\..
+!endif
+#------------------------------------------------------------------------------
+MAKE = $(ROOT)\bin\make.exe -$(MAKEFLAGS) -f$**
+DCC = $(ROOT)\bin\dcc32.exe $**
+BRCC = $(ROOT)\bin\brcc32.exe $**
+#------------------------------------------------------------------------------
+PROJECTS = xrtl_util_D50.bpl xrtl_util_async_D50.bpl xrtl_reflect_D50.bpl \
+  xrtl_io_D50.bpl xrtl_io_zlib_D50.bpl xrtl_io_bzlib_D50.bpl \
+  xrtl_io_dencoder_D50.bpl xrtl_sdf_D50.bpl xrtl_sdf_binary_D50.bpl \
+  xrtl_sdf_msxml_D50.bpl xrtl_math_D50.bpl xrtl_crypt_D50.bpl \
+  xrtl_crypt_cipher_D50.bpl xrtl_crypt_md_D50.bpl xrtl_crypt_test_D50.bpl \
+  xrtl_net_D50.bpl xrtl_opc_D50.bpl xrtl_opc_sdk_D50.bpl xrtl_opc_cdk_D50.bpl \
+  zlibDemo1.exe zlibDemo2.exe bzlibDemo1.exe bzlibDemo2.exe mathDemo1.exe \
+  OPCDA20Server.exe OPCDA20Client.exe OPCDA20CTServer.exe DataStream.exe \
+  DDPDemo1.exe secDemo1.exe secDemo2.exe CryptTest.exe ASyncDemo.exe \
+  IOObjectDemo1.exe
+#------------------------------------------------------------------------------
+default: $(PROJECTS)
+#------------------------------------------------------------------------------
+
+xrtl_io_D50.bpl: packages\D5\xrtl_io_D50.dpk
+  $(DCC)
+
+xrtl_math_D50.bpl: packages\D5\xrtl_math_D50.dpk
+  $(DCC)
+
+xrtl_crypt_D50.bpl: packages\D5\xrtl_crypt_D50.dpk
+  $(DCC)
+
+xrtl_io_zlib_D50.bpl: packages\D5\xrtl_io_zlib_D50.dpk
+  $(DCC)
+
+xrtl_io_bzlib_D50.bpl: packages\D5\xrtl_io_bzlib_D50.dpk
+  $(DCC)
+
+zlibDemo1.exe: demos\io_zlib\demo1\zlibDemo1.dpr
+  $(DCC)
+
+bzlibDemo1.exe: demos\io_bzlib\demo1\bzlibDemo1.dpr
+  $(DCC)
+
+xrtl_net_D50.bpl: packages\D5\xrtl_net_D50.dpk
+  $(DCC)
+
+mathDemo1.exe: demos\math\demo1\mathDemo1.dpr
+  $(DCC)
+
+xrtl_opc_D50.bpl: packages\D5\xrtl_opc_D50.dpk
+  $(DCC)
+
+OPCDA20Server.exe: demos\OPC\OPCDA20Server\OPCDA20Server.dpr
+  $(DCC)
+
+xrtl_opc_sdk_D50.bpl: packages\D5\xrtl_opc_sdk_D50.dpk
+  $(DCC)
+
+xrtl_opc_cdk_D50.bpl: packages\D5\xrtl_opc_cdk_D50.dpk
+  $(DCC)
+
+OPCDA20Client.exe: demos\OPC\OPCDA20Client\OPCDA20Client.dpr
+  $(DCC)
+
+DataStream.exe: demos\DataStream\DataStream.dpr
+  $(DCC)
+
+zlibDemo2.exe: demos\io_zlib\demo2\zlibDemo2.dpr
+  $(DCC)
+
+bzlibDemo2.exe: demos\io_bzlib\demo2\bzlibDemo2.dpr
+  $(DCC)
+
+DDPDemo1.exe: demos\security\DDPDemo1\DDPDemo1.dpr
+  $(DCC)
+
+secDemo1.exe: demos\security\demo1\secDemo1.dpr
+  $(DCC)
+
+xrtl_crypt_cipher_D50.bpl: packages\D5\xrtl_crypt_cipher_D50.dpk
+  $(DCC)
+
+secDemo2.exe: demos\security\demo2\secDemo2.dpr
+  $(DCC)
+
+xrtl_crypt_md_D50.bpl: packages\D5\xrtl_crypt_md_D50.dpk
+  $(DCC)
+
+xrtl_crypt_test_D50.bpl: packages\D5\xrtl_crypt_test_D50.dpk
+  $(DCC)
+
+CryptTest.exe: demos\security\test\CryptTest.dpr
+  $(DCC)
+
+xrtl_io_dencoder_D50.bpl: packages\D5\xrtl_io_dencoder_D50.dpk
+  $(DCC)
+
+OPCDA20CTServer.exe: demos\OPC\OPCDA20CTServer\OPCDA20CTServer.dpr
+  $(DCC)
+
+ASyncDemo.exe: demos\ASync\ASyncDemo.dpr
+  $(DCC)
+
+xrtl_util_async_D50.bpl: packages\D5\xrtl_util_async_D50.dpk
+  $(DCC)
+
+xrtl_util_D50.bpl: packages\D5\xrtl_util_D50.dpk
+  $(DCC)
+
+xrtl_sdf_D50.bpl: packages\D5\xrtl_sdf_D50.dpk
+  $(DCC)
+
+xrtl_reflect_D50.bpl: packages\D5\xrtl_reflect_D50.dpk
+  $(DCC)
+
+IOObjectDemo1.exe: demos\sdf\IOObjectDemo1\IOObjectDemo1.dpr
+  $(DCC)
+
+xrtl_sdf_binary_D50.bpl: packages\D5\xrtl_sdf_binary_D50.dpk
+  $(DCC)
+
+xrtl_sdf_msxml_D50.bpl: packages\D5\xrtl_sdf_msxml_D50.dpk
+  $(DCC)
+
+

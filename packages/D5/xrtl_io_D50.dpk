@@ -1,0 +1,51 @@
+package xrtl_io_D50;
+
+{$R *.res}
+{$A 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $37400000}
+{$DESCRIPTION 'xrtl input/output'}
+{$RUNONLY}
+{$IMPLICITBUILD OFF}
+
+requires
+  vcl50,
+  xrtl_util_D50;
+
+contains
+  xrtl_io_BufferedStream in '..\..\src\xrtl_io\xrtl_io_BufferedStream.pas',
+  xrtl_io_DataStream in '..\..\src\xrtl_io\xrtl_io_DataStream.pas',
+  xrtl_io_Exception in '..\..\src\xrtl_io\xrtl_io_Exception.pas',
+  xrtl_io_FileStream in '..\..\src\xrtl_io\xrtl_io_FileStream.pas',
+  xrtl_io_HandleStream in '..\..\src\xrtl_io\xrtl_io_HandleStream.pas',
+  xrtl_io_Stream in '..\..\src\xrtl_io\xrtl_io_Stream.pas',
+  xrtl_io_StreamAdapter in '..\..\src\xrtl_io\xrtl_io_StreamAdapter.pas',
+  xrtl_io_ResourceStrings in '..\..\src\xrtl_io\xrtl_io_ResourceStrings.pas',
+  xrtl_io_Pipe in '..\..\src\xrtl_io\xrtl_io_Pipe.pas',
+  xrtl_io_StreamUtils in '..\..\src\xrtl_io\xrtl_io_StreamUtils.pas',
+  xrtl_io_StreamProcessor in '..\..\src\xrtl_io\xrtl_io_StreamProcessor.pas',
+  xrtl_io_ProcessingStream in '..\..\src\xrtl_io\xrtl_io_ProcessingStream.pas',
+  xrtl_io_CheckSum in '..\..\src\xrtl_io\xrtl_io_CheckSum.pas',
+  xrtl_io_CRC in '..\..\src\xrtl_io\xrtl_io_CRC.pas',
+  xrtl_io_TaggedDataStream in '..\..\src\xrtl_io\xrtl_io_TaggedDataStream.pas',
+  xrtl_io_BlockStream in '..\..\src\xrtl_io\xrtl_io_BlockStream.pas';
+
+end.

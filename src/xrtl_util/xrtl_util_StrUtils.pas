@@ -17,7 +17,8 @@ function XRTLRPos(const ASub, AIn: WideString; AStart: Integer = -1): Integer;
 implementation
 
 uses
-  SysUtils;
+  SysUtils,
+  xrtl_util_Type, xrtl_util_Compat;
 
 function XRTLFetch(var AInput: WideString; const ADelim: WideString = ' ';
                    const ADelete: Boolean = True): WideString;

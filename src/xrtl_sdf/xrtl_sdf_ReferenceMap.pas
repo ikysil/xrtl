@@ -7,7 +7,7 @@ interface
 uses
   SysUtils,
   xrtl_util_Map,
-  xrtl_util_Container, xrtl_util_Value,
+  xrtl_util_Container, xrtl_util_Value, xrtl_util_Compat,
   xrtl_sdf_Reference;
 
 type

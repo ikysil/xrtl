@@ -6,7 +6,7 @@ interface
 
 uses
   SysUtils,
-  xrtl_util_Map, xrtl_util_Value, xrtl_util_Exception;
+  xrtl_util_Map, xrtl_util_Value, xrtl_util_Exception, xrtl_util_Compat;
 
 type
   EXRTLClassHelperRegistryException = class(EXRTLException);

@@ -6,7 +6,7 @@ interface
 
 uses
   SysUtils, {$IFDEF HAS_UNIT_VARIANTS}Variants,{$ENDIF}
-  xrtl_util_Compare, xrtl_util_Type;
+  xrtl_util_Compare, xrtl_util_Type, xrtl_util_Compat;
 
 type
   IXRTLValue = interface(IXRTLComparable)
@@ -76,8 +76,8 @@ function  XRTLSetValue(const IValue: IXRTLValue; const AValue: Pointer): Pointer
 function  XRTLGetAsPointer(const IValue: IXRTLValue): Pointer;
 function  XRTLGetAsPointerDef(const IValue: IXRTLValue; const DefValue: Pointer = nil): Pointer;
 
-function  XRTLValue(const AValue: Variant): IXRTLValue; overload;
-function  XRTLSetValue(const IValue: IXRTLValue; const AValue: Variant): Variant; overload;
+function  XRTLValueV(const AValue: Variant): IXRTLValue; overload;
+function  XRTLSetValueV(const IValue: IXRTLValue; const AValue: Variant): Variant; overload;
 function  XRTLGetAsVariant(const IValue: IXRTLValue): Variant;
 function  XRTLGetAsVariantDef(const IValue: IXRTLValue; const DefValue: Variant): Variant;
 
@@ -376,12 +376,12 @@ begin
     Result:= LValue.GetValue;
 end;
 
-function XRTLValue(const AValue: Variant): IXRTLValue;
+function XRTLValueV(const AValue: Variant): IXRTLValue;
 begin
   Result:= TXRTLValueVariant.Create(AValue);
 end;
 
-function XRTLSetValue(const IValue: IXRTLValue; const AValue: Variant): Variant;
+function XRTLSetValueV(const IValue: IXRTLValue; const AValue: Variant): Variant;
 begin
   Result:= (IValue as IXRTLValueVariant).SetValue(AValue);
 end;

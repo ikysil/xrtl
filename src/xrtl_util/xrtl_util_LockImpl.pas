@@ -187,7 +187,12 @@ end;
 
 function TXRTLReadWriteLock.BeginWrite: Boolean;
 begin
+  {$IFDEF COMPILER6_UP}
   Result:= FLock.BeginWrite;
+  {$ELSE}
+  Result:= False;
+  FLock.BeginWrite;
+  {$ENDIF}
 end;
 
 procedure TXRTLReadWriteLock.EndWrite;

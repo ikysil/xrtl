@@ -6,7 +6,7 @@ interface
 
 uses
   SysUtils,
-  xrtl_util_Type, 
+  xrtl_util_Type, xrtl_util_Compat, 
   xrtl_io_Stream, xrtl_io_DataStream,
   xrtl_sdf_Serializer;
 
