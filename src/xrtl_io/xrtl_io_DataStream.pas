@@ -18,6 +18,7 @@ type
     function   ReadCurrency: Currency; virtual;
     function   ReadDateTime: TDateTime; virtual;
     function   ReadDouble: Double; virtual;
+    function   ReadExtended: Extended; virtual;
     function   ReadInt64: Int64; virtual;
     function   ReadInteger: Integer; virtual;
     function   ReadShortInt: ShortInt; virtual;
@@ -39,6 +40,7 @@ type
     procedure  WriteCurrency(AValue: Currency); virtual;
     procedure  WriteDateTime(AValue: TDateTime); virtual;
     procedure  WriteDouble(AValue: Double); virtual;
+    procedure  WriteExtended(AValue: Extended); virtual;
     procedure  WriteInt64(AValue: Int64); virtual;
     procedure  WriteInteger(AValue: Integer); virtual;
     procedure  WriteShortInt(AValue: ShortInt); virtual;
@@ -81,6 +83,11 @@ begin
 end;
 
 function TXRTLDataInputStream.ReadDouble: Double;
+begin
+  ReadBufferFully(Result, SizeOf(Result));
+end;
+
+function TXRTLDataInputStream.ReadExtended: Extended;
 begin
   ReadBufferFully(Result, SizeOf(Result));
 end;
@@ -304,6 +311,11 @@ begin
 end;
 
 procedure TXRTLDataOutputStream.WriteDouble(AValue: Double);
+begin
+  WriteBuffer(AValue, SizeOf(AValue));
+end;
+
+procedure TXRTLDataOutputStream.WriteExtended(AValue: Extended);
 begin
   WriteBuffer(AValue, SizeOf(AValue));
 end;
