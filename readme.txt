@@ -31,8 +31,8 @@ x. Contact information and Internet resources
      https://lists.berlios.de/mailman/listinfo/xrtl-user
        XRTL Users list
 
-   Newsgroups access (subscription pending):
+   Newsgroups access:
      news://news.gmane.org/gmane.comp.lib.xrtl.announce
-     news://news.gmane.org/gmane.comp.lib.xrtl.dev
-     news://news.gmane.org/gmane.comp.lib.xrtl.svn
+     news://news.gmane.org/gmane.comp.lib.xrtl.devel
+     news://news.gmane.org/gmane.comp.lib.xrtl.cvs
      news://news.gmane.org/gmane.comp.lib.xrtl.user
