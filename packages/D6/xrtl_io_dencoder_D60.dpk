@@ -1,0 +1,43 @@
+package xrtl_io_dencoder_D60;
+
+{$R *.res}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $37400000}
+{$DESCRIPTION 'xrtl input/output coders'}
+{$RUNONLY}
+{$IMPLICITBUILD OFF}
+
+requires
+  rtl,
+  xrtl_util_D60,
+  xrtl_io_D60;
+
+contains
+  xrtl_io_dencoder_Base64 in '..\..\src\xrtl_io_dencoder\xrtl_io_dencoder_Base64.pas',
+  xrtl_io_dencoder_Base32 in '..\..\src\xrtl_io_dencoder\xrtl_io_dencoder_Base32.pas',
+  xrtl_io_dencoder_Base16 in '..\..\src\xrtl_io_dencoder\xrtl_io_dencoder_Base16.pas',
+  xrtl_io_dencoder_Dencoder in '..\..\src\xrtl_io_dencoder\xrtl_io_dencoder_Dencoder.pas',
+  xrtl_io_dencoder_UTF8 in '..\..\src\xrtl_io_dencoder\xrtl_io_dencoder_UTF8.pas',
+  xrtl_io_dencoder_ByteOrder16 in '..\..\src\xrtl_io_dencoder\xrtl_io_dencoder_ByteOrder16.pas',
+  xrtl_io_dencoder_ByteOrder32 in '..\..\src\xrtl_io_dencoder\xrtl_io_dencoder_ByteOrder32.pas';
+
+end.

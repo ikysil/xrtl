@@ -1,0 +1,8 @@
+LIBRARY         XRTLOPCDAProxy
+
+EXPORTS
+	DllGetClassObject	PRIVATE
+	DllCanUnloadNow		PRIVATE
+	GetProxyDllInfo
+	DllRegisterServer	PRIVATE
+	DllUnregisterServer	PRIVATE

@@ -1,0 +1,46 @@
+package xrtl_crypt_D60;
+
+{$R *.res}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DESCRIPTION 'xrtl Cryptography - Core'}
+{$RUNONLY}
+{$IMPLICITBUILD OFF}
+
+requires
+  rtl,
+  xrtl_io_D60,
+  xrtl_util_D60;
+
+contains
+  xrtl_crypt_Cipher in '..\..\src\xrtl_crypt\xrtl_crypt_Cipher.pas',
+  xrtl_crypt_BlockCipher in '..\..\src\xrtl_crypt\xrtl_crypt_BlockCipher.pas',
+  xrtl_crypt_BlockCipherPadding in '..\..\src\xrtl_crypt\xrtl_crypt_BlockCipherPadding.pas',
+  xrtl_crypt_DDP in '..\..\src\xrtl_crypt\xrtl_crypt_DDP.pas',
+  xrtl_crypt_BlockCipherMode in '..\..\src\xrtl_crypt\xrtl_crypt_BlockCipherMode.pas',
+  xrtl_crypt_ResourceStrings in '..\..\src\xrtl_crypt\xrtl_crypt_ResourceStrings.pas',
+  xrtl_crypt_BlockCipherEngine in '..\..\src\xrtl_crypt\xrtl_crypt_BlockCipherEngine.pas',
+  xrtl_crypt_CipherKey in '..\..\src\xrtl_crypt\xrtl_crypt_CipherKey.pas',
+  xrtl_crypt_MessageDigest in '..\..\src\xrtl_crypt\xrtl_crypt_MessageDigest.pas',
+  xrtl_crypt_BlockMessageDigest in '..\..\src\xrtl_crypt\xrtl_crypt_BlockMessageDigest.pas';
+
+end.

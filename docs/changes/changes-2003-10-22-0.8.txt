@@ -1,0 +1,31 @@
+XRTL Changes since 0.7 - 2003-09-23
+---------------------------------------
+
+Release 0.8 - 2003-10-22
+---------------------------------------
+
+21 Oct 2003
+---------------------------------------
+[N] xrtl_util_ASyncManager.TXRTLASyncManager.Schedule method.
+
+10 Oct 2003
+---------------------------------------
+[B] xrtl_util_TimeUtils.TimeZoneInfoTimestamp never updated. Thanx to Morozov Sergey.
+
+07 Oct 2003
+---------------------------------------
+[C] xrtl_opc_sdk refactored in order to integrate OPC DA 3.0 support.
+[N] TXRTLOPCDA30Server - OPC DA 3.0 server base class. Not finished.
+[N] TXRTLOPCDA30Group  - OPC DA 3.0 group base class. Not finished.
+
+06 Oct 2003
+---------------------------------------
+[N] xrtl_util_ASyncManager.TXRTLASyncManager
+[C] I've decided to do not include compiled DCUs in distribution package in future.
+    Hope this will do no harm since everyone should compile to get new BPLs.
+
+28 Sep 2003
+---------------------------------------
+[B] Many bugfixes in xrtl_opc_sdk regarding to memory leaks.
+[M] OPC Compliance testing.
+

@@ -1,0 +1,94 @@
+Containers
+----------
+
+1. Basic Data Structures
+
+  a) array
+    Sortable             +
+    Sorted by default    +/-
+    Index access         +
+    Key access           -
+    Bidirectional access +
+    Search               O(n)/O(ln(n))
+   
+  b) linked list
+    Sortable             -
+    Sorted by default    -
+    Index access         -
+    Key access           -
+    Bidirectional access -
+    Search               O(n)
+   
+  c) double linked list
+    Sortable             -
+    Sorted by default    -
+    Index access         -
+    Key access           -
+    Bidirectional access +
+    Search               O(n)
+   
+  d) binary tree
+    Sortable             +
+    Sorted by default    +
+    Index access         -
+    Key access           +
+    Bidirectional access +
+    Search               O(ln(n))
+   
+  e) red-black tree
+    Sortable             +
+    Sorted by default    +
+    Index access         -
+    Key access           +
+    Bidirectional access +
+    Search               O(ln(n))
+   
+  f) hashtable
+    Sortable             +
+    Sorted by default    +
+    Index access         -
+    Key access           +
+    Bidirectional access +
+    Search               ?
+
+  g) heap
+    Sortable             +
+    Sorted by default    +
+    Index access         ?
+    Key access           +
+    Bidirectional access +
+    Search               O(ln(n))
+
+2. Containers  
+
+  a) List
+    Possible implementations: array, linked list
+
+  b) Set
+    Possible implementations: array(sorted), trees, hashtable, heap
+
+  c) Queue
+    Possible implementations: array, linked list
+
+  d) Priority queue
+    Possible implementations: array(sorted), trees, heap
+
+  e) Deque
+    Possible implementations: array, double linked list
+
+  f) Stack
+    Possible implementations: array, linked list
+
+  g) Map
+    Possible implementations: array(sorted), trees, hashtable
+
+3. Special Containers
+
+  a) Identity Map
+    This class implements the Map using reference-equality in place of object-equality when comparing keys (and values).
+
+  b) Linked Hash Map
+    Hash table and linked list implementation of the Map, with predictable iteration order.
+
+  c) Linked Hash Set
+    Hash table and linked list implementation of the Set, with predictable iteration order. 

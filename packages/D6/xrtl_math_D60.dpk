@@ -1,0 +1,39 @@
+package xrtl_math_D60;
+
+{$R *.res}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DESCRIPTION 'xrtl math'}
+{$RUNONLY}
+{$IMPLICITBUILD OFF}
+
+requires
+  rtl,
+  xrtl_util_D60;
+
+contains
+  xrtl_math_Integer in '..\..\src\xrtl_math\xrtl_math_Integer.pas',
+  xrtl_math_Primitives in '..\..\src\xrtl_math\xrtl_math_Primitives.pas',
+  xrtl_math_Stack in '..\..\src\xrtl_math\xrtl_math_Stack.pas',
+  xrtl_math_ResourceStrings in '..\..\src\xrtl_math\xrtl_math_ResourceStrings.pas';
+
+end.

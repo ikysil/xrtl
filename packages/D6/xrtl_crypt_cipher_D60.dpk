@@ -1,0 +1,45 @@
+package xrtl_crypt_cipher_D60;
+
+{$R *.res}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DESCRIPTION 'xrtl Cryptography - Ciphers'}
+{$RUNONLY}
+{$IMPLICITBUILD OFF}
+
+requires
+  rtl,
+  xrtl_io_D60,
+  xrtl_crypt_D60,
+  xrtl_util_D60;
+
+contains
+  xrtl_crypt_cipher_Blowfish in '..\..\src\xrtl_crypt_cipher\xrtl_crypt_cipher_Blowfish.pas',
+  xrtl_crypt_cipher_Twofish in '..\..\src\xrtl_crypt_cipher\xrtl_crypt_cipher_Twofish.pas',
+  xrtl_crypt_cipher_AES in '..\..\src\xrtl_crypt_cipher\xrtl_crypt_cipher_AES.pas',
+  xrtl_crypt_cipher_Anubis in '..\..\src\xrtl_crypt_cipher\xrtl_crypt_cipher_Anubis.pas',
+  xrtl_crypt_cipher_Khazad in '..\..\src\xrtl_crypt_cipher\xrtl_crypt_cipher_Khazad.pas',
+  xrtl_crypt_cipher_RijndaelBase in '..\..\src\xrtl_crypt_cipher\xrtl_crypt_cipher_RijndaelBase.pas',
+  xrtl_crypt_cipher_RijndaelUtil in '..\..\src\xrtl_crypt_cipher\xrtl_crypt_cipher_RijndaelUtil.pas',
+  xrtl_crypt_cipher_Rijndael in '..\..\src\xrtl_crypt_cipher\xrtl_crypt_cipher_Rijndael.pas';
+
+end.

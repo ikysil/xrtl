@@ -1,0 +1,51 @@
+package xrtl_crypt_test_D60;
+
+{$R *.res}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DESCRIPTION 'xrtl Cryptography - Tests'}
+{$RUNONLY}
+{$IMPLICITBUILD OFF}
+
+requires
+  rtl,
+  xrtl_util_D60,
+  xrtl_io_D60,
+  xrtl_crypt_cipher_D60,
+  xrtl_crypt_md_D60;
+
+contains
+  xrtl_crypt_test_AES in '..\..\src\xrtl_crypt_test\xrtl_crypt_test_AES.pas',
+  xrtl_crypt_test_Anubis in '..\..\src\xrtl_crypt_test\xrtl_crypt_test_Anubis.pas',
+  xrtl_crypt_test_Blowfish in '..\..\src\xrtl_crypt_test\xrtl_crypt_test_Blowfish.pas',
+  xrtl_crypt_test_Khazad in '..\..\src\xrtl_crypt_test\xrtl_crypt_test_Khazad.pas',
+  xrtl_crypt_test_MD2 in '..\..\src\xrtl_crypt_test\xrtl_crypt_test_MD2.pas',
+  xrtl_crypt_test_MD4 in '..\..\src\xrtl_crypt_test\xrtl_crypt_test_MD4.pas',
+  xrtl_crypt_test_MD5 in '..\..\src\xrtl_crypt_test\xrtl_crypt_test_MD5.pas',
+  xrtl_crypt_test_Rijndael in '..\..\src\xrtl_crypt_test\xrtl_crypt_test_Rijndael.pas',
+  xrtl_crypt_test_RIPEMD128 in '..\..\src\xrtl_crypt_test\xrtl_crypt_test_RIPEMD128.pas',
+  xrtl_crypt_test_RIPEMD160 in '..\..\src\xrtl_crypt_test\xrtl_crypt_test_RIPEMD160.pas',
+  xrtl_crypt_test_SHA0 in '..\..\src\xrtl_crypt_test\xrtl_crypt_test_SHA0.pas',
+  xrtl_crypt_test_SHA1 in '..\..\src\xrtl_crypt_test\xrtl_crypt_test_SHA1.pas',
+  xrtl_crypt_test_Twofish in '..\..\src\xrtl_crypt_test\xrtl_crypt_test_Twofish.pas';
+
+end.

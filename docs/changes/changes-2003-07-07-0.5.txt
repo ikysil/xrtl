@@ -1,0 +1,19 @@
+XRTL Changes since 0.4 (2003-06-15)
+---------------------------------------
+
+Release 0.5 - 2003-07-07
+---------------------------------------
+
+7 Jul 2003
+---------------------------------------
+[C] TXRTLRijndaelCipher moved to xrtl_crypt_cipher_RijndaelBase unit
+[N] TXRTLRijndael128Cipher, TXRTLRijndael160Cipher, TXRTLRijndael192Cipher,
+    TXRTLRijndael224Cipher, TXRTLRijndael256Cipher - Rijndael ciphers with block size preset.
+    Optimized - state word loops unrolled.
+
+6 Jul 2003
+---------------------------------------
+[N] xrtl_crypt_cipher_Rijndael.TXRTLRijndaelCipher - generic Rijndael cipher,
+    supports all key lengths (128, 192, 256 bits) and block sizes
+    (128, 160, 192, 224, 256 bits)
+[B] TXRTLDefaultBlockCipherEngine

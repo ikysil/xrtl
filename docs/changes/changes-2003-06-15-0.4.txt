@@ -1,0 +1,50 @@
+XRTL Changes since 0.3 (2003-05-12)
+---------------------------------------
+
+Release 0.4 - 2003-06-15
+---------------------------------------
+
+10 Jun 2003
+---------------------------------------
+[N] xrtl_crypt_test_D60 package, contains all testing code from
+    xrtl_crypt_cipher_D60 and xrtl_crypt_md_D60
+[R] TXRTLCipher.SelfTest
+[R] TXRTLMessageDigest.SelfTest
+[N] XRTLCompareMessageDigest to make testing easier
+[N] XRTL\demos\security\test\CryptTest.dpr for testing cryptography packages
+[C] xrtl_util_CPUUtils.XRTLROL renamed to XRTLROL32
+[C] xrtl_util_CPUUtils.XRTLROR renamed to XRTLROR32
+[N] xrtl_util_CPUUtils.XRTLROL16, xrtl_util_CPUUtils.XRTLROR16
+[N] xrtl_util_CPUUtils.XRTLROL8, xrtl_util_CPUUtils.XRTLROR8
+[R] XRTLLRot16, XRTLRRot16, XRTLLRot32, XRTLRRot32 - duplicates of above, removed
+[N] XRTLSwapHiLo16
+
+08 Jun 2003
+---------------------------------------
+[N] TXRTLSHA0 (SHA-0 message digest)
+[N] TXRTLSHA1 (SHA-1 message digest)
+[N] TXRTLRIPEMD128 (RIPEMD128 message digest)
+[N] TXRTLRIPEMD160 (RIPEMD160 message digest)
+
+07 Jun 2003
+---------------------------------------
+[N] TXRTLMD4 (MD4 message digest)
+[N] TXRTLMD5 (MD5 message digest)
+
+06 Jun 2003
+---------------------------------------
+[N] XRTLMoveMemory with SrcOffset and DstOffset arguments 
+[N] xrtl_crypt_md package - message digest classes
+[N] TXRTLMD2 (MD2 message digest)
+
+24 May 2003
+---------------------------------------
+[N] TXRTLCBCCCipherMode (cipher block chaining with checksum)
+[N] TXRTLPCBCCipherMode (propagating cipher block chaining)
+[N] TXRTLBCCipherMode (block chaining mode)
+[N] TXRTLOFB8BitCipherMode
+[C] TXRTLOFBCipherMode renamed to TXRTLOFBBlockCipherMode
+
+22 May 2003
+---------------------------------------
+[B] TXRTLBufferedInputStream.Skip

@@ -1,0 +1,9 @@
+XRTL - Release 0.9.1 - 2003-12-17
+---------------------------------------
+
+Changes since 0.9 - 2003-12-16
+---------------------------------------
+
+[B] Bug in TXRTLASyncTask.Compare.
+[M] OPCDA20CTServer passed OPC Compliance Test.
+    See docs\xrtl_opc\OPCDA20CTServer_Compliant-2003-12-17.html for more details.

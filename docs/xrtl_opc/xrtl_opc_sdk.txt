@@ -1,0 +1,72 @@
+I've done an OPC DA server using Delphi 6.
+I've written it from scratch using Compliance Test from OPC Foundation to
+test implementation details.
+
+The main goals was:
+1. Reusability - I don't like to copy units source in each project.
+2. Configureability - OPC DA server namespace should be configurable from outside,
+not burned in. See below.
+3. Caching OPC DA server - data is provided via external client app, which uses
+standard OPC DA Interfaces.
+4. External data source - data is provided via external client app, which
+set a data source using custom interfaces.
+
+One of the biggest problem is an absence of COM objects stub/proxy DLL generation in Delphi.
+Without that you can't write a REUSABLE library.
+Don't even try to create a REUSABLE library using Type Libraries.
+
+This is only needed if you want to add private interfaces (for configuration purposes) however.
+I've used midl.exe from VS.NET and VS C++ to accomplish that task.
+
+Have you seen http://www.opcconnect.com?
+It's a good starting point for all Delphi OPC programmers.
+
+Additional info:
+
+1. NEVER return local WideString variable as out POLEStr parameter.
+
+Use a call to
+
+function XRTLAllocOutWideString(const Src: WideString): PWideChar;
+begin
+  Result:= CoTaskMemAlloc((Length(Src) + 1) * SizeOf(WideChar));
+  Move(PWideChar(Src)^, Result^, (Length(Src) + 1) * SizeOf(WideChar));
+end;
+
+2. ALWAYS wrap your interface functions with try/except and use following function to retrieve
+HResult.
+
+function XRTLHandleCOMException: HResult;
+var
+  E: TObject;
+begin
+  E:= ExceptObject;
+  if (E is EOleSysError) and Failed(EOleSysError(E).ErrorCode) then
+    Result:= EOleSysError(E).ErrorCode
+  else
+    Result:= E_UNEXPECTED;
+end;
+
+Example:
+
+function xxx(in ItemName: POLEStr; out ItemID: POLEStr): HResult;
+var
+  Name: WideString;
+begin
+  Result:= S_OK;
+  try
+    Name:= WideString(ItemName);
+    // some code to process Name
+    ItemID:= POLEStr(Name); !!! NEVER NEVER NEVER DO THAT - compiler will free memory for Name on return
+    ItemID:= XRTLAllocOutWideString(Name);
+  except
+    Result:= XRTLHandleCOMException;
+  end;
+end;
+
+--
+Regards
+Illya Kysil, software developer
+Delphi/C/C++/C#/Java/Forth/Assembler
+If it is NOT SOURCE, it is NOT SOFTWARE. (C) NASA
+

@@ -1,0 +1,70 @@
+package xrtl_util_D70;
+
+{$R *.res}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $37A00000}
+{$DESCRIPTION 'xrtl'}
+{$RUNONLY}
+{$IMPLICITBUILD OFF}
+
+requires
+  rtl;
+
+contains
+  xrtl_util_Algorithm in '..\..\src\xrtl_util\xrtl_util_Algorithm.pas',
+  xrtl_util_Array in '..\..\src\xrtl_util\xrtl_util_Array.pas',
+  xrtl_util_COMCat in '..\..\src\xrtl_util\xrtl_util_COMCat.pas',
+  xrtl_util_Compare in '..\..\src\xrtl_util\xrtl_util_Compare.pas',
+  xrtl_util_COMUtils in '..\..\src\xrtl_util\xrtl_util_COMUtils.pas',
+  xrtl_util_Container in '..\..\src\xrtl_util\xrtl_util_Container.pas',
+  xrtl_util_CPUUtils in '..\..\src\xrtl_util\xrtl_util_CPUUtils.pas',
+  xrtl_util_Deque in '..\..\src\xrtl_util\xrtl_util_Deque.pas',
+  xrtl_util_DoubleLinkedList in '..\..\src\xrtl_util\xrtl_util_DoubleLinkedList.pas',
+  xrtl_util_Exception in '..\..\src\xrtl_util\xrtl_util_Exception.pas',
+  xrtl_util_FileUtils in '..\..\src\xrtl_util\xrtl_util_FileUtils.pas',
+  xrtl_util_FileVersion in '..\..\src\xrtl_util\xrtl_util_FileVersion.pas',
+  xrtl_util_Guard in '..\..\src\xrtl_util\xrtl_util_Guard.pas',
+  xrtl_util_Hashtable in '..\..\src\xrtl_util\xrtl_util_Hashtable.pas',
+  xrtl_util_LinkedList in '..\..\src\xrtl_util\xrtl_util_LinkedList.pas',
+  xrtl_util_Map in '..\..\src\xrtl_util\xrtl_util_Map.pas',
+  xrtl_util_MemoryManager in '..\..\src\xrtl_util\xrtl_util_MemoryManager.pas',
+  xrtl_util_MemoryUtils in '..\..\src\xrtl_util\xrtl_util_MemoryUtils.pas',
+  xrtl_util_Module in '..\..\src\xrtl_util\xrtl_util_Module.pas',
+  xrtl_util_PackageUtils in '..\..\src\xrtl_util\xrtl_util_PackageUtils.pas',
+  xrtl_util_Queue in '..\..\src\xrtl_util\xrtl_util_Queue.pas',
+  xrtl_util_ResourceStrings in '..\..\src\xrtl_util\xrtl_util_ResourceStrings.pas',
+  xrtl_util_Set in '..\..\src\xrtl_util\xrtl_util_Set.pas',
+  xrtl_util_Stack in '..\..\src\xrtl_util\xrtl_util_Stack.pas',
+  xrtl_util_StrUtils in '..\..\src\xrtl_util\xrtl_util_StrUtils.pas',
+  xrtl_util_Synchronizer in '..\..\src\xrtl_util\xrtl_util_Synchronizer.pas',
+  xrtl_util_ThreadUtils in '..\..\src\xrtl_util\xrtl_util_ThreadUtils.pas',
+  xrtl_util_TimeStamp in '..\..\src\xrtl_util\xrtl_util_TimeStamp.pas',
+  xrtl_util_TimeUtils in '..\..\src\xrtl_util\xrtl_util_TimeUtils.pas',
+  xrtl_util_TimeZone in '..\..\src\xrtl_util\xrtl_util_TimeZone.pas',
+  xrtl_util_Type in '..\..\src\xrtl_util\xrtl_util_Type.pas',
+  xrtl_util_Value in '..\..\src\xrtl_util\xrtl_util_Value.pas',
+  xrtl_util_VariantUtils in '..\..\src\xrtl_util\xrtl_util_VariantUtils.pas',
+  xrtl_util_NameSpace in '..\..\src\xrtl_util\xrtl_util_NameSpace.pas',
+  xrtl_util_NameSpacePath in '..\..\src\xrtl_util\xrtl_util_NameSpacePath.pas',
+  xrtl_util_ValueImpl in '..\..\src\xrtl_util\xrtl_util_ValueImpl.pas';
+
+end.

@@ -1,0 +1,59 @@
+package xrtl_opc_sdk_D60;
+
+{$R *.res}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $37900000}
+{$DESCRIPTION 'xrtl OPC Server Development Kit'}
+{$RUNONLY}
+{$IMPLICITBUILD OFF}
+
+requires
+  rtl,
+  xrtl_opc_D60,
+  xrtl_util_D60,
+  xrtl_util_async_D60,
+  vcl;
+
+contains
+  xrtl_opc_sdk_OPCDA20COMObjectFactory in '..\..\src\xrtl_opc_sdk\xrtl_opc_sdk_OPCDA20COMObjectFactory.pas',
+  xrtl_opc_sdk_OPCDAServer in '..\..\src\xrtl_opc_sdk\xrtl_opc_sdk_OPCDAServer.pas',
+  xrtl_opc_sdk_OPCDANameSpace in '..\..\src\xrtl_opc_sdk\xrtl_opc_sdk_OPCDANameSpace.pas',
+  xrtl_opc_sdk_OPCDANameSpaceItem in '..\..\src\xrtl_opc_sdk\xrtl_opc_sdk_OPCDANameSpaceItem.pas',
+  xrtl_opc_sdk_OPCLocaleManager in '..\..\src\xrtl_opc_sdk\xrtl_opc_sdk_OPCLocaleManager.pas',
+  xrtl_opc_sdk_OPCServer in '..\..\src\xrtl_opc_sdk\xrtl_opc_sdk_OPCServer.pas',
+  xrtl_opc_sdk_ResourceStrings in '..\..\src\xrtl_opc_sdk\xrtl_opc_sdk_ResourceStrings.pas',
+  xrtl_opc_sdk_OPCServerList in '..\..\src\xrtl_opc_sdk\xrtl_opc_sdk_OPCServerList.pas',
+  xrtl_opc_sdk_EnumOPCItemAttributes in '..\..\src\xrtl_opc_sdk\xrtl_opc_sdk_EnumOPCItemAttributes.pas',
+  xrtl_opc_sdk_OPCDA20GroupASyncOperation in '..\..\src\xrtl_opc_sdk\xrtl_opc_sdk_OPCDA20GroupASyncOperation.pas',
+  xrtl_opc_sdk_OPCDADataSource in '..\..\src\xrtl_opc_sdk\xrtl_opc_sdk_OPCDADataSource.pas',
+  xrtl_opc_sdk_OPCDADataSourceCache in '..\..\src\xrtl_opc_sdk\xrtl_opc_sdk_OPCDADataSourceCache.pas',
+  xrtl_opc_sdk_DA in '..\..\src\xrtl_opc_sdk\xrtl_opc_sdk_DA.pas',
+  xrtl_opc_sdk_Utils in '..\..\src\xrtl_opc_sdk\xrtl_opc_sdk_Utils.pas',
+  xrtl_opc_sdk_OPCDAVariantManager in '..\..\src\xrtl_opc_sdk\xrtl_opc_sdk_OPCDAVariantManager.pas',
+  xrtl_opc_sdk_OPCDA20Classes in '..\..\src\xrtl_opc_sdk\xrtl_opc_sdk_OPCDA20Classes.pas',
+  xrtl_opc_sdk_OPCDA30Classes in '..\..\src\xrtl_opc_sdk\xrtl_opc_sdk_OPCDA30Classes.pas',
+  xrtl_opc_sdk_OPCDA20Group in '..\..\src\xrtl_opc_sdk\xrtl_opc_sdk_OPCDA20Group.pas',
+  xrtl_opc_sdk_OPCDA30Group in '..\..\src\xrtl_opc_sdk\xrtl_opc_sdk_OPCDA30Group.pas',
+  xrtl_opc_sdk_OPCDA20Server in '..\..\src\xrtl_opc_sdk\xrtl_opc_sdk_OPCDA20Server.pas',
+  xrtl_opc_sdk_OPCDA30Server in '..\..\src\xrtl_opc_sdk\xrtl_opc_sdk_OPCDA30Server.pas';
+
+end.

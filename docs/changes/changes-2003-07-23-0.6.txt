@@ -1,0 +1,15 @@
+XRTL Changes since 0.5 (2003-07-07)
+---------------------------------------
+
+Release 0.6 - 2003-07-23
+---------------------------------------
+
+23 Jul 2003
+---------------------------------------
+[N] xrtl_util_PackageUtils.pas
+[N] xrtl_util_TimeZone.pas
+[N] xrtl_util_TimeUtils.pas
+
+22 Jul 2003
+---------------------------------------
+[B] TXRTLOPCDADataSourceCache.Read

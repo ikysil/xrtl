@@ -1,0 +1,45 @@
+XRTL Changes since 0.6 (2003-07-23)
+---------------------------------------
+
+Release 0.7 - 2003-09-23
+---------------------------------------
+
+23 Sep 2003
+---------------------------------------
+[M] OPC Compliance testing - the first success. Almost all tests passed without errors/warnings.
+    Read docs\xrtl_opc\AsyncWrite.txt for the log and description of the only one that failed.
+    It seems to be a bug in CTT.
+
+22 Sep 2003
+---------------------------------------
+[C] OPC units updated to 2003-03-11 version.
+
+21 Sep 2003
+---------------------------------------
+[M] OPC Compliance testing.
+
+20 Sep 2003
+---------------------------------------
+[M] OPC Compliance testing.
+
+19 Sep 2003
+---------------------------------------
+[M] OPC Compliance testing.
+
+18 Sep 2003
+---------------------------------------
+[B] Many bugfixes in xrtl_opc_sdk regarding to memory leaks (RtlFreeHeap messages in Debug log).
+[C] Moved OPC demos to demos\OPC folder.
+[N] OPCDA20CTServer.dpr - 'reference' OPC DA 2.0 server for OPC Compliance testing.
+[M] OPC Compliance testing.
+
+17 Sep 2003
+---------------------------------------
+[C] xrtl_io_dencoder_Dencoder.TXRTLDencoder
+[B] xrtl_io_Stream.TXRTLSequenceInputStream
+    - infinite loop on Close
+    - can't read (end of stream always in _ReadBuffer)
+[N] xrtl_io_Stream.TXRTLMultiOutputStream
+    Outputs data to several streams.
+[N] xrtl_util_StrUtils.XRTLAllocOutWideString, xrtl_util_StrUtils.XRTLFreeOutWideString
+

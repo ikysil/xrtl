@@ -1,0 +1,47 @@
+xrtl_io description 0.1 - 21 Apr 2003
+-------------------------------------
+
+1. What is xrtl_io?
+   xrtl_io is an input-output package implemented with java.io package in mind.
+   I love java.io very much and think it's more efficient and clear than Delphi's
+   native TStream and derivatives. Main disadvantages of TStream:
+   - combined input and output streams;
+   - incorrect implementation of Size and Position properties which imply that any
+     stream can be Seeked efficiently which is not true in case of
+     compressing/decompressing streams;
+   - each stream is assumed to be a random access stream, which is true for
+     file streams but is badly wrong for e.g. socket and COM-port streams;
+   - incorrect TStream.ReadBuffer implementation - TStream.Read may not read the
+     whole buffer at time while TStream.ReadBuffer demands that;
+   - semantics of return value from TStream.Read is different from THandleStream.Read;
+
+2. Ideas behind xrtl_io.
+   There is only 1(one) idea: each class does as little as needed, not more.
+   That's why there are many SIMPLE and SMALL classes.
+
+   Streams are divided in two groups: first group communicates with underlying OS
+   while second needs a stream from first group to do actual data transfer.
+   First group consists of
+   - TXRTLHandleInputStream & TXRTLHandleOutputStream;
+   - TXRTLFileInputStream & TXRTLFileOutputStream;
+   - TXRTLTempFileOutputStream;
+   - TXRTLPrintStream.
+
+3. How should I ...?
+   Look at example diagram:
+
+   TXRTLFileInputStream --(feeds data to)--> TXRTLBufferedInputStream ---->
+     TXRTLDataInputStream ----> application
+
+   - create TXRTLFileInputStream instance;
+   - create TXRTLBufferedInputStream instance and pass
+     TXRTLFileInputStream instance as CoreStream;
+   - create TXRTLDataInputStream instance and pass TXRTLBufferedInputStream
+     instance as CoreStream;
+   - use TXRTLDataInputStream instance methods to read actual data.
+
+x. Contact information and Internet resources
+   Illya Kysil
+     email:      ikysil@ua.fm
+     homepage:   http://msol.io.com/ikysil
+     XRTL group: http://groups.yahoo.com/group/xrtl/

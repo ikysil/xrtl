@@ -1,0 +1,38 @@
+package xrtl_io_bzlib_D70;
+
+{$R *.res}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DESCRIPTION 'xrtl bzlib input/output'}
+{$RUNONLY}
+{$IMPLICITBUILD OFF}
+
+requires
+  rtl,
+  xrtl_io_D70;
+
+contains
+  xrtl_io_bzlib_bzlib in '..\..\src\xrtl_io_bzlib\xrtl_io_bzlib_bzlib.pas',
+  xrtl_io_bzlib_bzlibStream in '..\..\src\xrtl_io_bzlib\xrtl_io_bzlib_bzlibStream.pas',
+  xrtl_io_bzlib_StreamProcessor in '..\..\src\xrtl_io_bzlib\xrtl_io_bzlib_StreamProcessor.pas';
+
+end.

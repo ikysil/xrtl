@@ -1,0 +1,11 @@
+Async. execution overview
+-------------------------
+
+1. Why?
+   a) I've been amazed by .NET delegate asynchronous invokation capabilities (BeginInvoke/EndInvoke).
+      It needs compiler support though.
+   b) OPC SDK which is a part of XRTL requires async. execution.
+      It would be a fatal challenge to manage independent threads since OPC server
+      is complicated on its own.
+
+2. 

@@ -1,0 +1,260 @@
+import "oaidl.idl";
+import "opcda.idl";
+
+interface IXRTLOPCDAServer;
+interface IXRTLOPCDAGroup;
+interface IXRTLOPCDANameSpace;
+interface IXRTLOPCDANameSpaceItem;
+interface IXRTLOPCDADataSource;
+
+typedef IXRTLOPCDANameSpace * LPXRTLOPCDANameSpace;
+typedef IXRTLOPCDANameSpaceItem * LPXRTLOPCDANameSpaceItem;
+typedef IXRTLOPCDADataSource * LPXRTLOPCDADataSource;
+
+[
+  object,
+  uuid(C9108B6D-B9A7-4396-BF9F-55F24849E920),
+  pointer_default(unique)
+]
+interface IXRTLOPCDAServer : IUnknown{
+//    function   GetNameSpace(out ANameSpace: IXRTLOPCDANameSpace): HResult; stdcall;
+  HRESULT GetNameSpace(
+    [out] LPXRTLOPCDANameSpace * ppNameSpace
+  );
+//    function   SetNameSpace(ANameSpace: IXRTLOPCDANameSpace): HResult; stdcall;
+  HRESULT SetNameSpace(
+    [in]  LPXRTLOPCDANameSpace pNameSpace
+  );
+//    function   GetDataSource(dwSource: OPCDATASOURCE; out ADataSource: IXRTLOPCDADataSource): HResult; stdcall;
+  HRESULT GetDataSource(
+    [in]  OPCDATASOURCE dwSource,
+    [out] LPXRTLOPCDADataSource * ppDataSource
+  );
+//    function   SetDataSource(dwSource: OPCDATASOURCE; ADataSource: IXRTLOPCDADataSource): HResult; stdcall;
+  HRESULT SetDataSource(
+    [in]  OPCDATASOURCE dwSource,
+    [in]  LPXRTLOPCDADataSource pDataSource
+  );
+}
+
+[
+  object,
+  uuid(D2ADCF12-1553-4040-AA0F-B74EDA6FE1D2),
+  pointer_default(unique)
+]
+interface IXRTLOPCDAGroup : IUnknown{
+//    function   SetDeleted(bFlag: BOOL): HResult; stdcall;
+  HRESULT SetDeleted(
+    [in]  BOOL bFlag
+  );
+//    function   GetDeleted(out bFLag: BOOL): HResult; stdcall;
+  HRESULT GetDeleted(
+    [out]  BOOL * pbFlag
+  );
+}
+
+[
+  object,
+  uuid(EF4B587B-7426-43C7-9C6F-A513E1367198),
+  pointer_default(unique)
+]
+interface IXRTLOPCDANameSpace : IUnknown{
+//    function   GetOrganization(out pNameSpaceType: OPCNAMESPACETYPE): HResult; stdcall;
+  HRESULT GetOrganization(
+    [out] OPCNAMESPACETYPE * pNameSpaceType
+  );
+//    function   SetOrganization(pNameSpaceType: OPCNAMESPACETYPE): HResult; stdcall;
+  HRESULT SetOrganization(
+    [in]  OPCNAMESPACETYPE NameSpaceType
+  );
+//    function   CheckPath(ItemIDChunks: OleVariant{array of WideString}): HResult; stdcall;
+  HRESULT CheckPath(
+    [in]  VARIANT vItemIDChunks
+  );
+//    function   AddItem(ItemIDChunks: OleVariant{array of WideString};
+//                       Description: WideString;
+//                       DataType: TVarType;
+//                       RIID: TIID;
+//                       out Item: IXRTLOPCDANameSpaceItem): HResult; stdcall;
+  HRESULT AddItem(
+    [in]         VARIANT vItemIDChunks,
+    [in, string] LPOLESTR pszDescription,
+    [in]         VARTYPE vtDataType,
+    [out]        LPXRTLOPCDANameSpaceItem * ppItem
+  );
+//    function   GetItem(ItemIDChunks: OleVariant{array of WideString}; out Item: IXRTLOPCDANameSpaceItem): HResult; stdcall;
+  HRESULT GetItem(
+    [in]         VARIANT vItemIDChunks,
+    [out]        LPXRTLOPCDANameSpaceItem * ppItem
+  );
+//    function   HasItem(ItemIDChunks: OleVariant{array of WideString}; out bResult: BOOL): HResult; stdcall;
+  HRESULT HasItem(
+    [in]         VARIANT vItemIDChunks,
+    [out]        BOOL * pbResult
+  );
+//    function   RemoveItem(ItemIDChunks: OleVariant{array of WideString}): HResult; stdcall;
+  HRESULT RemoveItem(
+    [in]         VARIANT vItemIDChunks
+  );
+//    function   Clear: HResult; stdcall;
+  HRESULT Clear();
+//    function   CreateItemEnumerator(RootItemIDChunks: OleVariant{array of WideString};
+//                                    dwBrowseFilterType: OPCBROWSETYPE;
+//                                    szFilterCriteria: POleStr;
+//                                    vtDataTypeFilter: TVarType;
+//                                    dwAccessRightsFilter: DWORD;
+//                                    out ppIEnumString: IEnumString): HResult; stdcall;
+  HRESULT CreateItemEnumerator(
+    [in]         VARIANT vRootItemIDChunks,
+    [in]         OPCBROWSETYPE dwBrowseFilterType,
+    [in, string] LPOLESTR szFilterCriteria,
+    [in]         VARTYPE vtDataTypeFilter,
+    [in]         DWORD dwAccessRightsFilter,
+    [out]        LPENUMSTRING * ppIEnumString
+  );
+//    function   GetItemIDSeparator(out AItemIDSeparator: POleStr): HResult; stdcall;
+  HRESULT GetItemIDSeparator(
+    [out, string] LPWSTR * pszItemIDSeparator
+  );
+//    function   SetItemIDSeparator(AItemIDSeparator: POleStr): HResult; stdcall;
+  HRESULT SetItemIDSeparator(
+    [in, string]  LPWSTR szItemIDSeparator
+  );
+//    function   CombineItemID(ItemIDChunks: OleVariant{array of WideString}; out ItemID: POleStr): HResult; stdcall;
+  HRESULT CombineItemID(
+    [in]          VARIANT vItemIDChunks,
+    [out, string] LPWSTR * pszItemID
+  );
+//    function   SplitItemID(ItemID: POleStr; out ItemIDChunks: OleVariant{array of WideString}): HResult; stdcall;
+  HRESULT SplitItemID(
+    [in, string] LPWSTR szItemID,
+    [out]        VARIANT * pvItemIDChunks
+  );
+//    function   IsLeaf(ItemIDChunks: OleVariant{array of WideString}; out bResult: BOOL): HResult; stdcall;
+  HRESULT IsLeaf(
+    [in]  VARIANT vItemIDChunks,
+    [out] BOOL * pbResult
+  );
+//    function   IsBranch(ItemIDChunks: OleVariant{array of WideString}; out bResult: BOOL): HResult; stdcall;
+  HRESULT IsBranch(
+    [in]  VARIANT vItemIDChunks,
+    [out] BOOL * pbResult
+  );
+}
+
+[
+  object,
+  uuid(3C914D07-3FE2-4339-B562-6D849177F787),
+  pointer_default(unique)
+]
+interface IXRTLOPCDANameSpaceItem : IUnknown{
+//    function   QueryAvailableProperties(out pdwCount: DWORD; out ppPropertyIDs: PDWORDARRAY;
+//                 out ppDescriptions: POleStrList; out ppvtDataTypes: PVarTypeList): HResult; stdcall;
+  HRESULT QueryAvailableProperties( 
+    [out]                         DWORD    * pdwCount,
+    [out, size_is(,*pdwCount)]    DWORD   ** ppPropertyIDs,
+    [out, size_is(,*pdwCount)]    LPWSTR  ** ppDescriptions,
+    [out, size_is(,*pdwCount)]    VARTYPE ** ppvtDataTypes
+  );
+//    function   GetItemProperties(dwCount: DWORD; pdwPropertyIDs: PDWORDARRAY;
+//                 out ppvData: POleVariantArray; out ppErrors: PResultList): HResult; stdcall;
+  HRESULT GetItemProperties ( 
+    [in]                         DWORD      dwCount,
+    [in, size_is(dwCount)]       DWORD    * pdwPropertyIDs,
+    [out, size_is(,dwCount)]     VARIANT ** ppvData,
+    [out, size_is(,dwCount)]     HRESULT ** ppErrors
+  );
+//    function   LookupItemIDs(dwCount: DWORD; pdwPropertyIDs: PDWORDARRAY;
+//                 out ppszNewItemIDs: POleStrList; out ppErrors: PResultList): HResult; stdcall;
+  HRESULT LookupItemIDs( 
+    [in]                         DWORD      dwCount,
+    [in, size_is(dwCount)]       DWORD    * pdwPropertyIDs,
+    [out, string, size_is(,dwCount)] LPWSTR ** ppszNewItemIDs,
+    [out, size_is(,dwCount)]     HRESULT ** ppErrors
+  );
+//    function   GetAccessRights(out AAccessRights: DWORD): HResult; stdcall;
+  HRESULT GetAccessRights(
+    [out] DWORD * pdwAccessRights
+  );
+//    function   SetAccessRights(AAccessRights: DWORD): HResult; stdcall;
+  HRESULT SetAccessRights(
+    [in]  DWORD dwAccessRights
+  );
+//    function   GetDataType(out ADataType: TVarType): HResult; stdcall;
+  HRESULT GetDataType(
+    [out] VARTYPE * pvtDataType
+  );
+//    function   SetDataType(ADataType: TVarType): HResult; stdcall;
+  HRESULT SetDataType(
+    [in]  VARTYPE vtDataType
+  );
+//    function   CanRead(out bResult: BOOL): HResult; stdcall;
+  HRESULT CanRead(
+    [out] BOOL * pbResult
+  );
+//    function   CanWrite(out bResult: BOOL): HResult; stdcall;
+  HRESULT CanWrite(
+    [out] BOOL * pbResult
+  );
+//    function   GetItemID(out szItemID: POLEStr): HResult; stdcall;
+  HRESULT GetItemID(
+    [out, string] LPWSTR * pszItemID
+  );
+}
+
+[
+  object,
+  uuid(5C389437-7A4D-4DB0-8E02-15FE2523D9B8),
+  pointer_default(unique)
+]
+interface IXRTLOPCDADataSource : IUnknown{
+//    function   Read(szItemID: POLEStr; out Value: OleVariant; out Quality: Word; out TimeStamp: TFileTime): HResult; stdcall;
+  HRESULT Read(
+    [in, string] LPWSTR szItemID,
+    [out]        VARIANT * pValue,
+    [out]        WORD * pQuality,
+    [out]        FILETIME * pftTimeStamp
+  );
+//    function   Write(szItemID: POLEStr; Value: OleVariant; Quality: Word; TimeStamp: TFileTime): HResult; stdcall;
+  HRESULT Write(
+    [in, string] LPWSTR szItemID,
+    [in]         VARIANT Value,
+    [in]         WORD Quality,
+    [in]         FILETIME ftTimeStamp
+  );
+//    function   CreateItemEnumerator(out Enum: IEnumString): HResult; stdcall;
+  HRESULT CreateItemEnumerator(
+    [out]        LPENUMSTRING * ppIEnumString
+  );
+//    function   Update(ADataSource: IXRTLOPCDADataSource): HResult; stdcall;
+  HRESULT Update(
+    [in]  LPXRTLOPCDADataSource pDataSource
+  );
+//    function   AddItem(szItemID: POleStr): HResult; stdcall;
+  HRESULT AddItem(
+    [in, string] LPWSTR szItemID
+  );
+//    function   RemoveItem(szItemID: POleStr): HResult; stdcall;
+  HRESULT RemoveItem(
+    [in, string] LPWSTR szItemID
+  );
+//    function   ClearItems: HResult; stdcall;
+  HRESULT ClearItems();
+}
+
+[
+    uuid(B27A21DD-E846-4CFF-B669-E29A254AEAB1),
+    version(1.0),
+    helpstring("xrtl OPC Type Library")
+]
+library XRTLOPCDA{
+    importlib("stdole32.tlb");
+    importlib("stdole2.tlb");
+    importlib("opcda.tlb");
+
+    interface IXRTLOPCDAServer;
+    interface IXRTLOPCDAGroup;
+    interface IXRTLOPCDANameSpace;
+    interface IXRTLOPCDANameSpaceItem;
+    interface IXRTLOPCDADataSource;
+};

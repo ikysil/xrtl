@@ -1,0 +1,50 @@
+WriteObject/WriteInterface/WriteClass algorithm - 2004-01-25
+------------------------------------------------------------
+1. Check if passed reference is null. Write null object/interface/class reference and exit.
+
+For WriteInterface only:
+2. 
+  a) Assign passed reference to local variable to keep implementing object alive. 
+  b) Check if IXRTLImplementationObjectProvider is supported. Raise exception if not.
+  c) Write INTERFACE_DATA stream marker.
+  c) Obtain a reference to implementing object instance via
+     IXRTLImplementationObjectProvider.GetImplementationObject.
+  d) Call WriteObject to write implementing object state.
+
+For WriteClass only:
+2. 
+  a) Obtain class descriptor object from serializable class registry.
+  b) Write CLASS_DATA stream marker.
+  c) Call WriteObject to write class descriptor object state.
+
+3. Write OBJECT_DATA stream marker.
+
+4. Check passed reference type for special cases:
+  a) class descriptor object - call WriteClassDescriptor and exit;
+  b) field definition - call WriteField;
+ 
+5. Possible instance replace:
+  a) call instance's ReplaceBeforeWrite (if defined);
+  b) call ClassDescriptor.ReplaceBeforeWrite;
+
+6. Check passed reference type for special cases:
+  a) class descriptor object - call WriteClassDescriptor and exit;
+
+7. Write instance handle:
+  a) if a handle for an instance is already allocated and shared write is allowed then
+     write existing instance handle and exit;
+  b) else allocate new instance handle and write it;
+
+8. Obtain class descriptor object from serializable class registry. Raise exception if not found.
+
+9. Write class descriptor.
+
+10. If class is externalizable (flag in ClassDescriptor) then call
+    ClassDescriptor.WriteExternal and exit. Class is fully responsible for data written.
+    The only responsibility of (de)serializer is an ability to skip data written.
+
+11. If class is serializable then:
+  a) obtain field definitions via to ClassDescriptor.DefineFields for current class and all ancestors;
+  b) update field list via instance's DefineFields if defined;
+  c) write each field via WriteObject;
+  d) call ClassDescriptor.WriteObject;

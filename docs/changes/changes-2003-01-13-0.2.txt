@@ -1,0 +1,27 @@
+XRTL Changes since 0.1 (2002-11-07)
+---------------------------------------
+
+Release 0.2 - 13 Jan 2003
+---------------------------------------
+
+13 Jan 2003
+---------------------------------------
+[N] xrtl_util_CPUUtils
+[N] xrtl_security_DDP (Data Dependent Permutation, permutates 32-bit data
+    depending on 96-bit control value)
+
+10 Jan 2003
+---------------------------------------
+[N] TXRTLBlockCipher, TXRTLBlockCipherMode
+[N] TXRTLCheckSum
+[N] TXRTLCustomCheckSum8Bit, TXRTLCustomCheckSum16Bit, TXRTLCustomCheckSum32Bit
+[N] TXRTLCheckSum8Bit, TXRTLCheckSum16Bit, TXRTLCheckSum32Bit
+[N] TXRTLCRC16, TXRTLCRC32
+[C] TXRTLStreamProcessor refactored.
+[N] TXRTLConvertingStreamProcessor
+[N] TXRTLCompressingStreamProcessor
+[N] TXRTLCipher
+
+9 Jan 2003
+---------------------------------------
+[N] xrtl_io_bzlib_StreamProcessor unit.

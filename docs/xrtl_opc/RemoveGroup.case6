@@ -1,0 +1,67 @@
+On OPC Compliance Test Tool RemoveGroup.
+
+I was able to fix RemoveGroup.Case6 in connection with RemoveGroup.Case4 failure in my server.
+The original code in Delphi follows:
+[code]
+// group is already removed from internal list at this point 
+      if Group.RefCount = 1 then
+      begin
+// server owns the only reference, release it...
+        Group._Release;
+        Result:= S_OK;
+      end
+      else
+      begin
+        if bForce then
+        begin
+// there are several references, release forced...
+// call Group._Release until all references are released
+          while Group.RefCount > 1 do
+          begin
+            Group._Release;
+          end;
+          Group._Release;
+          Result:= S_OK;
+        end
+        else
+        begin
+// there are several references, marking as deleted...
+          Group.SetDeleted(True);
+          Group._Release;
+          Result:= OPC_S_INUSE;
+        end;
+      end;
+[/code]
+Group is contained in internal list as object reference,
+so internal references are not automaticly counted.
+
+Here is the code that passes all RemoveGroup cases:
+[code]
+// group is already removed from internal list at this point 
+      if Group.RefCount = 1 then
+      begin
+// server owns the only reference, release it...
+        Group._Release;
+        Result:= S_OK;
+      end
+      else
+      begin
+        if bForce then
+        begin
+// there are several references, release forced...
+// !!! LOOK HERE !!!
+          Group.Free;
+          Result:= S_OK;
+        end
+        else
+        begin
+// there are several references, mark as deleted...
+          Group.SetDeleted(True);
+// release server reference
+          Group._Release;
+          Result:= OPC_S_INUSE;
+        end;
+      end;
+[/code]
+
+The only difference is that group object is freed directly instead of relying on RefCount and _Release.

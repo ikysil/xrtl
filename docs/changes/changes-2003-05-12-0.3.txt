@@ -1,0 +1,85 @@
+XRTL Changes since 0.2.1 (2003-01-14)
+---------------------------------------
+
+Release 0.3 - 12 May 2003
+---------------------------------------
+
+12 May 2003
+---------------------------------------
+[C] Splitted history.txt into several files.
+
+10 May 2003
+---------------------------------------
+[C] Moved packages\* to packages\D6\* folder.
+
+08 May 2003
+---------------------------------------
+[B] TXRTLInputDataStream.ReadVariant
+    Thanx to Marcos Pegoraro 
+[N] ReadUTF8String/WriteUTF8String in TXRTLxxxDataStream.
+
+21 Apr 2003
+---------------------------------------
+[N] docs\xrtl_io\xrtl_io-description-0.1.txt
+    A very brief introduction to xrtl_io.
+
+13 Apr 2003
+---------------------------------------
+[N] TXRTLTaggedDataOutputStream
+
+12 Apr 2003
+---------------------------------------
+[B] xrtl_io_StreamUtils.XRTLGetTempFileName
+
+10 Mar 2003
+---------------------------------------
+[N] xrtl_crypt_cipher_Khazad (Khazad cipher, 64 bits block size, 128 bits key size)
+
+18 Feb 2003
+---------------------------------------
+[C] Renamed TXRTLPrintStream.Write and TXRTLPrintStream.WriteLn to
+    TXRTLPrintStream.Print and TXRTLPrintStream.PrintLn.
+
+17 Feb 2003
+---------------------------------------
+[C] XRTLPointerAdd and XRTLPointerDist moved
+    from xrtl_util_Common to xrtl_util_CPUUtils.
+
+10 Feb 2003
+---------------------------------------
+[N] xrtl_crypt_cipher_Anubis (Anubis cipher, key up to 320 bits)
+
+07 Feb 2003
+---------------------------------------
+[B] Removed ThreadTimer unit reference from OPC DA 2.0 Server demo.
+    Thanx to Tsyplakov Denis (Tsyplakov_Denis_Y@sterling.ru).
+
+31 Jan 2003
+---------------------------------------
+[N] TXRTLBlockCipherPadding
+[N] TXRTLOneAndZeroesBlockCipherPadding
+[N] TXRTLPKCS5BlockCipherPadding
+[N] TXRTLPKCS7BlockCipherPadding
+[N] TXRTLBlockCipherMode
+[N] TXRTLECBCipherMode
+[N] TXRTLCBCCipherMode
+[N] TXRTLCFBBlockCipherMode
+[N] TXRTLOFBCipherMode
+
+30 Jan 2003
+---------------------------------------
+[N] xrtl_crypt_cipher_Rijndael (Rijndael 128 bits)
+[M] TXRTLProcessingOutputStream speedup
+
+20 Jan 2003
+---------------------------------------
+[N] xrtl_crypt_cipher_Twofish (Twofish)
+
+17 Jan 2003
+---------------------------------------
+[B] TXRTLStreamProcessor
+[B] TXRTLProcessingInputStream
+[B] TXRTLProcessingOutputStream
+[C] xrtl_security* renamed to xrtl_crypt*
+[N] xrtl_crypt_cipher package
+[N] xrtl_crypt_cipher_Blowfish (Blowfish)

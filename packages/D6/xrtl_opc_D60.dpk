@@ -1,0 +1,43 @@
+package xrtl_opc_D60;
+
+{$R *.res}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $37700000}
+{$DESCRIPTION 'xrtl OPC interfaces'}
+{$RUNONLY}
+{$IMPLICITBUILD OFF}
+
+requires
+  rtl,
+  xrtl_util_D60;
+
+contains
+  xrtl_opc_AE in '..\..\src\xrtl_opc\xrtl_opc_AE.pas',
+  xrtl_opc_Common in '..\..\src\xrtl_opc\xrtl_opc_Common.pas',
+  xrtl_opc_DA in '..\..\src\xrtl_opc\xrtl_opc_DA.pas',
+  xrtl_opc_Error in '..\..\src\xrtl_opc\xrtl_opc_Error.pas',
+  xrtl_opc_HDA in '..\..\src\xrtl_opc\xrtl_opc_HDA.pas',
+  xrtl_opc_Security in '..\..\src\xrtl_opc\xrtl_opc_Security.pas',
+  xrtl_opc_Types in '..\..\src\xrtl_opc\xrtl_opc_Types.pas',
+  xrtl_opc_Utils in '..\..\src\xrtl_opc\xrtl_opc_Utils.pas';
+
+end.

@@ -1,0 +1,35 @@
+XRTL - Release 0.9 - 2003-12-16
+---------------------------------------
+
+Changes since 0.8 - 2003-10-22
+---------------------------------------
+
+[N] xrtl_util_async package. Contains all async. execution related units.
+[C] Async. execution classes refactored.
+[N] Async. execution overview document. [docs\xrtl_util_async\overview-1.0.txt]
+[M] Integrated Delphi 7 files from Alexey A.Gawrilow.
+[N] xrtl_util_Type.XRTLAsIs - a Supports equ. for classes
+[N] xrtl_util_ThreadUtils.XRTLIsInMainThread
+[N] xrtl_util_Set
+[C] xrtl_compiler.inc updated to latest jedi.inc.
+[C] xrtl_compiler.inc moved to ($XRTL)\inc
+[C] Changed {$IFDEF SUPPORTS_VARIANTS} to {$IFDEF HAS_UNIT_VARIANTS} as defined in xrtl_compiler.inc.
+[N] xrtl_util_Compare.XRTLInvertNonEqualRelationship
+[N] xrtl_util_Value - container value types(interfaces).
+    I've decided to use interfaces instead of pointers as containers' values.
+    It will be easier to manage memory allocations/deallocations using reference counting.
+[N] xrtl_util_Container
+[N] xrtl_util_Array
+[N] xrtl_util_Set
+[N] xrtl_util_Stack
+[N] xrtl_util_Queue
+[N] xrtl_util_Deque
+[N] xrtl_util_LinkedList
+[N] xrtl_util_DoubleLinkedList
+[N] IXRTLIterator.Clone
+[N] xrtl_util_Map 
+[N] xrtl_util_Hashtable
+[C] zlib updated from 1.1.4 to 1.2.1. zlib compiled using Borland C++ 5.5 free compiler.
+[R] Code related to old containers archived. Will be removed in future.
+[C] Async. execution classes use IXRTLValue for Data instead of Pointer.
+

@@ -1,0 +1,7 @@
+Legend
+---------------------------------------
+[N] New
+[R] Removed
+[B] Bug fixed
+[C] Changes
+[M] Misc.
