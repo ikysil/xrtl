@@ -10,8 +10,6 @@ uses
 type
   TXRTLIntrospector = class(TInterfacedObject, IXRTLIntrospector)
   public
-    constructor Create;
-    destructor Destroy; override;
     procedure  DefineProperties(const Descriptor: IXRTLClassDescriptor;
                                 const Properties: IXRTLPropertyList); virtual; abstract;
   end;
@@ -19,15 +17,5 @@ type
 implementation
 
 { TXRTLIntrospector }
-
-constructor TXRTLIntrospector.Create;
-begin
-  inherited Create;
-end;
-
-destructor TXRTLIntrospector.Destroy;
-begin
-  inherited;
-end;
 
 end.

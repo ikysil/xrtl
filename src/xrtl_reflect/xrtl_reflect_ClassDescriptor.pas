@@ -13,6 +13,7 @@ type
   EXRTLClassDescriptorException = class(EXRTLException);
 
   IXRTLClassDescriptor = interface;
+
   IXRTLIntrospector = interface
   ['{2BD0AC80-EC53-4252-A8A9-4F5325750A89}']
     procedure  DefineProperties(const Descriptor: IXRTLClassDescriptor; const Properties: IXRTLPropertyList);
