@@ -1,2 +1,2 @@
 call clean.bat
-7z -bd -tzip a XRTL-yyyy-mm-dd-v.v.zip -r * -x!*.dcu
+7z -bd -tzip a XRTL-yyyy-mm-dd-v.v.zip -r * -x!*.dcu -x!docs\api\*

@@ -55,20 +55,22 @@ destructor TXRTLPipe.Destroy;
 begin
   FreeAndNil(FOutputStream);
   FreeAndNil(FInputStream);
+  CloseHandle(FInputHandle);
+  CloseHandle(FOutputHandle);
   inherited;
 end;
 
 function TXRTLPipe.GetInputStream: TXRTLInputStream;
 begin
   if not Assigned(FInputStream) then
-    FInputStream:= TXRTLHandleInputStream.Create(FInputHandle, True);
+    FInputStream:= TXRTLHandleInputStream.Create(FInputHandle, False);
   Result:= FInputStream;
 end;
 
 function TXRTLPipe.GetOutputStream: TXRTLOutputStream;
 begin
   if not Assigned(FOutputStream) then
-    FOutputStream:= TXRTLPipeOutputStream.Create(FOutputHandle, True);
+    FOutputStream:= TXRTLPipeOutputStream.Create(FOutputHandle, False);
   Result:= FOutputStream;
 end;
 

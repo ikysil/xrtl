@@ -17,6 +17,7 @@ type
     procedure  SetPosition(const Value: Int64);
     function   GetPosition: Int64;
   protected
+    function   CreateHandle(const AFilePath: WideString): THandle;
     procedure  DoClose; override;
   public
     constructor Create(const AFilePath: WideString; AOwnFile: Boolean = False);
@@ -34,6 +35,7 @@ type
     FOwnFile: Boolean;
     FFilePath: WideString;
   protected
+    function   CreateHandle(const AFilePath: WideString): THandle;
     procedure  DoClose; override;
   public
     constructor Create(AFilePath: WideString; AOwnFile: Boolean = False);
@@ -62,14 +64,19 @@ constructor TXRTLFileInputStream.Create(const AFilePath: WideString; AOwnFile: B
 var
   H: THandle;
 begin
-  H:= CreateFileW(PWideChar(AFilePath), GENERIC_READ,
-                  FILE_SHARE_READ or FILE_SHARE_WRITE, nil,
-                  OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+  H:= CreateHandle(AFilePath);
   if H = INVALID_HANDLE_VALUE then
     XRTLRaiseError;
   inherited Create(H, True);
   FFilePath:= AFilePath;
   FOwnFile:= AOwnFile;
+end;
+
+function TXRTLFileInputStream.CreateHandle(const AFilePath: WideString): THandle;
+begin
+  Result:= CreateFileW(PWideChar(AFilePath), GENERIC_READ,
+                  FILE_SHARE_READ or FILE_SHARE_WRITE, nil,
+                  OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
 end;
 
 function TXRTLFileInputStream.GetPosition: Int64;
@@ -143,13 +150,19 @@ constructor TXRTLFileOutputStream.Create(AFilePath: WideString; AOwnFile: Boolea
 var
   H: THandle;
 begin
-  H:= CreateFileW(PWideChar(AFilePath), GENERIC_WRITE,
-                  FILE_SHARE_READ, nil, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
+  H:= CreateHandle(AFilePath);
   if H = INVALID_HANDLE_VALUE then
     XRTLRaiseError;
   inherited Create(H, True);
   FFilePath:= AFilePath;
   FOwnFile:= AOwnFile;
+end;
+
+function TXRTLFileOutputStream.CreateHandle(const AFilePath: WideString): THandle;
+begin
+  Result:= CreateFileW(PWideChar(AFilePath), GENERIC_WRITE,
+                       FILE_SHARE_READ, nil,
+                       CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
 end;
 
 procedure TXRTLFileOutputStream.DoClose;

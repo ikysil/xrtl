@@ -1,3 +1,5 @@
+{ @abstract(Primitive operations implementation.)
+}
 unit xrtl_math_Primitives;
 
 {$INCLUDE xrtl.inc}
@@ -8,9 +10,34 @@ uses
   xrtl_util_CPUUtils,
   xrtl_math_Integer;
 
+{ @abstract(Unsigned multiplication with accumulation - school (column) multiplication method used.)
+  @param(AInteger1 multiplicand)
+  @param(AInteger2 multiplier)
+  @param(AInteger3 addend)
+  @param(AResult = AInteger1 * AInteger2 + AInteger3)
+  @returns(carry from MSB if any)
+}
 function  XRTLUMulAdd1(const AInteger1, AInteger2, AInteger3: TXRTLInteger; var AResult: TXRTLInteger): Integer;
+{ @abstract(Unsigned multiplication with accumulation - shift and add method used.)
+  @param(AInteger1 multiplicand)
+  @param(AInteger2 multiplier)
+  @param(AInteger3 addend)
+  @param(AResult = AInteger1 * AInteger2 + AInteger3)
+  @returns(carry from MSB if any)
+}
 function  XRTLUMulAdd2(const AInteger1, AInteger2, AInteger3: TXRTLInteger; var AResult: TXRTLInteger): Integer;
+{ @abstract(Unsigned division - shift and subtract method used.)
+  @param(AInteger1 dividend)
+  @param(AInteger2 divisor)
+  @param(QResult = Quotient(AInteger1 / AInteger2))
+  @param(RResult = Remainder(AInteger1 / AInteger2))
+}
 procedure XRTLUDivMod1(const AInteger1, AInteger2: TXRTLInteger; var QResult, RResult: TXRTLInteger);
+{ @abstract(Initial root approximation.)
+  @param(AInteger1)
+  @param(AInteger2)
+  @param(AResult >= AInteger1 ^ (1 / AInteger2), initial approximation.)
+}
 procedure XRTLInitialRootApprox1(const AInteger1, AInteger2: TXRTLInteger; var AResult: TXRTLInteger);
 
 implementation

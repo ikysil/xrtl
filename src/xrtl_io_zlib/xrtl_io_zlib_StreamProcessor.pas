@@ -1,3 +1,6 @@
+{ 
+  @author(Illya Kysil <ikysil at users.berlios.de>)
+}
 unit xrtl_io_zlib_StreamProcessor;
 
 {$INCLUDE xrtl.inc}

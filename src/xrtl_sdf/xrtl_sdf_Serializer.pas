@@ -86,7 +86,7 @@ type
     procedure  EndBinaryData(var Stream: TXRTLInputStream);
   end;
 
-  IXRTLObjectStreamer = interface(IXRTLClassHelper)
+  IXRTLObjectStreamer = interface
   ['{34F068D3-2136-442C-B11A-69467F90333E}']
     procedure  WriteObjectData(const Writer: IXRTLObjectWriter; const Obj: TObject);
     procedure  ReadNoData(const Obj: TObject);

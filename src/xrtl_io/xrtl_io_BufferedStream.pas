@@ -13,11 +13,29 @@ const
   XRTLDefaultBufferSize = 4096;
 
 type
+{ @abstract(A TXRTLBufferedInputStream adds functionality to another input stream -
+            namely, the ability to buffer the input.)
+  When the TXRTLBufferedInputStream is created, an internal buffer is created.
+  As bytes from the stream are read or skipped, the internal buffer is refilled
+  as necessary from the contained input stream, many bytes at a time.
+  The @link(TXRTLBufferedInputStream.MarkPosition) method remembers a point in
+  the input stream and contents of internal buffer while
+  the @link(TXRTLBufferedInputStream.RestorePosition) method restores internal
+  buffer contents and contained input stream position.
+}
   TXRTLBufferedInputStream = class(TXRTLFilterInputStream)
   private
+{ The internal buffer where data is stored.
+}
     FBufferData: Pointer;
+{ Total length of buffer allocated.
+}
     FBufferSize: Integer;
+{ The number of valid bytes in the buffer.
+}
     FBufferLength: Integer;
+{ Position in the buffer to be read from next.
+}
     FReadPointer: Integer;
     procedure  SetBufferSize(const Value: Integer);
     procedure  FillBuffer;
@@ -28,20 +46,45 @@ type
                        AOwnCoreStream: Boolean = True;
                        const ABufferSize: Integer = XRTLDefaultBufferSize);
     destructor Destroy; override;
+{ The internal buffer where data is stored.
+}
     property   BufferData: Pointer read FBufferData;
+{ Total length of buffer allocated.
+}
     property   BufferSize: Integer read FBufferSize write SetBufferSize;
+{ The number of valid bytes in the buffer.
+}
     property   BufferLength: Integer read FBufferLength;
+{ @abstract(Returns the number of bytes that can be read (or skipped over) from
+            this input stream without blocking by the next caller of a method
+            for this input stream.)
+  @returns(the number of bytes in buffer + the number of bytes available from @link(CoreStream).)
+}
     function   BytesAvailable: Int64; override;
+{ Get the number of bytes in buffer.
+  @returns(the number of bytes in buffer)
+}
     function   BytesInBuffer: Int64;
     function   MarkPosition: TXRTLMarkData; override;
     procedure  RestorePosition(const MarkData: TXRTLMarkData); override;
     function   Skip(const Count: Int64): Int64; override;
   end;
 
+{ @abstract(The class implements a buffered output stream.)
+  By setting up such an output stream, an application can write bytes
+  to the underlying output stream without necessarily causing a call
+  to the underlying system for each byte written.
+}
   TXRTLBufferedOutputStream = class(TXRTLFilterOutputStream)
   private
+{ The internal buffer where data is stored.
+}
     FBufferData: Pointer;
+{ Total length of buffer allocated.
+}
     FBufferSize: Integer;
+{ Position in the buffer to be written to next.
+}
     FWritePointer: Integer;
     procedure  SetBufferSize(const Value: Integer);
     function   BytesInBuffer: Integer;
@@ -53,7 +96,11 @@ type
                        AOwnCoreStream: Boolean = True;
                        const ABufferSize: Integer = XRTLDefaultBufferSize);
     destructor Destroy; override;
+{ The internal buffer where data is stored.
+}
     property   BufferData: Pointer read FBufferData;
+{ Total length of buffer allocated.
+}
     property   BufferSize: Integer read FBufferSize write SetBufferSize;
     procedure  Flush; override;
   end;

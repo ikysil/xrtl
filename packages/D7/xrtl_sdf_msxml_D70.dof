@@ -88,7 +88,7 @@ RemoteSymbols=0
 MinStackSize=16384
 MaxStackSize=1048576
 ImageBase=926941184
-ExeDescription=xrtl binary serialization/deserialization
+ExeDescription=xrtl MSXML serialization/deserialization
 [Directories]
 OutputDir=
 UnitOutputDir=..\..\lib\D7
@@ -101,7 +101,7 @@ DebugSourceDirs=
 UsePackages=0
 [Parameters]
 RunParams=
-HostApplication=
+HostApplication=L:\Delphi\XRTL\exe\secDemo2.exe
 Launcher=
 UseLauncher=0
 DebugCWD=

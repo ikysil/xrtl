@@ -1,3 +1,5 @@
+{ @author(Illya Kysil <ikysil at users.berlios.de>)
+}
 unit xrtl_io_StreamProcessor;
 
 {$INCLUDE xrtl.inc}
@@ -13,9 +15,34 @@ type
 
   EXRTLInvalidStreamProcessorState = class(EXRTLStreamProcessorException);
 
-  TXRTLStreamProcessorOperation = (spoRun, spoFlush, spoFinish);
-  TXRTLStreamProcessorState     = (spsUnknown, spsClosed, spsRunning);
+{ Requested stream processor operating mode.
+}
+  TXRTLStreamProcessorOperation = (
+// Process as much as possible, buffer output data if required
+    spoRun,
+// Process as much as possible, flush output data buffer.
+// Flush operation doesn't have input buffer defined.
+// Note: not all stream processors support flush operation, see
+// @link(TXRTLStreamProcessor.IsFlushSupported).
+    spoFlush,
+// Process as much as possible, flush output data buffer, free internal state data
+// Finish operation doesn't have input buffer defined.
+    spoFinish
+  );
 
+{ Stream processor state.
+}
+  TXRTLStreamProcessorState = (
+// Stream processor is not initialized
+    spsUnknown,
+// Stream closed
+    spsClosed,
+// Stream processor is initialized
+    spsRunning
+  );
+
+{ Abstract stream processor.
+}
   TXRTLStreamProcessor = class
   private
     FState: TXRTLStreamProcessorState;
@@ -45,19 +72,52 @@ type
 //  The actual input length of the next update call may be smaller
 //  than the length returned by this method.
     function   GetInputSize(OutputSize: Integer; const Operation: TXRTLStreamProcessorOperation): Integer; virtual; abstract;
-//  Returns: true if processor has more data to transfer, false if all data processed
+//  Process another chunk of data.
+//  Advance input buffer pointer @link(InBuffer) by the number
+//  of bytes processed, decrease @link(InAvail) by the same amount.
+//  Advance output buffer pointer @link(OutBuffer) by the number
+//  of bytes outputted, decrease @link(OutAvail) by the same amount.
+//  @param(InAvail length of data available in input buffer)
+//  @param(OutBuffer pointer to an output buffer)
+//  @param(OutAvail length of output buffer available)
+//  @param(Operation requested operation)
+//  @returns(@true if output buffer is too small to include all data available
+//           (processor buffered excessive output data),
+//           @false if all data available has been put into output buffer.)
     function   Update(var InBuffer: PByteArray;
                       var InAvail: Integer;
                       var OutBuffer: PByteArray;
                       var OutAvail: Integer;
                       const Operation: TXRTLStreamProcessorOperation): Boolean;
+//  Returns a flag which denotes if this stream processor supports flush operation.
+//  If flush operation is not supported then calls to @link(TXRTLOutputStream.Flush)
+//  will have no effect on stream processor, i.e. stream processor's buffers will not be
+//  flushed. 
+//  @returns(@true if @link(spoFlush) is supported.)
     function   IsFlushSupported: Boolean; virtual; abstract;
+//  Reset processor into non-initialized state.
     procedure  Reset;
     class function GetDisplayName: string; virtual;
   end;
 
-  TXRTLConvertingStreamProcessorMode = (cspmUnknown, cspmDirect, cspmReverse);
+{ TXRTLConvertingStreamProcessor conversion mode.
+  Exact meaning of @link(cspmDirect) and @link(cspmReverse) depends on implementation
+  but general rule is that @link(cspmDirect) denotes conversion of application
+  data into some other form. Compressing and Enciphering are direct conversions
+  while Decompressing and Deciphering are reverse conversions under that rule.
+}
+  TXRTLConvertingStreamProcessorMode = (
+// Conversion mode is not initialized
+    cspmUnknown,
+// Direct conversion
+    cspmDirect,
+// Reverse conversion
+    cspmReverse
+  );
 
+{ Stream processor which provides bidirectional stream data conversion support.
+  Enciphering/Deciphering, Compressing/Decompressing, etc. stream processors belong here.
+}
   TXRTLConvertingStreamProcessor = class(TXRTLStreamProcessor)
   private
     FMode: TXRTLConvertingStreamProcessorMode;
@@ -69,6 +129,8 @@ type
     procedure  CheckState; override;
   end;
 
+{ Compressing/Decompressing stream processor.
+}
   TXRTLCompressingStreamProcessor = class(TXRTLConvertingStreamProcessor)
   private
   protected

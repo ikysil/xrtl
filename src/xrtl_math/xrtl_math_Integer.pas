@@ -49,12 +49,36 @@ procedure XRTLXor(const AInteger1, AInteger2: TXRTLInteger; var AResult: TXRTLIn
          0 AInteger = 0
          1 AInteger > 0}
 function  XRTLSign(const AInteger: TXRTLInteger): Integer;
+{ @abstract(Sets argument to zero.)
+  @param(AInteger)
+}
 procedure XRTLZero(var AInteger: TXRTLInteger);
+{ @abstract(Sets argument to one.)
+  @param(AInteger)
+}
 procedure XRTLOne(var AInteger: TXRTLInteger);
+{ @abstract(Sets argument to -1.)
+  @param(AInteger)
+}
 procedure XRTLMOne(var AInteger: TXRTLInteger);
+{ @abstract(Sets argument to two.)
+  @param(AInteger)
+}
 procedure XRTLTwo(var AInteger: TXRTLInteger);
+{ @abstract(Negates argument.)
+  @param(AInteger)
+  @param(AResult = -AInteger)
+  @returns(carry from MSB if any)
+}
 function  XRTLNeg(const AInteger: TXRTLInteger; var AResult: TXRTLInteger): Integer;
+{ @abstract(Returns an absolute value of an argument.)
+  @param(AInteger)
+  @param(AResult = abs(AInteger))
+  @returns(carry from MSB if any)
+}
 function  XRTLAbs(const AInteger: TXRTLInteger; var AResult: TXRTLInteger): Integer;
+{ @abstract(Calculates full sum A+B+C (mod 2^32) and carry value.)
+}
 procedure XRTLFullSum(const A, B, C: Integer; var Sum, Carry: Integer); stdcall;
 function  XRTLAdd(const AInteger1, AInteger2: TXRTLInteger; var AResult: TXRTLInteger): Integer; overload;
 function  XRTLAdd(const AInteger1: TXRTLInteger; const AInteger2: Int64; var AResult: TXRTLInteger): Integer; overload;

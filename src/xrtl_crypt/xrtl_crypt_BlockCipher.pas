@@ -1,3 +1,6 @@
+{ Abstract block ciphers, modes, and paddings.
+  @author(Illya Kysil <ikysil at users.berlios.de>)
+}
 unit xrtl_crypt_BlockCipher;
 
 {$INCLUDE xrtl.inc}

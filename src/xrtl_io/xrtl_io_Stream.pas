@@ -1,3 +1,4 @@
+//PENDING: @abstract()
 unit xrtl_io_Stream;
 
 {$INCLUDE xrtl.inc}
@@ -10,6 +11,8 @@ uses
   xrtl_io_Exception, xrtl_io_ResourceStrings;
 
 const
+{ @abstract(Value returned from @link(TXRTLInputStream.Read) method on end of stream.)
+}
   XRTLEndOfStreamValue = -1;
 
 type
@@ -17,6 +20,9 @@ type
   TXRTLInputStream  = class;
   TXRTLOutputStream = class;
 
+{ @abstract(Represents a position for the @link(TXRTLInputStream) which can be
+            restored with @link(TXRTLInputStream.RestorePosition) later.)
+}
   TXRTLMarkData = class
   private
     FOwner: TXRTLInputStream;
@@ -29,39 +35,214 @@ type
     procedure  CheckOwner(const AOwner: TXRTLInputStream); virtual;
   end;
 
+{ @abstract(This abstract class is the superclass of all classes representing
+            an input stream of bytes.)
+  Applications that need to define a subclass of @name must always provide
+  @link(TXRTLInputStream._ReadBuffer) method.
+}
   TXRTLInputStream = class
   private
   protected
+{ @abstract(A flag which is set by @link(Close) to mark the stream as closed.)
+}
     FClosed: Boolean;
+{ @abstract(Skips over and discards Count bytes of data from this input stream.)
+  The @name method may, for a variety of reasons, end up skipping over some smaller
+  number of bytes, possibly 0. This may result from any of a number of conditions;
+  reaching end of file before Count bytes have been skipped is only one possibility.
+  The actual number of bytes skipped is returned.
+  If Count is negative, no bytes are skipped.
+  The default implementation reads and discards data using @link(Read) method.
+  @param(Count the number of bytes to be skipped.)
+  @returns(the actual number of bytes skipped.)
+}
     function   _Skip(const Count: Int64): Int64;
     procedure  DoClose; virtual;
+{ @abstract(Reads up to Count bytes of data from the input stream into a Buffer.)
+  An attempt is made to read as many as Count bytes,
+  but a smaller number may be read, possibly zero.
+  The number of bytes actually read is returned as an integer.
+
+  This method blocks until input data is available, end of file is detected,
+  or an exception is thrown.
+
+  If Count is zero, then no bytes are read and 0 is returned;
+  otherwise, there is an attempt to read at least one byte.
+  If no byte is available because the stream is at end of file,
+  the value @link(XRTLEndOfStreamValue) is returned;
+  otherwise, at least one byte is read and stored into Buffer.
+
+  Applications that need to define a subclass of @classname must always override
+  @link(_ReadBuffer) method.
+  @param(Buffer the buffer into which the data is read.)
+  @param(Count the maximum number of bytes to read.)
+  @returns(the total number of bytes read into the buffer,
+           or @link(XRTLEndOfStreamValue) if there is no more data because
+           the end of the stream has been reached.)
+}
     function   _ReadBuffer(var Buffer; const Count: Integer): Integer; virtual;
   public
+{ A flag which is set by @link(Close) to mark the stream as closed.
+  Reads @link(FClosed).
+}
+    property   Closed: Boolean read FClosed;
+{ @abstract(Closes this input stream using @link(Close).)
+}
     procedure  BeforeDestruction; override;
+{ @abstract(Closes this input stream and releases any system resources associated
+            with this stream.)
+  @name calls @link(DoClose) to do actual close then stream is marked as
+  closed by setting @link(FClosed) to @true.
+}
     procedure  Close;
+{ @abstract(Returns the number of bytes that can be read (or skipped over) from
+            this input stream without blocking by the next caller of a method
+            for this input stream.)
+  The next caller might be the same thread or another thread.
+  The @name method for class @classname always returns 0.
+  This method should be overridden by subclasses.
+  @returns(the number of bytes that can be read from this input stream without blocking.)
+}
     function   BytesAvailable: Int64; virtual;
+{ @abstract(Marks a position for the @classname which can be restored later
+            with @link(RestorePosition).)
+  @returns(the instance of @link(TXRTLMarkData) representing current position.)
+  @raises(EXRTLMarkException if position can't be marked.)
+}
     function   MarkPosition: TXRTLMarkData; virtual;
+{ @abstract(Restores a position marked with @link(MarkPosition).)
+  @param(MarkData the instance of @link(TXRTLMarkData) representing position to be restored.)
+  @raises(EXRTLRestoreException is position can't be restored.)
+}
     procedure  RestorePosition(const MarkData: TXRTLMarkData); virtual;
+{ @abstract(Reads the next byte of data from the input stream.)
+  The value byte is returned as an int in the range 0 to 255.
+  If no byte is available because the end of the stream has been reached,
+  the value @link(XRTLEndOfStreamValue) is returned.
+  This method blocks until input data is available,
+  the end of the stream is detected, or an exception is thrown.
+
+  A subclass must provide an implementation of this method.
+}
     function   Read: Integer;
+{ @abstract(Reads up to Count bytes of data from the input stream into a Buffer.)
+  An attempt is made to read as many as Count bytes,
+  but a smaller number may be read, possibly zero.
+  The number of bytes actually read is returned as an integer.
+
+  This method blocks until input data is available, end of file is detected,
+  or an exception is thrown.
+
+  If Count is zero, then no bytes are read and 0 is returned;
+  otherwise, there is an attempt to read at least one byte.
+  If no byte is available because the stream is at end of file,
+  the value @link(XRTLEndOfStreamValue) is returned;
+  otherwise, at least one byte is read and stored into Buffer.
+
+  @name calls @link(_ReadBuffer) to do actual read.
+  @param(Buffer the buffer into which the data is read.)
+  @param(Count the maximum number of bytes to read.)
+  @returns(the total number of bytes read into the buffer,
+           or @link(XRTLEndOfStreamValue) if there is no more data because
+           the end of the stream has been reached.)
+}
     function   ReadBuffer(var Buffer; const Count: Integer): Integer;
+{ @abstract(Reads Count bytes of data from the input stream into a Buffer.)
+  An attempt is made to read Count bytes.
+  If no byte is available because the stream is at end of file,
+  the exception @link(EXRTLEndOfStreamException) is raised.
+
+  @param(Buffer the buffer into which the data is read.)
+  @param(Count the maximum number of bytes to read.)
+  @raises(EXRTLEndOfStreamException if end of stream reached before Count bytes read.)
+}
     procedure  ReadBufferFully(var Buffer; const Count: Integer);
+{ @abstract(Skips over and discards Count bytes of data from this input stream.)
+  The @name method may, for a variety of reasons, end up skipping over some smaller
+  number of bytes, possibly 0. This may result from any of a number of conditions;
+  reaching end of file before Count bytes have been skipped is only one possibility.
+  The actual number of bytes skipped is returned.
+  If Count is negative, no bytes are skipped.
+  @name calls @link(_Skip) to do actual read.
+  @param(Count the number of bytes to be skipped.)
+  @returns(the actual number of bytes skipped.)
+}
     function   Skip(const Count: Int64): Int64; virtual;
   end;
 
+{ @abstract(This abstract class is the superclass of all classes representing
+            an output stream of bytes.)
+  An output stream accepts output bytes and sends them to some sink.
+  Applications that need to define a subclass of @name must always override
+  @link(TXRTLOutputStream._WriteBuffer) method.
+}
   TXRTLOutputStream = class
   private
   protected
+{ @abstract(A flag which is set by @link(Close) to mark the stream as closed.)
+}
     FClosed: Boolean;
+{ @abstract(Closes this output stream and releases any system resources associated
+            with this stream.)
+  The general contract of close is that it closes the output stream.
+  A closed stream cannot perform output operations and cannot be reopened.
+  Applications that need to define a subclass of @classname must always override
+  @link(@classname.@name) method.
+}
     procedure  DoClose; virtual;
+{ @abstract(Writes the specified data buffer to this output stream.)
+  The general contract for @name is that Count bytes are written to the output stream.
+  Applications that need to define a subclass of @classname must always override
+  @link(@classname.@name) method.
+  @param(Buffer data to write)
+  @param(Count length of data to write)
+}
     procedure  _WriteBuffer(const Buffer; const Count: Integer); virtual;
   public
+{ A flag which is set by @link(Close) to mark the stream as closed.
+  Reads @link(FClosed).
+}
+    property   Closed: Boolean read FClosed;
+{ @abstract(Closes this output stream using @link(Close).)
+}
     procedure  BeforeDestruction; override;
+{ @abstract(Closes this output stream and releases any system resources associated
+            with this stream.)
+  The general contract of close is that it closes the output stream.
+  A closed stream cannot perform output operations and cannot be reopened.
+  @name calls @link(DoClose) to do actual close then stream is marked as
+  closed by setting @link(FClosed) to @true.
+}
     procedure  Close;
+{ @abstract(Flushes this output stream and forces any buffered output bytes to be written out.)
+  The general contract of @name is that calling it is an indication that,
+  if any bytes previously written have been buffered by the implementation
+  of the output stream, such bytes should immediately be written to their intended destination.
+  The @name method of @classname does nothing.
+}
     procedure  Flush; virtual;
+{ @abstract(Writes the specified byte to this output stream.)
+  The general contract for @name is that one byte is written to the output stream.
+  @param(Value the byte)
+}
     procedure  Write(const Value: Byte);
+{ @abstract(Writes the specified data buffer to this output stream.)
+  The general contract for @name is that Count bytes are written to the output stream.
+  @name calls @link(_WriteBuffer) to do actual write.
+  @param(Buffer data to write)
+  @param(Count length of data to write)
+}
     procedure  WriteBuffer(const Buffer; const Count: Integer);
   end;
 
+{ @abstract(A TXRTLFilterInputStream contains some other input stream,
+            which it uses as its basic source of data, possibly transforming
+            the data along the way or providing additional functionality.)
+  The class @classname itself simply overrides all methods of @link(TXRTLInputStream)
+  with versions that pass all requests to the contained input stream.
+  Subclasses of TXRTLFilterInputStream may further override some of these
+  methods and may also provide additional methods and fields.
+}
   TXRTLFilterInputStream = class(TXRTLInputStream)
   private
   protected
@@ -80,6 +261,15 @@ type
     function   Skip(const Count: Int64): Int64; override;
   end;
 
+{ @abstract(This class is the superclass of all classes that filter output streams.)
+  These streams sit on top of an already existing output stream
+  (the underlying output stream) which it uses as its basic sink of data,
+  but possibly transforming the data along the way or providing additional functionality.
+  The class TXRTLFilterOutputStream itself simply overrides all methods of
+  @link(TXRTLOutputStream) with versions that pass all requests to the underlying
+  output stream. Subclasses of TXRTLFilterOutputStream may further override
+  some of these methods as well as provide additional methods and fields.
+}
   TXRTLFilterOutputStream = class(TXRTLOutputStream)
   private
   protected
