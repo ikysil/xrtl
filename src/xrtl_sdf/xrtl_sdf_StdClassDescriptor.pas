@@ -93,7 +93,7 @@ implementation
 
 uses
   {$IFDEF HAS_UNIT_VARIANTS}Variants, {$ENDIF}
-  xrtl_util_ValueImpl, xrtl_sdf_Reference, xrtl_util_Value;
+  xrtl_util_ValueImpl, xrtl_sdf_Reference, xrtl_util_Value, xrtl_util_Container;
 
 procedure XRTLRegisterStdClassDescriptors;
 begin
@@ -130,6 +130,12 @@ begin
                                 'xrtl::value::GUID', TXRTLValueGUID));
   XRTLRegisterClassDescriptor(TXRTLValueBooleanClassDescriptor.Create(
                                 'xrtl::value::Boolean', TXRTLValueBoolean));
+  XRTLRegisterClassDescriptor(TXRTLClassDescriptor.Create(
+                                'xrtl::container::SequentialContainer', TXRTLSequentialContainer));
+  XRTLRegisterClassDescriptor(TXRTLClassDescriptor.Create(
+                                'xrtl::container::SetContainer', TXRTLSetContainer));
+  XRTLRegisterClassDescriptor(TXRTLClassDescriptor.Create(
+                                'xrtl::container::KeyValueContainer', TXRTLKeyValueContainer));
 end;
 
 { TXRTLValueCardinalClassDescriptor }

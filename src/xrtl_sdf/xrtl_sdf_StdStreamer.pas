@@ -6,6 +6,7 @@ interface
 
 uses
   SysUtils,
+  xrtl_util_Value,
   xrtl_sdf_Serializer;
 
 type
@@ -104,12 +105,38 @@ type
     procedure  ReadObjectData(const Reader: IXRTLObjectReader; const Obj: TObject); override;
   end;
 
+  TXRTLValueContainerStreamer = class(TXRTLObjectStreamer)
+  protected
+    procedure  DoAdd(const Obj: TObject; const Value: IXRTLValue); virtual; abstract;
+  public
+    procedure  WriteObjectData(const Writer: IXRTLObjectWriter; const Obj: TObject); override;
+    procedure  ReadNoData(const Obj: TObject); override;
+    procedure  ReadObjectData(const Reader: IXRTLObjectReader; const Obj: TObject); override;
+  end;
+
+  TXRTLSequentialContainerStreamer = class(TXRTLValueContainerStreamer)
+  protected
+    procedure  DoAdd(const Obj: TObject; const Value: IXRTLValue); override;
+  end;
+
+  TXRTLSetContainerStreamer = class(TXRTLValueContainerStreamer)
+  protected
+    procedure  DoAdd(const Obj: TObject; const Value: IXRTLValue); override;
+  end;
+
+  TXRTLKeyValueContainerStreamer = class(TXRTLObjectStreamer)
+  public
+    procedure  WriteObjectData(const Writer: IXRTLObjectWriter; const Obj: TObject); override;
+    procedure  ReadNoData(const Obj: TObject); override;
+    procedure  ReadObjectData(const Reader: IXRTLObjectReader; const Obj: TObject); override;
+  end;
+
 procedure XRTLRegisterStdStreamers;
 
 implementation
 
 uses
-  xrtl_util_ValueImpl;
+  xrtl_util_ValueImpl, xrtl_util_Container;
 
 procedure XRTLRegisterStdStreamers;
 begin
@@ -128,6 +155,10 @@ begin
   XRTLStreamerRegistry.Register(TXRTLValueClass,      TXRTLValueClassStreamer.Create);
   XRTLStreamerRegistry.Register(TXRTLValueGUID,       TXRTLValueGUIDStreamer.Create);
   XRTLStreamerRegistry.Register(TXRTLValueBoolean,    TXRTLValueBooleanStreamer.Create);
+  
+  XRTLStreamerRegistry.Register(TXRTLSequentialContainer, TXRTLSequentialContainerStreamer.Create);
+  XRTLStreamerRegistry.Register(TXRTLSetContainer,        TXRTLSetContainerStreamer.Create);
+  XRTLStreamerRegistry.Register(TXRTLKeyValueContainer,   TXRTLSequentialContainerStreamer.Create);
 end;
 
 { TXRTLValueStreamer }
@@ -344,6 +375,104 @@ procedure TXRTLValueBooleanStreamer.ReadObjectData(const Reader: IXRTLObjectRead
   const Obj: TObject);
 begin
   (Obj as TXRTLValueBoolean).SetValue(Reader.ReadBoolean);
+end;
+
+{ TXRTLValueContainerStreamer }
+
+procedure TXRTLValueContainerStreamer.WriteObjectData(const Writer: IXRTLObjectWriter;
+  const Obj: TObject);
+var
+  Values: TXRTLValueArray;
+  I: Integer;
+begin
+  Values:= nil;
+  try
+    Values:= (Obj as TXRTLSequentialContainer).GetValues;
+    Writer.WriteInteger(Length(Values));
+    for I:= Low(Values) to High(Values) do
+      Writer.WriteInterface(Values[I], True);
+  finally
+    Values:= nil;
+  end;
+end;
+
+procedure TXRTLValueContainerStreamer.ReadNoData(const Obj: TObject);
+begin
+  (Obj as TXRTLSequentialContainer).Clear;
+end;
+
+procedure TXRTLValueContainerStreamer.ReadObjectData(const Reader: IXRTLObjectReader;
+  const Obj: TObject);
+var
+  Count, I: Integer;
+begin
+  (Obj as TXRTLSequentialContainer).Clear;
+  Count:= Reader.ReadInteger;
+  for I:= 0 to Count - 1 do
+  begin
+    DoAdd(Obj, Reader.ReadInterface(nil, True) as IXRTLValue);
+  end;
+end;
+
+{ TXRTLSequentialContainerStreamer }
+
+procedure TXRTLSequentialContainerStreamer.DoAdd(const Obj: TObject; const Value: IXRTLValue);
+begin
+  (Obj as TXRTLSequentialContainer).Insert(Value, nil);
+end;
+
+{ TXRTLSetContainerStreamer }
+
+procedure TXRTLSetContainerStreamer.DoAdd(const Obj: TObject; const Value: IXRTLValue);
+begin
+  (Obj as TXRTLSetContainer).Add(Value);
+end;
+
+{ TXRTLKeyValueContainerStreamer }
+
+procedure TXRTLKeyValueContainerStreamer.WriteObjectData(const Writer: IXRTLObjectWriter;
+  const Obj: TObject);
+var
+  Values, Keys: TXRTLValueArray;
+  I: Integer;
+begin
+  Values:= nil;
+  Keys:= nil;
+  try
+    Values:= (Obj as TXRTLKeyValueContainer).GetValues;
+    Keys:=   (Obj as TXRTLKeyValueContainer).GetKeys;
+    Assert(Length(Values) = Length(Keys));
+    Writer.WriteInteger(Length(Values));
+    for I:= Low(Values) to High(Values) do
+    begin
+      Writer.WriteInterface(Keys[I],   True);
+      Writer.WriteInterface(Values[I], True);
+    end;
+  finally
+    Values:= nil;
+    Keys:= nil;
+  end;
+end;
+
+procedure TXRTLKeyValueContainerStreamer.ReadNoData(const Obj: TObject);
+begin
+  (Obj as TXRTLKeyValueContainer).Clear;
+end;
+
+procedure TXRTLKeyValueContainerStreamer.ReadObjectData(const Reader: IXRTLObjectReader;
+  const Obj: TObject);
+var
+  Count, I: Integer;
+  Key, Value: IXRTLValue;
+begin
+  (Obj as TXRTLKeyValueContainer).Clear;
+  Count:= Reader.ReadInteger;
+  for I:= 0 to Count - 1 do
+  begin
+    Key:=   Reader.ReadInterface(nil, True) as IXRTLValue;
+    Value:= Reader.ReadInterface(nil, True) as IXRTLValue;
+    (Obj as TXRTLKeyValueContainer).SetValue(Key, Value);
+  end;
 end;
 
 end.
