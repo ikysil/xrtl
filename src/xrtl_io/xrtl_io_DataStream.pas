@@ -15,6 +15,7 @@ type
     function   ReadBoolean: Boolean; virtual;
     function   ReadByte: Byte; virtual;
     function   ReadCardinal: Cardinal; virtual;
+    function   ReadComp: Comp; virtual;
     function   ReadCurrency: Currency; virtual;
     function   ReadDateTime: TDateTime; virtual;
     function   ReadDouble: Double; virtual;
@@ -37,6 +38,7 @@ type
     procedure  WriteBoolean(AValue: Boolean); virtual;
     procedure  WriteByte(AValue: Byte); virtual;
     procedure  WriteCardinal(AValue: Cardinal); virtual;
+    procedure  WriteComp(AValue: Comp); virtual;
     procedure  WriteCurrency(AValue: Currency); virtual;
     procedure  WriteDateTime(AValue: TDateTime); virtual;
     procedure  WriteDouble(AValue: Double); virtual;
@@ -68,6 +70,11 @@ begin
 end;
 
 function TXRTLDataInputStream.ReadCardinal: Cardinal;
+begin
+  ReadBufferFully(Result, SizeOf(Result));
+end;
+
+function TXRTLDataInputStream.ReadComp: Comp;
 begin
   ReadBufferFully(Result, SizeOf(Result));
 end;
@@ -296,6 +303,11 @@ begin
 end;
 
 procedure TXRTLDataOutputStream.WriteCardinal(AValue: Cardinal);
+begin
+  WriteBuffer(AValue, SizeOf(AValue));
+end;
+
+procedure TXRTLDataOutputStream.WriteComp(AValue: Comp);
 begin
   WriteBuffer(AValue, SizeOf(AValue));
 end;
