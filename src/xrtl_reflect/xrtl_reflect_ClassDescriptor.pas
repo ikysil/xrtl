@@ -25,13 +25,20 @@ type
     procedure  SetValues(const Obj: TObject; const Properties: IXRTLPropertyList);
   end;
 
+  IXRTLFactory = interface
+  ['{2BD0AC81-EC53-4252-A8A9-4F5325750A89}']
+    function   CreateInstance: TObject;
+  end;
+
   IXRTLClassDescriptor = interface
   ['{C255D459-F2C1-44FA-A47F-C37771143BF4}']
     function   GetClass: TClass;
     function   GetClassId: WideString;
     function   DefineProperties: IXRTLPropertyList;
     function   GetIntrospector: IXRTLIntrospector;
+    function   GetFactory: IXRTLFactory;
     property   Introspector: IXRTLIntrospector read GetIntrospector;
+    property   Factory: IXRTLFactory read GetFactory;
   end;
 
   TXRTLClassDescriptor = class(TInterfacedObject, IXRTLImplementationObjectProvider,
@@ -40,18 +47,27 @@ type
     FClass: TClass;
     FClassId: WideString;
     FIntrospector: IXRTLIntrospector;
+    FFactory: IXRTLFactory;
   protected
   public
+    constructor Create(const AClassId: WideString); overload;
     constructor Create(const AClass: TClass; const AClassId: WideString;
-                       const AIntrospector: IXRTLIntrospector);
+                       const AIntrospector: IXRTLIntrospector;
+                       const AFactory: IXRTLFactory); overload;
     destructor Destroy; override;
     function   GetImplementationObject: TObject;
     function   GetClass: TClass;
     function   GetClassId: WideString;
     function   DefineProperties: IXRTLPropertyList;
     function   GetIntrospector: IXRTLIntrospector;
+    function   GetFactory: IXRTLFactory;
   end;
 
+  TXRTLClassDescriptorFactory = class(TInterfacedObject, IXRTLFactory)
+  public
+    function   CreateInstance: TObject;
+  end;
+  
 procedure XRTLRegisterClassDescriptor(const Descriptor: IXRTLClassDescriptor);
 function  XRTLFindClassDescriptor(const Clazz: TClass; var Descriptor: IXRTLClassDescriptor): Boolean; overload;
 function  XRTLFindClassDescriptor(const ClassId: WideString; var Descriptor: IXRTLClassDescriptor): Boolean; overload;
@@ -176,13 +192,23 @@ end;
 
 { TXRTLClassDescriptor }
 
+constructor TXRTLClassDescriptor.Create(const AClassId: WideString);
+begin
+  inherited Create;
+  FClass:= nil;
+  FClassId:= AClassId;
+  FIntrospector:= nil;
+  FFactory:= nil;
+end;
+
 constructor TXRTLClassDescriptor.Create(const AClass: TClass; const AClassId: WideString;
-  const AIntrospector: IXRTLIntrospector);
+  const AIntrospector: IXRTLIntrospector; const AFactory: IXRTLFactory);
 begin
   inherited Create;
   FClass:= AClass;
   FClassId:= AClassId;
   FIntrospector:= AIntrospector;
+  FFactory:= AFactory;
 end;
 
 destructor TXRTLClassDescriptor.Destroy;
@@ -217,11 +243,25 @@ begin
   Result:= FIntrospector;
 end;
 
+function TXRTLClassDescriptor.GetFactory: IXRTLFactory;
+begin
+  Result:= FFactory;
+end;
+
+{ TXRTLClassDescriptorFactory }
+
+function TXRTLClassDescriptorFactory.CreateInstance: TObject;
+begin
+  Result:= TXRTLClassDescriptor.Create;
+end;
+
 initialization
 begin
   FDescriptorLock:= XRTLCreateExclusiveLock;
   FDescriptorList:= TXRTLArray.Create;
-  XRTLRegisterClassDescriptor(TXRTLClassDescriptor.Create(TXRTLClassDescriptor, XRTLClassDescriptorId, nil));
+  XRTLRegisterClassDescriptor(
+    TXRTLClassDescriptor.Create(TXRTLClassDescriptor, XRTLClassDescriptorId, nil,
+                                TXRTLClassDescriptorFactory.Create));
 end;
 
 finalization
