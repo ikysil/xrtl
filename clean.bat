@@ -3,3 +3,4 @@
 @del/q/f/s src\*.dcu
 @del/q/f/s demos\*.dcu
 @del/q/f/s *.~* *.dsk *.ddp *.drc
+@rmdir/s/q export

@@ -71,10 +71,12 @@ var
   AutoLock: IInterface;
 begin
   AutoLock:= XRTLAcquireExclusiveLock(FDescriptorLock);
-  if XRTLFindClassDescriptor(Descriptor.GetClass, LDescriptor) then
+  if XRTLFindClassDescriptor(Descriptor.GetClass, LDescriptor)
+     and (LDescriptor <> Descriptor) then
     raise EXRTLClassDescriptorException.CreateFmt(SXRTLDescriptorForClassNameRegistered,
                                                   [Descriptor.GetClass.ClassName]);
-  if XRTLFindClassDescriptor(Descriptor.GetClassId, LDescriptor) then
+  if XRTLFindClassDescriptor(Descriptor.GetClassId, LDescriptor)
+     and (LDescriptor <> Descriptor) then
     raise EXRTLClassDescriptorException.CreateFmt(SXRTLDescriptorForClassIdRegistered,
                                                   [Descriptor.GetClassId]);
   FDescriptorList.Insert(XRTLValue(Descriptor));
