@@ -6,11 +6,11 @@ interface
 
 uses
   SysUtils,
-  xrtl_util_Type, xrtl_util_Array,
+  xrtl_util_Type, xrtl_util_Array, xrtl_util_Map,
   xrtl_util_Container, xrtl_util_Value,
   xrtl_reflect_ClassDescriptor, xrtl_reflect_PropertyList, xrtl_reflect_Property,
   xrtl_io_Stream,
-  xrtl_io_object_Serializer, xrtl_io_object_Reference;
+  xrtl_io_object_Serializer, xrtl_io_object_Reference, xrtl_io_object_ReferenceMap;
 
 const
   XRTLEndOfPropertiesData = 'xrtl::eop';
@@ -21,6 +21,9 @@ type
 
   TXRTLBinarySerializer = class(TInterfacedObject, IXRTLSerializer)
   private
+    FRefMap: TXRTLReferenceMap;
+    procedure  WriteClassDescriptor(const Stream: TXRTLOutputStream;
+                                    const Obj: TObject);
     procedure  WriteClassDescriptors(const Stream: TXRTLOutputStream;
                                      const Descriptors: TXRTLSequentialContainer);
     procedure  WriteInstanceData(const Stream: TXRTLOutputStream;
@@ -49,14 +52,16 @@ type
 
   TXRTLBinaryDeserializer = class(TInterfacedObject, IXRTLDeserializer)
   private
+    FRefMap: TXRTLReferenceMap;
+    procedure  ReadObjectData(const Stream: TXRTLInputStream; var Obj: TObject);
     function   ReadReference(const Stream: TXRTLInputStream): TXRTLInstanceReference;
     function   GetInstanceFromReference(var Ref: TXRTLInstanceReference;
                                         var Obj: TObject; var AllowShared: Boolean): Boolean;
+    procedure  ReadClassDescriptor(const Stream: TXRTLInputStream; var Obj: TObject);
     function   ReadClassDescriptors(const Stream: TXRTLInputStream): TXRTLSequentialContainer;
     procedure  ReadInstanceData(const Stream: TXRTLInputStream;
                                 const LDescriptors, SDescriptors: TXRTLSequentialContainer;
                                 const Obj: TObject);
-    procedure  ReadObjectData(const Stream: TXRTLInputStream; var Obj: TObject);
     procedure  ReadClassInstanceData(const Stream: TXRTLInputStream;
                                      const Descriptor: IXRTLClassDescriptor;
                                      const Obj: TObject);
@@ -88,10 +93,12 @@ uses
 constructor TXRTLBinarySerializer.Create;
 begin
   inherited Create;
+  FRefMap:= TXRTLReferenceMap.Create;
 end;
 
 destructor TXRTLBinarySerializer.Destroy;
 begin
+  FreeAndNil(FRefMap);
   inherited;
 end;
 
@@ -102,28 +109,33 @@ var
 begin
   Ref:= nil;
   Result:= False;
-  if AllowShared then
-  begin
-// TO DO: check for shared instance and return shared instance reference
-    //Ref:= get shared reference
-    Result:= Assigned(Ref);
-    if not Result then
+  try
+    if AllowShared then
     begin
-//  create and register new instance reference
-      Ref:= TXRTLInstanceReference.Create(Obj, AllowShared);
-//  register ref
-    end;
-    WriteObjectData(Stream, Ref);
-  end
-  else
-  begin
-    try
+//  check for shared instance and return shared instance reference
+      Ref:= FRefMap.GetReference(Obj);
+      Result:= Assigned(Ref);
+      if not Result then
+      begin
+//  create new instance reference
+        Ref:= TXRTLInstanceReference.Create(Obj, AllowShared);
+      end;
+      WriteObjectData(Stream, Ref);
+//  if reference is new (Result = False) and is registered successfully then
+//  set Ref to nil to bypass FreeAndNil below
+      if not Result and FRefMap.RegisterReference(Ref, Obj) then
+      begin
+        Ref:= nil; // to bypass FreeAndNil below
+      end;
+    end
+    else
+    begin
 //  create unique instance reference
       Ref:= TXRTLInstanceReference.Create(Obj, AllowShared);
       WriteObjectData(Stream, Ref);
-    finally
-      FreeAndNil(Ref);
     end;
+  finally
+    FreeAndNil(Ref);
   end;
 end;
 
@@ -203,10 +215,6 @@ begin
       WriteInstanceReference(Obj as TXRTLInstanceReference);
       Exit;
     end;
-    if Obj is TXRTLClassDescriptor then
-    begin
-      LAllowShared:= False;
-    end;
     if WriteReference(LStream, Obj, LAllowShared) then
       Exit;
     WriteObjectData(LStream, Obj);
@@ -219,13 +227,22 @@ procedure TXRTLBinarySerializer.WriteObjectData(const Stream: TXRTLOutputStream;
   const Obj: TObject);
 var
   LDescriptors: TXRTLSequentialContainer;
+  CDescriptor: IXRTLClassDescriptor;
 begin
   LDescriptors:= nil;
   try
 //  get class descriptors in descendant - ancestor order
     LDescriptors:= XRTLFindHierarchyClassDescriptors(Obj.ClassType);
+    CDescriptor:= XRTLGetAsInterface(LDescriptors.GetValue(LDescriptors.AtBegin)) as IXRTLClassDescriptor;
     WriteClassDescriptors(Stream, LDescriptors);
-    WriteInstanceData(Stream, LDescriptors, Obj);
+    if WideCompareStr(CDescriptor.GetClassId, XRTLClassDescriptorId) = 0 then
+    begin
+      WriteClassDescriptor(Stream, Obj);
+    end
+    else
+    begin
+      WriteInstanceData(Stream, LDescriptors, Obj);
+    end;
   finally
     FreeAndNil(LDescriptors);
   end;
@@ -254,6 +271,20 @@ begin
   finally
     FreeAndNil(DStream);
     Values:= nil;
+  end;
+end;
+
+procedure TXRTLBinarySerializer.WriteClassDescriptor(const Stream: TXRTLOutputStream;
+  const Obj: TObject);
+var
+  DStream: TXRTLDataOutputStream;
+begin
+  DStream:= nil;
+  try
+    DStream:= TXRTLDataOutputStream.Create(TXRTLBlockOutputStream.Create(Stream, False), True);
+    DStream.WriteUTF8String((Obj as TXRTLClassDescriptor).GetClassId);
+  finally
+    FreeAndNil(DStream);
   end;
 end;
 
@@ -342,10 +373,12 @@ end;
 constructor TXRTLBinaryDeserializer.Create;
 begin
   inherited;
+  FRefMap:= TXRTLReferenceMap.Create;
 end;
 
 destructor TXRTLBinaryDeserializer.Destroy;
 begin
+  FreeAndNil(FRefMap);
   inherited;
 end;
 
@@ -400,6 +433,10 @@ begin
     if GetInstanceFromReference(Ref, Result, LAllowShared) then
       Exit;
     ReadObjectData(LStream, Result);
+//  if AllowShared and reference is registered successfully then
+//  set Ref to nil to bypass FreeAndNil below
+    if LAllowShared and FRefMap.RegisterReference(Ref, Result) then
+      Ref:= nil; // to bypass FreeAndNil below
   finally
     FreeAndNil(Ref);
     FreeAndNil(LStream);
@@ -423,6 +460,8 @@ end;
 
 function TXRTLBinaryDeserializer.GetInstanceFromReference(var Ref: TXRTLInstanceReference;
   var Obj: TObject; var AllowShared: Boolean): Boolean;
+var
+  LObj: TObject;
 begin
   Result:= False;
   if Ref.IsNil then
@@ -440,6 +479,11 @@ begin
     Result:= True;
     Exit;
   end;
+  if not AllowShared then Exit;
+  LObj:= FRefMap.GetObject(Ref);
+  Result:= Assigned(LObj);
+  if Result then
+    Obj:= LObj;
 end;
 
 procedure TXRTLBinaryDeserializer.ReadObjectData(const Stream: TXRTLInputStream;
@@ -453,6 +497,11 @@ begin
   try
     SDescriptors:= ReadClassDescriptors(Stream);
     CDescriptor:= XRTLGetAsInterface(SDescriptors.GetValue(SDescriptors.AtBegin)) as IXRTLClassDescriptor;
+    if WideCompareStr(CDescriptor.GetClassId, XRTLClassDescriptorId) = 0 then
+    begin
+      ReadClassDescriptor(Stream, Obj);
+      Exit;
+    end;
     if Assigned(Obj) then
     begin
       if Assigned(CDescriptor.GetClass) then
@@ -498,6 +547,31 @@ begin
       if not XRTLFindClassDescriptor(LClassId, LDescriptor) then
         LDescriptor:= TXRTLClassDescriptor.Create(LClassId);
       Result.Insert(XRTLValue(LDescriptor), Result.AtEnd);
+    end;
+  finally
+    FreeAndNil(DStream);
+  end;
+end;
+
+procedure TXRTLBinaryDeserializer.ReadClassDescriptor(const Stream: TXRTLInputStream;
+  var Obj: TObject);
+var
+  DStream: TXRTLDataInputStream;
+  LDescriptor: IXRTLClassDescriptor;
+  LClassId: WideString;
+begin
+  DStream:= nil;
+  LDescriptor:= nil;
+  try
+    DStream:= TXRTLDataInputStream.Create(TXRTLBlockInputStream.Create(Stream, False), True);
+    LClassId:= DStream.ReadUTF8String;
+    if XRTLFindClassDescriptor(LClassId, LDescriptor) then
+    begin
+      Obj:= (LDescriptor as IXRTLImplementationObjectProvider).GetImplementationObject;
+    end
+    else
+    begin
+      Obj:= TXRTLClassDescriptor.Create(LClassId);
     end;
   finally
     FreeAndNil(DStream);

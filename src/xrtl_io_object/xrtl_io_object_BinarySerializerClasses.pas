@@ -26,9 +26,11 @@ type
     procedure  WriteBoolean(AValue: Boolean);
     procedure  WriteByte(AValue: Byte);
     procedure  WriteCardinal(AValue: Cardinal);
+    procedure  WriteComp(AValue: Comp);
     procedure  WriteCurrency(AValue: Currency);
     procedure  WriteDateTime(AValue: TDateTime);
     procedure  WriteDouble(AValue: Double);
+    procedure  WriteExtended(AValue: Extended);
     procedure  WriteInt64(AValue: Int64);
     procedure  WriteInteger(AValue: Integer);
     procedure  WriteShortInt(AValue: ShortInt);
@@ -58,9 +60,11 @@ type
     function   ReadBoolean: Boolean;
     function   ReadByte: Byte;
     function   ReadCardinal: Cardinal;
+    function   ReadComp: Comp;
     function   ReadCurrency: Currency;
     function   ReadDateTime: TDateTime;
     function   ReadDouble: Double;
+    function   ReadExtended: Extended;
     function   ReadInt64: Int64;
     function   ReadInteger: Integer;
     function   ReadShortInt: ShortInt;
@@ -124,6 +128,12 @@ begin
   FStream.WriteCardinal(AValue);
 end;
 
+procedure TXRTLBinaryObjectWriter.WriteComp(AValue: Comp);
+begin
+  CheckBinaryDataStream;
+  FStream.WriteComp(AValue);
+end;
+
 procedure TXRTLBinaryObjectWriter.WriteCurrency(AValue: Currency);
 begin
   CheckBinaryDataStream;
@@ -140,6 +150,12 @@ procedure TXRTLBinaryObjectWriter.WriteDouble(AValue: Double);
 begin
   CheckBinaryDataStream;
   FStream.WriteDouble(AValue);
+end;
+
+procedure TXRTLBinaryObjectWriter.WriteExtended(AValue: Extended);
+begin
+  CheckBinaryDataStream;
+  FStream.WriteExtended(AValue);
 end;
 
 procedure TXRTLBinaryObjectWriter.WriteInt64(AValue: Int64);
@@ -175,7 +191,7 @@ end;
 procedure TXRTLBinaryObjectWriter.WriteString(AValue: string);
 begin
   CheckBinaryDataStream;
-  FStream.WriteString(AValue);
+  FStream.WriteUTF8String(AValue);
 end;
 
 procedure TXRTLBinaryObjectWriter.WriteUTF8String(AValue: WideString);
@@ -193,7 +209,7 @@ end;
 procedure TXRTLBinaryObjectWriter.WriteWideString(AValue: WideString);
 begin
   CheckBinaryDataStream;
-  FStream.WriteWideString(AValue);
+  FStream.WriteUTF8String(AValue);
 end;
 
 procedure TXRTLBinaryObjectWriter.WriteWordBool(AValue: WordBool);
@@ -275,6 +291,12 @@ begin
   Result:= FStream.ReadCardinal;
 end;
 
+function TXRTLBinaryObjectReader.ReadComp: Comp;
+begin
+  CheckBinaryDataStream;
+  Result:= FStream.ReadComp;
+end;
+
 function TXRTLBinaryObjectReader.ReadCurrency: Currency;
 begin
   CheckBinaryDataStream;
@@ -291,6 +313,12 @@ function TXRTLBinaryObjectReader.ReadDouble: Double;
 begin
   CheckBinaryDataStream;
   Result:= FStream.ReadDouble;
+end;
+
+function TXRTLBinaryObjectReader.ReadExtended: Extended;
+begin
+  CheckBinaryDataStream;
+  Result:= FStream.ReadExtended;
 end;
 
 function TXRTLBinaryObjectReader.ReadInt64: Int64;
@@ -326,7 +354,7 @@ end;
 function TXRTLBinaryObjectReader.ReadString: string;
 begin
   CheckBinaryDataStream;
-  Result:= FStream.ReadString;
+  Result:= FStream.ReadUTF8String;
 end;
 
 function TXRTLBinaryObjectReader.ReadUTF8String: WideString;
@@ -344,7 +372,7 @@ end;
 function TXRTLBinaryObjectReader.ReadWideString: WideString;
 begin
   CheckBinaryDataStream;
-  Result:= FStream.ReadWideString;
+  Result:= FStream.ReadUTF8String;
 end;
 
 function TXRTLBinaryObjectReader.ReadWordBool: WordBool;

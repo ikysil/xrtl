@@ -42,9 +42,11 @@ type
     procedure  WriteBoolean(AValue: Boolean);
     procedure  WriteByte(AValue: Byte);
     procedure  WriteCardinal(AValue: Cardinal);
+    procedure  WriteComp(AValue: Comp);
     procedure  WriteCurrency(AValue: Currency);
     procedure  WriteDateTime(AValue: TDateTime);
     procedure  WriteDouble(AValue: Double);
+    procedure  WriteExtended(AValue: Extended);
     procedure  WriteInt64(AValue: Int64);
     procedure  WriteInteger(AValue: Integer);
     procedure  WriteShortInt(AValue: ShortInt);
@@ -67,9 +69,11 @@ type
     function   ReadBoolean: Boolean;
     function   ReadByte: Byte;
     function   ReadCardinal: Cardinal;
+    function   ReadComp: Comp;
     function   ReadCurrency: Currency;
     function   ReadDateTime: TDateTime;
     function   ReadDouble: Double;
+    function   ReadExtended: Extended;
     function   ReadInt64: Int64;
     function   ReadInteger: Integer;
     function   ReadShortInt: ShortInt;
@@ -91,8 +95,8 @@ type
   ['{34F068D3-2136-442C-B11A-69467F90333E}']
     function   GetDescriptor: IXRTLClassDescriptor;
     procedure  WriteObjectData(const Writer: IXRTLObjectWriter; const Obj: TObject);
-    procedure  ReadObjectData(const Reader: IXRTLObjectReader; const Obj: TObject);
     procedure  ReadNoData(const Obj: TObject);
+    procedure  ReadObjectData(const Reader: IXRTLObjectReader; const Obj: TObject);
     property   Descriptor: IXRTLClassDescriptor read GetDescriptor;
   end;
 
@@ -103,8 +107,8 @@ type
     constructor Create(const ADescriptor: IXRTLClassDescriptor);
     function   GetDescriptor: IXRTLClassDescriptor;
     procedure  WriteObjectData(const Writer: IXRTLObjectWriter; const Obj: TObject); virtual; abstract;
-    procedure  ReadObjectData(const Reader: IXRTLObjectReader; const Obj: TObject); virtual; abstract;
     procedure  ReadNoData(const Obj: TObject); virtual; abstract;
+    procedure  ReadObjectData(const Reader: IXRTLObjectReader; const Obj: TObject); virtual; abstract;
   end;
 
 procedure XRTLRegisterStreamer(const Streamer: IXRTLObjectStreamer);
@@ -117,8 +121,9 @@ function  XRTLGetStreamer(const ClassId: WideString): IXRTLObjectStreamer; overl
 implementation
 
 uses
-  xrtl_util_Compare, xrtl_util_Container, xrtl_util_Array, xrtl_util_Lock,
-  xrtl_io_object_ResourceStrings, xrtl_util_Value;
+  xrtl_util_Compare, xrtl_util_Container, xrtl_util_Array, xrtl_util_Lock, xrtl_util_Value,
+  xrtl_io_object_ResourceStrings, xrtl_io_object_ValueClassDescriptor,
+  xrtl_io_object_ValueStreamer;
 
 var
   FStreamerLock: IXRTLExclusiveLock = nil;
@@ -225,6 +230,8 @@ initialization
 begin
   FStreamerLock:= XRTLCreateExclusiveLock;
   FStreamerList:= TXRTLArray.Create;
+  XRTLRegisterValueClassDescriptors;
+  XRTLRegisterValueStreamers;
 end;
 
 finalization
