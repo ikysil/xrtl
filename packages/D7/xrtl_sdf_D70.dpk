@@ -1,0 +1,45 @@
+package xrtl_sdf_D70;
+
+{$R *.res}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $37400000}
+{$DESCRIPTION 'xrtl serialization/deserialization framework'}
+{$RUNONLY}
+{$IMPLICITBUILD OFF}
+
+requires
+  rtl,
+  xrtl_util_D70,
+  xrtl_io_D70,
+  xrtl_reflect_D70;
+
+contains
+  xrtl_sdf_BinarySerializer in '..\..\src\xrtl_sdf\xrtl_sdf_BinarySerializer.pas',
+  xrtl_sdf_Serializer in '..\..\src\xrtl_sdf\xrtl_sdf_Serializer.pas',
+  xrtl_sdf_ResourceStrings in '..\..\src\xrtl_sdf\xrtl_sdf_ResourceStrings.pas',
+  xrtl_sdf_BinarySerializerClasses in '..\..\src\xrtl_sdf\xrtl_sdf_BinarySerializerClasses.pas',
+  xrtl_sdf_Reference in '..\..\src\xrtl_sdf\xrtl_sdf_Reference.pas',
+  xrtl_sdf_ReferenceMap in '..\..\src\xrtl_sdf\xrtl_sdf_ReferenceMap.pas',
+  xrtl_sdf_StdClassDescriptor in '..\..\src\xrtl_sdf\xrtl_sdf_StdClassDescriptor.pas',
+  xrtl_sdf_StdStreamer in '..\..\src\xrtl_sdf\xrtl_sdf_StdStreamer.pas';
+
+end.

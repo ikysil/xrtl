@@ -11,7 +11,7 @@ BRCC = $(ROOT)\bin\brcc32.exe $**
 #------------------------------------------------------------------------------
 PROJECTS = xrtl_util_D60.bpl xrtl_util_async_D60.bpl xrtl_reflect_D60.bpl \
   xrtl_io_D60.bpl xrtl_io_zlib_D60.bpl xrtl_io_bzlib_D60.bpl \
-  xrtl_io_dencoder_D60.bpl xrtl_io_object_D60.bpl xrtl_math_D60.bpl \
+  xrtl_io_dencoder_D60.bpl xrtl_sdf_D60.bpl xrtl_math_D60.bpl \
   xrtl_crypt_D60.bpl xrtl_crypt_cipher_D60.bpl xrtl_crypt_md_D60.bpl \
   xrtl_crypt_test_D60.bpl xrtl_net_D60.bpl xrtl_opc_D60.bpl xrtl_opc_sdk_D60.bpl \
   xrtl_opc_cdk_D60.bpl zlibDemo1.exe zlibDemo2.exe bzlibDemo1.exe bzlibDemo2.exe \
@@ -109,13 +109,13 @@ xrtl_util_async_D60.bpl: packages\D6\xrtl_util_async_D60.dpk
 xrtl_util_D60.bpl: packages\D6\xrtl_util_D60.dpk
   $(DCC)
 
-xrtl_io_object_D60.bpl: packages\D6\xrtl_io_object_D60.dpk
+xrtl_sdf_D60.bpl: packages\D6\xrtl_sdf_D60.dpk
   $(DCC)
 
 xrtl_reflect_D60.bpl: packages\D6\xrtl_reflect_D60.dpk
   $(DCC)
 
-IOObjectDemo1.exe: demos\io_object\IOObjectDemo1\IOObjectDemo1.dpr
+IOObjectDemo1.exe: demos\sdf\IOObjectDemo1\IOObjectDemo1.dpr
   $(DCC)
 
 
