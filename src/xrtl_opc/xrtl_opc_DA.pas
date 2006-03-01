@@ -21,6 +21,10 @@ unit xrtl_opc_DA;
 
 {$INCLUDE xrtl.inc}
 
+{$IFDEF VER150}
+{$WARN UNSAFE_TYPE OFF}
+{$ENDIF}
+
 // ************************************************************************ //
 // Type Lib: OPCProxy.dll
 // IID\LCID: {3B540B51-0378-4551-ADCC-EA9B104302BF}\0 - Data Access 3.0

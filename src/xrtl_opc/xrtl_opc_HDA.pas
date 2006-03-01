@@ -1,7 +1,7 @@
 
 {*******************************************************}
 {                                                       }
-{       OPC Historical Data Access 1.1                  }
+{       OPC Historical Data Access 1.2                  }
 {                                                       }
 {       Delphi conversion generated and supplied by     }
 {       Mike Dillamore                                  }
@@ -18,6 +18,10 @@
 unit xrtl_opc_HDA;
 
 {$INCLUDE xrtl.inc}
+
+{$IFDEF VER150}
+{$WARN UNSAFE_TYPE OFF}
+{$ENDIF}
 
 // ************************************************************************ //
 // Type Lib: opchda_ps.dll
@@ -180,6 +184,7 @@ const
   OPCHDA_NODATA             = $00200000;
   OPCHDA_DATALOST           = $00400000;
   OPCHDA_CONVERSION         = $00800000;
+  OPCHDA_PARTIAL            = $01000000;
 
 type
 

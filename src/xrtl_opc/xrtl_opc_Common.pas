@@ -15,6 +15,10 @@ unit xrtl_opc_Common;
 
 {$INCLUDE xrtl.inc}
 
+{$IFDEF VER150}
+{$WARN UNSAFE_TYPE OFF}
+{$ENDIF}
+
 // ************************************************************************ //
 // Type Lib: opccomn_ps.dll
 // IID\LCID: {B28EEDB1-AC6F-11D1-84D5-00608CB8A7E9}\0

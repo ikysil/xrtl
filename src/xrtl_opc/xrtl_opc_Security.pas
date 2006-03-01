@@ -19,6 +19,10 @@ unit xrtl_opc_Security;
 
 {$INCLUDE xrtl.inc}
 
+{$IFDEF VER150}
+{$WARN UNSAFE_TYPE OFF}
+{$ENDIF}
+
 // ************************************************************************ //
 // Type Lib: opcSec_PS.dll
 // IID\LCID: {7AA83AFF-6C77-11D3-84F9-00008630A38B}\0

@@ -15,6 +15,10 @@ unit xrtl_opc_AE;
 
 {$INCLUDE xrtl.inc}
 
+{$IFDEF VER150}
+{$WARN UNSAFE_TYPE OFF}
+{$ENDIF}
+
 // ************************************************************************ //
 // Type Lib: opc_aeps.dll
 // IID\LCID: {65168844-5783-11D1-84A0-00608CB8A7E9}\0

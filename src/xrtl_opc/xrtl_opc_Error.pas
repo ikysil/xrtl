@@ -26,6 +26,7 @@ Release 2.0
     Added OPC_E_INVALID_PID
 Release 3.0
     Added new error codes for DA3.0
+    Added error codes for complex data
 
 Module Name:
     opcae_er.h
@@ -57,9 +58,6 @@ Code Assignements:
 }
 
 interface
-
-//uses
-//  Windows;
 
 const
 
@@ -302,6 +300,51 @@ const
   //  The server does not support writing of quality and/or timestamp.
   //
   OPC_E_NOTSUPPORTED = HResult($C0040406);
+
+  //
+  // MessageId: OPCCPX_E_TYPE_CHANGED
+  //
+  // MessageText:
+  //
+  //  The dictionary and/or type description for the item has changed.
+  //
+  OPCCPX_E_TYPE_CHANGED = HResult($C0040407);
+
+  //
+  // MessageId: OPCCPX_E_FILTER_DUPLICATE
+  //
+  // MessageText:
+  //
+  //  A data filter item with the specified name already exists.
+  //
+  OPCCPX_E_FILTER_DUPLICATE = HResult($C0040408);
+
+  //
+  // MessageId: OPCCPX_E_FILTER_INVALID
+  //
+  // MessageText:
+  //
+  //  The data filter value does not conform to the server's syntax.
+  //
+  OPCCPX_E_FILTER_INVALID = HResult($C0040409);
+
+  //
+  // MessageId: OPCCPX_E_FILTER_ERROR
+  //
+  // MessageText:
+  //
+  //  An error occurred when the filter value was applied to the source data.
+  //
+  OPCCPX_E_FILTER_ERROR = HResult($C004040A);
+
+  //
+  // MessageId: OPCCPX_S_FILTER_NO_DATA
+  //
+  // MessageText:
+  //
+  //  The item value is empty because the data filter has excluded all fields.
+  //
+  OPCCPX_S_FILTER_NO_DATA = HResult($0004040B);
 
   // OPC Alarms & Events
 
